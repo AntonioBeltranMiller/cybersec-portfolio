@@ -23,14 +23,16 @@ export default function ProjectShowcase({ project, index }: { project: Project; 
   const [currentImage, setCurrentImage] = useState(0)
 
   const nextImage = () => {
-    if (project.images) {
-      setCurrentImage((prev) => (prev + 1) % project.images.length)
+    const images = project.images
+    if (images && images.length > 0) {
+      setCurrentImage((prev) => (prev + 1) % images.length)
     }
   }
 
   const prevImage = () => {
-    if (project.images) {
-      setCurrentImage((prev) => (prev - 1 + project.images.length) % project.images.length)
+    const images = project.images
+    if (images && images.length > 0) {
+      setCurrentImage((prev) => (prev - 1 + images.length) % images.length)
     }
   }
 
