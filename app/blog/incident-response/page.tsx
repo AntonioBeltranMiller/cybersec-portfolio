@@ -9,7 +9,7 @@ export default function IncidentResponseCaseStudy() {
     {
       time: 'T+00:00',
       phase: 'Initial Contact',
-      description: 'Client reported &ldquo;website not loading properly&rdquo;',
+      description: 'Client reported website not loading properly',
       severity: 'unknown',
       actions: ['Gathered initial symptoms', 'Requested access credentials', 'Initiated remote session'],
     },
@@ -84,7 +84,7 @@ export default function IncidentResponseCaseStudy() {
               </div>
               <div>
                 <h1 className="text-4xl font-bold mb-2">Critical Incident Response</h1>
-                <p className="text-xl text-slate-400">WordPress Compromise & Recovery</p>
+                <p className="text-xl text-slate-400">WordPress Compromise &amp; Recovery</p>
               </div>
             </div>
 
@@ -116,7 +116,7 @@ export default function IncidentResponseCaseStudy() {
           >
             <h2 className="text-2xl font-bold mb-4">Executive Summary</h2>
             <p className="text-slate-300 mb-4">
-              What began as a routine "website issue" quickly escalated into a critical security incident involving 
+              What began as a routine website issue quickly escalated into a critical security incident involving 
               active compromise, data exfiltration attempts, and multiple persistence mechanisms. Through rapid 
               response and systematic remediation, we successfully contained the breach, prevented data loss, and 
               restored operations within 2.5 hours.
@@ -235,7 +235,7 @@ export default function IncidentResponseCaseStudy() {
             
             <div className="space-y-4">
               <div>
-                <h3 className="font-semibold text-cyan-400 mb-2">1. Never Underestimate "Simple" Issues</h3>
+                <h3 className="font-semibold text-cyan-400 mb-2">1. Never Underestimate Simple Issues</h3>
                 <p className="text-slate-300">What appeared to be a simple website problem was actually an active compromise. Always investigate thoroughly.</p>
               </div>
               

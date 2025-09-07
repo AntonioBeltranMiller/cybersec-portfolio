@@ -9,3 +9,5 @@ const nextConfig = {
   // Optimize for production
   swcMinify: true,
 }
+
+module.exports = nextConfig

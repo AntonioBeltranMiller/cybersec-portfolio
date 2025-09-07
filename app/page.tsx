@@ -6,7 +6,7 @@ import SkillsMatrix from '@/components/SkillsMatrix'
 import ExperienceTimeline from '@/components/Timeline'
 import MetricsBar from '@/components/MetricsBar'
 import { motion } from 'framer-motion'
-import { Shield, Terminal, Search, AlertCircle, Lock, Cloud } from 'lucide-react'
+import { Shield, Terminal, Search, AlertCircle, Lock } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
