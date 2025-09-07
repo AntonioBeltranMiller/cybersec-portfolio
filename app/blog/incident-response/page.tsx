@@ -9,7 +9,7 @@ export default function IncidentResponseCaseStudy() {
     {
       time: 'T+00:00',
       phase: 'Initial Contact',
-      description: 'Client reported "website not loading properly"',
+      description: 'Client reported &ldquo;website not loading properly&rdquo;',
       severity: 'unknown',
       actions: ['Gathered initial symptoms', 'Requested access credentials', 'Initiated remote session'],
     },
