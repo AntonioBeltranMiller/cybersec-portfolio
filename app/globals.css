@@ -1,3 +1,5 @@
+```css
+/* app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,6 +52,76 @@
     content: '_';
     animation: blink 1s infinite;
   }
+
+  /* Terminal glow effect */
+  .terminal-glow {
+    box-shadow: 
+      0 0 50px rgba(6, 182, 212, 0.1),
+      0 0 100px rgba(6, 182, 212, 0.05),
+      inset 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Matrix-style text animation */
+  @keyframes matrix-rain {
+    0% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(100vh);
+    }
+  }
+
+  .matrix-text {
+    animation: matrix-rain 8s linear infinite;
+    color: rgba(6, 182, 212, 0.8);
+  }
+
+  /* Terminal typing effect */
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  .typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2s steps(40, end);
+  }
+
+  /* Scanline effect for terminals */
+  @keyframes scanline {
+    0% {
+      transform: translateY(0);
+      opacity: 0.1;
+    }
+    50% {
+      opacity: 0.05;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0.1;
+    }
+  }
+
+  .terminal-scanline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.2), transparent);
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+  }
 }
 
 /* Custom scrollbar */
@@ -94,3 +166,34 @@ pre code {
 .animate-delay-300 { animation-delay: 300ms; }
 .animate-delay-400 { animation-delay: 400ms; }
 .animate-delay-500 { animation-delay: 500ms; }
+
+/* Terminal-specific animations */
+.terminal-fade-in {
+  animation: terminalFadeIn 0.5s ease-in-out;
+}
+
+@keyframes terminalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Hide terminals on mobile for better performance */
+@media (max-width: 768px) {
+  .terminal-background {
+    display: none;
+  }
+}
+
+/* Reduce terminal opacity on smaller screens */
+@media (max-width: 1024px) {
+  .terminal-window {
+    opacity: 0.4;
+  }
+}
+```
