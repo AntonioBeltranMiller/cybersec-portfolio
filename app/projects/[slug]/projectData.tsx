@@ -30,7 +30,7 @@ export default function ProjectPage({ params }: { params: Params }) {
         <p>{project.fullDescription}</p>
       </section>
 
-      {project.technologies?.length ? (
+      {!!project.technologies?.length && (
         <section className="mt-8">
           <h2 className="text-xl font-semibold">Technologies</h2>
           <ul className="mt-3 flex flex-wrap gap-2">
@@ -44,9 +44,9 @@ export default function ProjectPage({ params }: { params: Params }) {
             ))}
           </ul>
         </section>
-      ) : null}
+      )}
 
-      {project.details?.length ? (
+      {!!project.details?.length && (
         <section className="mt-8">
           <h2 className="text-xl font-semibold">Details</h2>
           <ul className="mt-3 list-disc pl-6">
@@ -57,9 +57,9 @@ export default function ProjectPage({ params }: { params: Params }) {
             ))}
           </ul>
         </section>
-      ) : null}
+      )}
 
-      {project.metrics?.length ? (
+      {!!project.metrics?.length && (
         <section className="mt-8">
           <h2 className="text-xl font-semibold">Metrics</h2>
           <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -74,9 +74,9 @@ export default function ProjectPage({ params }: { params: Params }) {
             ))}
           </div>
         </section>
-      ) : null}
+      )}
 
-      {project.findings?.length ? (
+      {!!project.findings?.length && (
         <section className="mt-8">
           <h2 className="text-xl font-semibold">Findings</h2>
           <div className="mt-3 space-y-4">
@@ -104,9 +104,9 @@ export default function ProjectPage({ params }: { params: Params }) {
             ))}
           </div>
         </section>
-      ) : null}
+      )}
 
-      {project.additionalSections?.length ? (
+      {!!project.additionalSections?.length && (
         <section className="mt-8 space-y-6">
           {project.additionalSections.map((sec, i) => (
             <div
@@ -119,7 +119,7 @@ export default function ProjectPage({ params }: { params: Params }) {
                 ) : null}
                 <h2 className="text-lg font-semibold">{sec.title}</h2>
               </div>
-              {sec.content?.length ? (
+              {!!sec.content?.length && (
                 <ul className="list-disc pl-6">
                   {sec.content.map((c, j) => (
                     <li key={j} className="text-neutral-800">
@@ -127,24 +127,21 @@ export default function ProjectPage({ params }: { params: Params }) {
                     </li>
                   ))}
                 </ul>
-              ) : null}
+              )}
             </div>
           ))}
         </section>
-      ) : null}
+      )}
 
-      {(project.blogs?.length || project.github || project.liveDemo) ? (
+      {(!!project.blogs?.length || project.github || project.liveDemo) && (
         <section className="mt-10 space-y-4">
-          {project.blogs?.length ? (
+          {!!project.blogs?.length && (
             <div>
               <h2 className="text-xl font-semibold">Related Posts</h2>
               <ul className="mt-3 list-disc pl-6">
                 {project.blogs.map((b, i) => (
                   <li key={`${b.title}-${i}`}>
-                    <Link
-                      href={b.link}
-                      className="text-blue-600 hover:underline"
-                    >
+                    <Link href={b.link} className="text-blue-600 hover:underline">
                       {b.title}
                     </Link>
                     {b.description ? (
@@ -156,30 +153,30 @@ export default function ProjectPage({ params }: { params: Params }) {
                 ))}
               </ul>
             </div>
-          ) : null}
+          )}
 
-          {(project.github || project.liveDemo) ? (
+          {(project.github || project.liveDemo) && (
             <div className="flex flex-wrap gap-3">
-              {project.liveDemo ? (
+              {project.liveDemo && (
                 <Link
                   href={project.liveDemo}
                   className="rounded-xl border border-neutral-200 px-4 py-2 text-sm font-medium hover:bg-neutral-50"
                 >
                   Live Demo
                 </Link>
-              ) : null}
-              {project.github ? (
+              )}
+              {project.github && (
                 <Link
                   href={project.github}
                   className="rounded-xl border border-neutral-200 px-4 py-2 text-sm font-medium hover:bg-neutral-50"
                 >
                   GitHub
                 </Link>
-              ) : null}
+              )}
             </div>
-          ) : null}
+          )}
         </section>
-      ) : null}
+      )}
     </main>
   );
 }
