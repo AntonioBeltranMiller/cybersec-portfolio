@@ -6,7 +6,7 @@ import SkillsMatrix from '@/components/SkillsMatrix'
 import ExperienceTimeline from '@/components/Timeline'
 import MetricsBar from '@/components/MetricsBar'
 import { motion } from 'framer-motion'
-import { Shield, Terminal, Search, AlertCircle, Lock } from 'lucide-react'
+import { Shield, Terminal, Search, AlertCircle, Lock, Eye } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -20,10 +20,26 @@ export default function Home() {
       icon: <AlertCircle className="w-6 h-6" />,
       featured: true,
       images: [
-        '/images/projects/npm-vuln-1.png', // Add your screenshots here
+        '/images/projects/npm-vuln-1.png',
         '/images/projects/npm-vuln-2.png',
       ],
       demoLink: '/projects/vulnerability-research',
+    },
+    {
+      id: 'blind-xss-server',
+      title: 'Blind XSS Detection Platform',
+      description: 'Custom XSS hunter platform with SSL-encrypted dashboard, payload generation, and real-time capture monitoring - deployed from a single bash script',
+      impact: 'Zero to Production in 60 seconds • Captures stored XSS in real-time',
+      tags: ['XSS', 'Web Security', 'Automation', 'Bash'],
+      icon: <Eye className="w-6 h-6" />,
+      featured: true,
+      images: [
+        '/images/projects/blind-xss-dashboard.png',
+        '/images/projects/blind-xss-payloads.png',
+        '/images/projects/blind-xss-captures.png',
+      ],
+      github: 'https://github.com/CyberShellCode/blind-xss-server',
+      demoLink: '/projects/blind-xss-server',
     },
     {
       id: 'certprotector',
@@ -56,10 +72,10 @@ export default function Home() {
     },
     {
       id: 'honeypot',
-      title: 'T-Pot Threat Intelligence',
-      description: 'Deployed honeypot infrastructure collecting 45,000+ attacks for analysis',
-      impact: '12 New Attack Vectors • 89 IOCs Identified',
-      tags: ['Threat Intelligence', 'Honeypot', 'Analysis'],
+      title: 'T-Pot Threat Intelligence Platform',
+      description: 'Deployed distributed honeypot infrastructure collecting 45,000+ attacks for threat intelligence analysis',
+      impact: '12 New Attack Vectors Discovered • 89 IOCs Identified • 3 CVE Reports Filed',
+      tags: ['Threat Intelligence', 'Honeypot', 'T-Pot', 'Analysis'],
       icon: <Search className="w-6 h-6" />,
       images: [
         '/images/projects/tpot-dashboard.png',
