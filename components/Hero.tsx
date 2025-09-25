@@ -102,10 +102,6 @@ export default function Hero() {
         transition={{ delay: 1, duration: 1 }}
         className="absolute left-4 top-1/4 hidden lg:block font-mono text-xs text-green-400"
       >
-        <div className="bg-black/80 backdrop-blur p-4 rounded border border-green-500/30 max-w-xs">
-          <div className="mb-2">$ nmap -sV target.sys</div>
-          <div className="text-green-300">Scanning...</div>
-        </div>
       </motion.div>
 
       <motion.div
