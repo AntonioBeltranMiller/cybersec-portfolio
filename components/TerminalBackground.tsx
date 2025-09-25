@@ -1,4 +1,3 @@
-```tsx
 // components/TerminalBackground.tsx
 'use client'
 
@@ -48,9 +47,7 @@ export default function TerminalBackground() {
           output: [
             '15:32:41.123456 IP 192.168.1.105.445 > 10.0.0.5.38291: Flags [S]',
             '15:32:41.123501 IP 192.168.1.105.445 > 10.0.0.5.38292: Flags [S]',
-            '15:32:41.123589 IP 192.168.1.105.445 > 10.0.0.5.38293: Flags [S]',
-            '[!] SMB brute force detected from 192.168.1.105',
-            'Initiating automated response...'
+            '[!] SMB brute force detected from 192.168.1.105'
           ],
           delay: 2000,
           clearAfter: true
@@ -59,24 +56,10 @@ export default function TerminalBackground() {
           input: 'python3 isolate_host.py --ip 192.168.1.105',
           output: [
             '[*] Connecting to firewall API...',
-            '[*] Creating isolation rule for 192.168.1.105',
             '[+] Host isolated successfully',
-            '[*] Sending alert to SOC team',
             '[+] Incident #2024-1337 created'
           ],
           delay: 3000,
-          clearAfter: true
-        },
-        {
-          input: 'splunk search "index=firewall src_ip=192.168.1.105" | stats count',
-          output: [
-            'Searching... ',
-            'Results:',
-            '  count: 4,523',
-            '  first_seen: 2024-09-24 14:45:23',
-            '  attack_type: credential_stuffing'
-          ],
-          delay: 2500,
           clearAfter: true
         }
       ]
@@ -87,38 +70,13 @@ export default function TerminalBackground() {
       title: 'cybershell@threat-intel:~$',
       commands: [
         {
-          input: 'curl -s https://api.threatfeed.io/iocs/latest | jq .count',
+          input: 'curl -s https://api.threatfeed.io/iocs/latest',
           output: [
             '{"new_iocs": 847}',
             '{"critical": 23}',
-            '{"high": 156}',
             '[*] Updating blocklist...'
           ],
           delay: 2000,
-          clearAfter: true
-        },
-        {
-          input: './check_vulnerabilities.sh --critical',
-          output: [
-            'Scanning for critical CVEs...',
-            '[!] CVE-2024-1234: RCE in Apache Log4j',
-            '[!] CVE-2024-5678: Privilege Escalation in sudo',
-            '[*] 2 critical vulnerabilities found',
-            '[*] Generating patch report...'
-          ],
-          delay: 3000,
-          clearAfter: true
-        },
-        {
-          input: 'nmap -sV --script vuln 10.0.0.0/24',
-          output: [
-            'Starting Nmap 7.94...',
-            'Discovered open port 22/tcp on 10.0.0.15',
-            'Discovered open port 443/tcp on 10.0.0.20',
-            '[!] MS17-010 detected on 10.0.0.45',
-            'Scan complete: 256 IP addresses'
-          ],
-          delay: 4000,
           clearAfter: true
         }
       ]
@@ -129,119 +87,21 @@ export default function TerminalBackground() {
       title: 'cybershell@honeypot:~$',
       commands: [
         {
-          input: 'tail -f /var/log/cowrie/cowrie.json | grep -E "login|download"',
+          input: 'tail -f /var/log/cowrie/cowrie.json',
           output: [
-            '{"eventid":"cowrie.login.success","username":"admin","password":"123456"}',
-            '{"eventid":"cowrie.session.file_download","url":"http://malware.ru/bot.sh"}',
-            '{"eventid":"cowrie.login.failed","username":"root","password":"toor"}',
-            '[*] New malware sample captured: bot.sh',
-            '[*] Sending to sandbox for analysis...'
+            '{"eventid":"cowrie.login.success","username":"admin"}',
+            '{"eventid":"cowrie.session.file_download","url":"bot.sh"}',
+            '[*] New malware sample captured'
           ],
           delay: 2500,
-          clearAfter: true
-        },
-        {
-          input: 'python3 analyze_payloads.py --last 24h',
-          output: [
-            'Analyzing attack patterns...',
-            'Total attacks: 12,847',
-            'Unique IPs: 3,291',
-            'Top country: CN (41%)',
-            'Most targeted: SSH (67%)'
-          ],
-          delay: 3000,
-          clearAfter: true
-        }
-      ]
-    },
-    {
-      id: 4,
-      position: { bottom: '15%', left: '4%' },
-      title: 'cybershell@dfir:~$',
-      commands: [
-        {
-          input: 'volatility -f memory.dump imageinfo',
-          output: [
-            'Determining profile...',
-            'Suggested Profile: Win10x64_19041',
-            'AS Layer: AMD64PagedMemory',
-            'Number of Processors: 4',
-            'Image Type: Service Pack 0'
-          ],
-          delay: 3500,
-          clearAfter: true
-        },
-        {
-          input: 'strings memory.dump | grep -i password | head -5',
-          output: [
-            'password123',
-            'Enter password:',
-            'admin_password=P@ssw0rd!',
-            '[REDACTED - Sensitive Data]',
-            '[*] Credentials found and documented'
-          ],
-          delay: 2000,
-          clearAfter: true
-        },
-        {
-          input: 'yara malware_rules.yar /tmp/suspicious/',
-          output: [
-            'Cobalt_Strike_Beacon /tmp/suspicious/update.exe',
-            'Mimikatz_Dump /tmp/suspicious/lsass.dmp',
-            'Ransomware_Artifact /tmp/suspicious/readme.txt',
-            '[!] 3 malware signatures detected'
-          ],
-          delay: 3000,
-          clearAfter: true
-        }
-      ]
-    },
-    {
-      id: 5,
-      position: { top: '35%', right: '5%' },
-      title: 'cybershell@pentest:~$',
-      commands: [
-        {
-          input: 'msfconsole -q -x "use auxiliary/scanner/smb/smb_version; set RHOSTS 10.10.10.0/24; run"',
-          output: [
-            '[*] 10.10.10.5:445 - Host is running Windows 7 SP1',
-            '[*] 10.10.10.20:445 - Host is running Windows Server 2016',
-            '[!] 10.10.10.45:445 - Vulnerable to EternalBlue',
-            '[*] Scan complete'
-          ],
-          delay: 3000,
-          clearAfter: true
-        },
-        {
-          input: 'sqlmap -u "http://target.com/id=1" --batch --random-agent',
-          output: [
-            '[*] Testing connection to target URL',
-            '[*] Testing for SQL injection',
-            '[!] Parameter "id" is vulnerable',
-            '[!] Type: boolean-based blind',
-            '[*] Dumping database schema...'
-          ],
-          delay: 3500,
-          clearAfter: true
-        },
-        {
-          input: 'hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt',
-          output: [
-            'Session..........: hashcat',
-            'Status...........: Running',
-            'Hash.Type........: NTLM',
-            'Progress.........: 1024000/14344385 (7.14%)',
-            '[+] Cracked: Administrator:Password123!'
-          ],
-          delay: 4000,
           clearAfter: true
         }
       ]
     }
   ]
 
-  // Filter terminals for tablet view (show only 3)
-  const visibleTerminals = isTablet ? terminals.slice(0, 3) : terminals
+  // Filter terminals for tablet view (show only 2)
+  const visibleTerminals = isTablet ? terminals.slice(0, 2) : terminals
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 terminal-background">
@@ -272,7 +132,7 @@ function TerminalWindow({ terminal, isTablet }: { terminal: Terminal; isTablet?:
   useEffect(() => {
     const currentCommand = terminal.commands[currentCommandIndex]
     
-    if (isTyping) {
+    if (isTyping && currentCommand) {
       // Type the command
       let charIndex = 0
       intervalRef.current = setInterval(() => {
@@ -373,4 +233,3 @@ function TerminalWindow({ terminal, isTablet }: { terminal: Terminal; isTablet?:
     </motion.div>
   )
 }
-```
