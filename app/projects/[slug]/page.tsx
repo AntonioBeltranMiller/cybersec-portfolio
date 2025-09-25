@@ -9,10 +9,6 @@ import {
   Github, 
   Shield, 
   AlertTriangle, 
-  Globe, 
-  Database, 
-  FileText, 
-  TrendingUp,
   Activity,
   BookOpen
 } from 'lucide-react'
