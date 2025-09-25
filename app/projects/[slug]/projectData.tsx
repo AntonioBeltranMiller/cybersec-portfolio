@@ -170,7 +170,7 @@ const projectDetails: Record<string, Project> = {
     ],
     metrics: [
       { label: 'Honeypot Attacks', value: '33,000+*', color: 'red' },
-      { label: 'Top Attacker ASNs', value: 'DigitalOcean, RETHEMHOSTING, Host Europe, Google Cloud', color: 'orange' },
+      { label: 'Top Attacker ASNs', value: 'DigitalOcean, GoDaddy, Host Europe, Google Cloud', color: 'orange' },
       { label: 'Most-Triggered Sig', value: 'SURICATA SSH invalid banner', color: 'blue' },
       { label: 'Peak Categories', value: 'Generic protocol, misc activity, attempted admin', color: 'purple' },
     ],
