@@ -15,7 +15,7 @@ export default function Home() {
       id: 'vulnerability-research',
       title: 'Supply Chain Vulnerability Discovery',
       description: 'Discovered critical NPM package vulnerability enabling RCE via dependency confusion',
-      impact: 'CVE Pending • Prevented potential supply chain attack',
+      impact: 'Public Disclosure Pending • Prevented potential supply chain attack',
       tags: ['Security Research', 'Responsible Disclosure', 'Supply Chain'],
       icon: <AlertCircle className="w-6 h-6" />,
       featured: true,
