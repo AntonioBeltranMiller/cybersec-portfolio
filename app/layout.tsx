@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
-// import TerminalBackground from '@/components/TerminalBackground' // Comment out unused import
+import TerminalBackground from '@/components/TerminalBackground'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -33,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable + ' ' + jetbrains.variable}>
       <body className="bg-slate-950 text-slate-100 antialiased">
+        <TerminalBackground />
         <div className="relative z-10">
           <Navigation />
           <main className="min-h-screen">
