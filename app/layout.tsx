@@ -33,10 +33,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={inter.variable + ' ' + jetbrains.variable}>
       <body className="bg-slate-950 text-slate-100 antialiased">
-        {/* Terminal Background Animation */}
-        <TerminalBackground />
         
         {/* Main Content */}
         <div className="relative z-10">
