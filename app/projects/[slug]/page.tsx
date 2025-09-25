@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { 
   ChevronLeft, 
@@ -214,6 +215,76 @@ export default function ProjectDetailPage() {
               </motion.div>
             ))}
 
+            {/* Gallery Section with Screenshots */}
+            {slug === 'honeypot' && (
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+                <figure className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Attack Dashboard</h3>
+                  <div className="relative aspect-video">
+                    <Image
+                      src="/images/projects/tpot-dashboard.png"
+                      alt="T-Pot main dashboard"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain rounded-lg"
+                      priority
+                    />
+                  </div>
+                </figure>
+
+                <figure className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Kibana Visualizations</h3>
+                  <div className="relative aspect-video">
+                    <Image
+                      src="/images/projects/tpot-attacks.png"
+                      alt="Kibana visualizations of captured attacks"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain rounded-lg"
+                    />
+                  </div>
+                </figure>
+
+                <figure className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Geographic Distribution</h3>
+                  <div className="relative aspect-video">
+                    <Image
+                      src="/images/projects/tpot-analysis.png"
+                      alt="Attack maps and geographic data"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain rounded-lg"
+                    />
+                  </div>
+                </figure>
+
+                <figure className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">VirusTotal Detection</h3>
+                  <div className="relative aspect-video">
+                    <Image
+                      src="/images/projects/tpot-virustotal.png"
+                      alt="VirusTotal detection screenshot"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain rounded-lg"
+                    />
+                  </div>
+                </figure>
+              </div>
+            )}
+
+            {/* Default Gallery Placeholder for other projects */}
+            {slug !== 'honeypot' && (
+              <div className="mt-8 p-8 bg-slate-800/30 rounded-xl text-center">
+                <p className="text-slate-500">
+                  {slug === 'blind-xss-server' ?
+                    'XSS hunter dashboard, payload generator, and capture screenshots coming soon' :
+                    'Project screenshots and demonstrations coming soon'
+                  }
+                </p>
+              </div>
+            )}
+
             {/* Blog Posts / Research Papers */}
             {project.blogs && project.blogs.length > 0 && (
               <motion.div 
@@ -258,48 +329,6 @@ export default function ProjectDetailPage() {
                 ))}
               </ul>
             </div>
-
-            {/* Gallery Section with Screenshots */}
-            {slug === 'honeypot' && (
-              <div className="grid md:grid-cols-2 gap-6 mt-8">
-                <div className="bg-slate-800/30 rounded-xl p-4">
-                  <h3 className="text-lg font-semibold mb-3">Attack Dashboard</h3>
-                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
-                    <span className="text-slate-500">T-Pot Dashboard Screenshot</span>
-                  </div>
-                </div>
-                <div className="bg-slate-800/30 rounded-xl p-4">
-                  <h3 className="text-lg font-semibold mb-3">Geographic Distribution</h3>
-                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
-                    <span className="text-slate-500">Attack Map Visualization</span>
-                  </div>
-                </div>
-                <div className="bg-slate-800/30 rounded-xl p-4">
-                  <h3 className="text-lg font-semibold mb-3">Attack Analytics</h3>
-                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
-                    <span className="text-slate-500">Kibana Analytics</span>
-                  </div>
-                </div>
-                <div className="bg-slate-800/30 rounded-xl p-4">
-                  <h3 className="text-lg font-semibold mb-3">Threat Intelligence</h3>
-                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
-                    <span className="text-slate-500">AbuseIPDB Reports</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Default Gallery Placeholder for other projects */}
-            {slug !== 'honeypot' && (
-              <div className="mt-8 p-8 bg-slate-800/30 rounded-xl text-center">
-                <p className="text-slate-500">
-                  {slug === 'blind-xss-server' ?
-                    'XSS hunter dashboard, payload generator, and capture screenshots coming soon' :
-                    'Project screenshots and demonstrations coming soon'
-                  }
-                </p>
-              </div>
-            )}
           </motion.div>
         </div>
       </section>
