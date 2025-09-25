@@ -1,5 +1,5 @@
 import React from 'react'
-import { Shield, AlertTriangle, Globe, Database, FileText, TrendingUp, Eye, Lock, Terminal, Search, Activity } from 'lucide-react'
+import { Shield, AlertTriangle, Database, TrendingUp } from 'lucide-react'
 
 export interface Project {
   title: string
