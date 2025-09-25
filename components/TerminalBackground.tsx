@@ -39,7 +39,7 @@ export default function TerminalBackground() {
   const terminals: Terminal[] = [
     {
       id: 1,
-      position: { top: '10%', left: '1%' },
+      position: { top: '25%', left: '1%' },
       title: 'cybershell@soc-lab:~$',
       commands: [
         {
@@ -83,7 +83,7 @@ export default function TerminalBackground() {
     },
     {
       id: 3,
-      position: { top: '45%', left: '1%' },
+      position: { top: '55%', left: '1%' },
       title: 'cybershell@honeypot:~$',
       commands: [
         {
