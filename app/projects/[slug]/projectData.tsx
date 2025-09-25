@@ -34,10 +34,11 @@ export interface Project {
   }[]
 }
 
-export const projectDetails: Record<string, Project> = {
+const projectDetails: Record<string, Project> = {
   'vulnerability-research': {
     title: 'NPM Supply Chain Vulnerability Discovery',
-    fullDescription: `Discovered a critical vulnerability in a public NPM package that could enable remote code execution through dependency confusion attacks. This finding highlighted the importance of supply chain security and proper package configuration.`,
+    fullDescription:
+      `Discovered a critical vulnerability in a public NPM package that could enable remote code execution through dependency confusion attacks. This finding highlighted the importance of supply chain security and proper package configuration.`,
     timeline: 'August 2024 - Present',
     technologies: ['Node.js', 'NPM', 'Security Research', 'Responsible Disclosure'],
     details: [
@@ -52,11 +53,13 @@ export const projectDetails: Record<string, Project> = {
       'Contributing to CVE database',
     ],
   },
+
   'blind-xss-server': {
     title: 'Blind XSS Detection Platform',
-    fullDescription: `Developed a sophisticated XSS hunter platform that deploys from a single bash script to a fully functional SSL-encrypted dashboard. The platform enables security researchers and pentesters to detect stored XSS vulnerabilities in real-time with comprehensive payload management and capture analysis.`,
+    fullDescription:
+      `Developed a sophisticated XSS hunter platform that deploys from a single bash script to a fully functional SSL-encrypted dashboard. The platform enables security researchers and pentesters to detect stored XSS vulnerabilities in real-time with comprehensive payload management and capture analysis.`,
     timeline: 'November 2024 - Present',
-    technologies: ['Bash', 'Node.js', 'Express', 'WebSockets', 'Let\'s Encrypt', 'MongoDB', 'JavaScript'],
+    technologies: ['Bash', 'Node.js', 'Express', 'WebSockets', "Let's Encrypt", 'MongoDB', 'JavaScript'],
     details: [
       'One-command deployment: chmod +x setup.sh && ./setup.sh deploys entire infrastructure',
       'Automatic SSL certificate generation and renewal via Let\'s Encrypt',
@@ -85,7 +88,7 @@ export const projectDetails: Record<string, Project> = {
           'Redis for session management and caching',
           'Automated backup system for capture data',
           'Rate limiting to prevent abuse',
-        ]
+        ],
       },
       {
         title: 'Payload Features',
@@ -96,8 +99,8 @@ export const projectDetails: Record<string, Project> = {
           'Blind XSS with external callbacks',
           'CSP bypass techniques included',
           'Automatic screenshot capture on trigger',
-        ]
-      }
+        ],
+      },
     ],
     outcomes: [
       'Zero to production deployment in under 60 seconds',
@@ -107,9 +110,11 @@ export const projectDetails: Record<string, Project> = {
     ],
     github: 'https://github.com/CyberShellCode/blind-xss-server',
   },
+
   'certprotector': {
     title: 'CertProtector - SSL/TLS Monitoring Platform',
-    fullDescription: `Built a production-ready monitoring platform that tracks SSL/TLS certificate lifecycles and alerts on expiration. Demonstrates full-stack development capabilities and understanding of security monitoring needs.`,
+    fullDescription:
+      `Built a production-ready monitoring platform that tracks SSL/TLS certificate lifecycles and alerts on expiration. Demonstrates full-stack development capabilities and understanding of security monitoring needs.`,
     timeline: 'December 2024 - Present',
     technologies: ['React', 'Node.js', 'Supabase', 'GitHub Actions', 'RESEND API'],
     details: [
@@ -125,9 +130,11 @@ export const projectDetails: Record<string, Project> = {
     ],
     liveDemo: 'https://certprotector.com',
   },
+
   'soc-lab': {
     title: 'Enterprise SOC Home Lab',
-    fullDescription: `Designed and deployed a comprehensive Security Operations Center environment for testing and skill development. Features enterprise-grade tools and realistic attack simulations.`,
+    fullDescription:
+      `Designed and deployed a comprehensive Security Operations Center environment for testing and skill development. Features enterprise-grade tools and realistic attack simulations.`,
     timeline: 'June 2024 - Present',
     technologies: ['Splunk', 'Active Directory', 'Sysmon', 'pfSense', 'VMware'],
     details: [
@@ -143,144 +150,136 @@ export const projectDetails: Record<string, Project> = {
       'Documented security playbooks',
     ],
   },
+
   'honeypot': {
     title: 'T-Pot Honeypot Threat Intelligence Platform',
-    fullDescription: `Deployed a distributed T-Pot honeypot infrastructure that captured and analyzed over 17,000 attacks, leading to the detection of active exploitation attempts against critical CVEs including the URGENT/11 vulnerabilities and sophisticated VoIP toll fraud campaigns. Successfully identified 5 actively exploited CVEs, analyzed attack patterns from 95+ countries, and contributed threat intelligence to global security platforms including AbuseIPDB.`,
-    timeline: 'September 2024',
+    fullDescription:
+      `Deployed a distributed T-Pot honeypot and captured/analysed large-scale hostile activity, including active exploitation attempts against URGENT/11 VxWorks CVEs, Citrix Workspace probing, a VoIP toll-fraud campaign, scanner activity from ONYPHE, and advanced TLS reconnaissance on a non-standard port.`,
+    timeline: 'September 2024 – Present',
     technologies: [
-      'T-Pot Platform', 'Docker', 'Elasticsearch', 'Logstash', 'Kibana', 
-      'Suricata IDS', 'Cowrie SSH/Telnet', 'Dionaea', 'Sentrypeer', 
-      'Honeytrap', 'Conpot ICS/SCADA', 'Ubuntu Server 22.04', 'Python'
+      'T-Pot Platform', 'Docker', 'Elasticsearch', 'Logstash', 'Kibana',
+      'Suricata IDS', 'Cowrie', 'Dionaea', 'Sentrypeer',
+      'Honeytrap', 'ConPot', 'Ubuntu Server 22.04', 'Python'
     ],
     details: [
-      'Deployed T-Pot with 12+ honeypot services capturing diverse attack vectors',
-      'Collected 17,000+ attacks from 3,000+ unique IPs across 95 countries in 24 hours',
-      'Detected active exploitation of URGENT/11 (CVE-2019-12255, CVE-2019-12260, CVE-2019-12261, CVE-2019-12263)',
-      'Captured sophisticated VoIP toll fraud campaign from GoDaddy infrastructure (AS398101)',
-      'Identified TLS reconnaissance on non-standard ports indicating APT activity',
-      'Detected commercial threat intelligence scanners (ONYPHE) mapping infrastructure',
-      'Implemented automated threat intelligence sharing via AbuseIPDB API',
-      'Created custom Kibana dashboards for real-time threat visualization',
-      'Analyzed attack patterns: SSH (67%), Telnet (15%), Web (10%), Other (8%)',
-      'Peak attack times identified: 2-4 AM EST correlating with Asian business hours',
+      'Detected exploitation attempts for URGENT/11 (CVE-2019-12255/12260/12261/12263) and Citrix Workspace CVE-2020-11900',
+      'Captured SIP INVITE floods (UDP/5060) with spoofed “Cisco-SIPGateway” identity from GoDaddy AS398101, targeting premium international routes',
+      'Observed TLS session establishment on high, non-standard port 64297 from M247 Europe (AS9009), indicative of targeted reconnaissance and potential honeypot fingerprinting',
+      'Identified systematic ONYPHE (AS213412) scanning on port 9770 with clean handshake and immediate RST after banner grab',
+      'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
     ],
     metrics: [
-      { label: 'Total Attacks', value: '17,000+', color: 'red' },
-      { label: 'Unique IPs', value: '3,000+', color: 'orange' },
-      { label: 'Countries', value: '95', color: 'blue' },
-      { label: 'CVEs Detected', value: '5', color: 'purple' },
-      { label: 'Top Attacker AS', value: 'AS18403 (FPT)', color: 'green' },
-      { label: 'Abuse Reports Filed', value: '12', color: 'cyan' },
+      { label: 'Honeypot Attacks', value: '33,000+*', color: 'red' },
+      { label: 'Top Attacker ASNs', value: 'DigitalOcean, RETHEMHOSTING, Host Europe, Google Cloud', color: 'orange' },
+      { label: 'Most-Triggered Sig', value: 'SURICATA SSH invalid banner', color: 'blue' },
+      { label: 'Peak Categories', value: 'Generic protocol, misc activity, attempted admin', color: 'purple' },
     ],
     findings: [
       {
-        title: 'URGENT/11: Wind River VxWorks TCP/IP Stack RCE',
+        title: 'URGENT/11: VxWorks TCP/IP Stack Exploitation Attempts',
         severity: 'critical',
-        description: 'Detected active exploitation of URGENT/11 vulnerabilities (CVSS 9.8-10.0) targeting IoT/OT devices. 4 attempts captured exploiting TCP stack overflow affecting medical devices, industrial controls, and network equipment.',
-        cve: 'CVE-2019-12255'
+        description:
+          'Multiple probes against VxWorks/IPnet components including TCP urgent pointer and DHCP options paths — consistent with CVE-2019-12255/12260/12261/12263. CVSS 9.8–10.0; remote, unauthenticated RCE/DoS paths.',
+        cve: 'CVE-2019-12255, CVE-2019-12260, CVE-2019-12261, CVE-2019-12263',
       },
       {
-        title: 'Citrix Workspace Privilege Escalation',
+        title: 'Citrix Workspace Privilege Escalation Probing',
         severity: 'high',
-        description: 'Captured attempts to exploit CVE-2020-11900 (CVSS 8.8) for local privilege escalation in enterprise environments. Attackers targeting remote worker infrastructure.',
-        cve: 'CVE-2020-11900'
+        description:
+          'Probing consistent with DLL-hijack/priv-esc vectors in Citrix Workspace (post-compromise escalation pattern, enterprise targeting).',
+        cve: 'CVE-2020-11900',
       },
       {
-        title: 'VoIP Toll Fraud Campaign',
+        title: 'VoIP Toll Fraud Campaign (SIP INVITE Floods)',
         severity: 'high',
-        description: 'Sophisticated toll fraud operation using spoofed Cisco-SIPGateway identities targeting premium rate numbers (0075346850780296). Campaign could generate $50,000+ in fraudulent charges per compromised system.',
+        description:
+          'Aggressive SIP INVITE floods to premium routes (e.g., 0075346850780296, 76000046850780294) from 208.109.190.200 (GoDaddy/AS398101), spoofing Cisco-SIPGateway; full SDP negotiation captured.',
       },
       {
-        title: 'TLS Reconnaissance on Port 64297',
+        title: 'TLS Reconnaissance on Non-standard Port 64297',
         severity: 'medium',
-        description: 'Advanced reconnaissance from M247 Europe (146.70.185.71) establishing full TLS sessions on non-standard ports, indicating targeted search for hidden services or C2 infrastructure.',
+        description:
+          'Complete TLS handshake and short exchange on TCP/64297 from 146.70.185.71 (M247 Europe/AS9009), likely targeted recon or C2 discovery; demonstrates encrypted probing beyond basic scans.',
       },
       {
-        title: 'Mass Scanner Infrastructure Mapping',
+        title: 'Commercial Mass Scanning by ONYPHE',
         severity: 'low',
-        description: 'ONYPHE commercial scanner systematically enumerating all 65,535 ports. Data likely sold to both researchers and threat actors, creating operational security concerns.',
-      }
+        description:
+          'Systematic port 9770 scan from ONYPHE (AS213412) with banner grab and immediate RST; commercial reconnaissance cataloging honeypot responses.',
+      },
     ],
     additionalSections: [
       {
         title: 'Attack Pattern Analysis',
         icon: <TrendingUp className="w-5 h-5" />,
         content: [
-          'SSH brute force dominated with "root" (45%), "admin" (23%), "ubuntu" (12%)',
-          'Password attempts: "123456" (8%), "(empty)" (7%), "password" (5%)',
-          'Top attacking countries: United States (45%), Hong Kong (12%), Seychelles (8%)',
-          'Automated botnet activity detected from known malicious ASNs',
-          'Correlation between ONYPHE scans and subsequent targeted attacks observed',
-        ]
+          'IoT/OT targeting for botnet building and persistence alongside enterprise lateral-movement objectives',
+          '24/7 automated scanning; CVE spray patterns with legacy exploits still in active rotation',
+          'Suricata top signatures include SSH invalid banner and stream anomalies',
+        ],
       },
       {
         title: 'Threat Intelligence Actions',
         icon: <AlertTriangle className="w-5 h-5" />,
         content: [
-          'Submitted all malicious IPs to AbuseIPDB with 100% confidence scores',
-          'Filed abuse reports to GoDaddy for toll fraud infrastructure',
-          'Created Suricata IDS rules for CVE-2019-12255 detection',
-          'Developed Python automation for threat intelligence sharing',
-          'Documented attack patterns for community threat feeds',
-        ]
+          'Submitted malicious IPs with 100% confidence to AbuseIPDB and notified GoDaddy for toll-fraud infrastructure',
+          'Curated IOC set (IPs, ports, User-Agent, numbers) and added detection notes for reuse',
+          'Monitored correlation between ONYPHE enumeration and subsequent targeted probes',
+        ],
       },
       {
         title: 'Technical Infrastructure',
         icon: <Database className="w-5 h-5" />,
         content: [
-          'Deployed on cloud VPS with 8GB RAM / 4 vCPUs',
-          'Docker Compose managing 30+ containers',
-          'Elasticsearch cluster indexing 500GB+ of attack data',
-          'Automated daily backups to external storage',
-          'Management interface secured with 2FA and IP whitelisting',
-        ]
+          'T-Pot multi-sensor stack (Cowrie, Dionaea, Sentrypeer, Honeytrap) with Suricata + ELK',
+          'Dockerized services with daily backups and hardened access',
+          'Custom dashboards for ASNs, top signatures, port histograms, and geo distribution',
+        ],
       },
       {
         title: 'SOC Value Demonstration',
         icon: <Shield className="w-5 h-5" />,
         content: [
-          'Early warning system for emerging threats',
-          'Validation of security controls effectiveness',
-          'Real-world attack data for detection rule tuning',
-          'Threat actor TTP documentation for hunt teams',
-          'Business risk quantification through attack volume metrics',
-        ]
-      }
+          'Early-warning telemetry for exploit campaigns and reconnaissance',
+          'Clear linkage from raw signals → IOCs → abuse reporting',
+          'Reusable detections and interview-ready deep-dives (packet-level analysis of URGENT/11, SIP fraud TTPs)',
+        ],
+      },
     ],
     blogs: [
       {
         title: 'URGENT/11: Why 5-Year-Old Vulnerabilities Still Matter',
         link: '/blog/honeypot/urgent11-analysis',
-        description: 'Deep dive into Wind River VxWorks exploitation attempts and their impact on critical infrastructure'
+        description: 'Impact of persistent VxWorks exploitation in IoT/OT and how to detect it',
       },
       {
         title: 'Anatomy of a VoIP Toll Fraud Campaign',
         link: '/blog/honeypot/voip-toll-fraud',
-        description: 'Technical analysis of SIP INVITE floods and how criminals monetize compromised PBX systems'
+        description: 'How INVITE floods monetize via premium-rate routes and how to spot them',
       },
       {
         title: 'Threat Intelligence Sharing: From Detection to Action',
         link: '/blog/honeypot/threat-intel-sharing',
-        description: 'How proper abuse reporting and threat intelligence sharing multiplies defensive impact'
+        description: 'Turning honeypot detections into community protection via reporting',
       },
       {
         title: 'Commercial Scanners: The Double-Edged Sword',
         link: '/blog/honeypot/commercial-scanners',
-        description: 'Analysis of ONYPHE and similar platforms role in the threat landscape'
-      }
+        description: 'Research vs. reconnaissance and why ONYPHE-style scans matter',
+      },
     ],
     outcomes: [
-      'Detected active exploitation of 5 critical CVEs including URGENT/11',
-      'Prevented potential toll fraud losses through early detection and reporting',
-      'Contributed threat intelligence to global security community via AbuseIPDB',
-      'Created detection signatures for emerging attack patterns',
-      'Demonstrated ROI of deception technologies for threat detection',
-      'Enhanced incident response playbooks with real attack data',
+      'Verified active exploitation attempts of legacy CVEs and documented packet-level indicators',
+      'Blocked and reported toll-fraud infrastructure; contributed IOCs to AbuseIPDB feeds',
+      'Demonstrated differentiation between mass-scan, targeted recon, and fraud campaigns',
+      'Built interview-ready artifacts: dashboards, signatures, and written analyses',
     ],
   },
+
   'cybershell': {
     title: 'CyberShell - Autonomous Exploitation Framework',
-    fullDescription: `Developed an automated security testing framework that combines traditional scanning with ML-powered analysis for continuous security assessment.`,
+    fullDescription:
+      `Developed an automated security testing framework that combines traditional scanning with ML-powered analysis for continuous security assessment.`,
     timeline: 'October 2024 - Present',
     technologies: ['Python', 'Machine Learning', 'LLM Integration', 'Automation'],
     details: [
@@ -299,4 +298,5 @@ export const projectDetails: Record<string, Project> = {
   },
 }
 
+export { projectDetails }
 export default projectDetails
