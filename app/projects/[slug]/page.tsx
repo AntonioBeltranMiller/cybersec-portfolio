@@ -3,113 +3,22 @@
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ExternalLink, Github } from 'lucide-react'
+import { 
+  ChevronLeft, 
+  ExternalLink, 
+  Github, 
+  Shield, 
+  AlertTriangle, 
+  Globe, 
+  Database, 
+  FileText, 
+  TrendingUp,
+  Activity,
+  BookOpen
+} from 'lucide-react'
 
-// Type definition for Project
-interface Project {
-  title: string
-  fullDescription: string
-  timeline: string
-  technologies: string[]
-  details: string[]
-  outcomes: string[]
-  liveDemo?: string
-  github?: string
-}
-
-// This would normally come from a database or API
-const projectDetails: Record<string, Project> = {
-  'vulnerability-research': {
-    title: 'NPM Supply Chain Vulnerability Discovery',
-    fullDescription: `Discovered a critical vulnerability in a public NPM package that could enable remote code execution through dependency confusion attacks. This finding highlighted the importance of supply chain security and proper package configuration.`,
-    timeline: 'August 2024 - Present',
-    technologies: ['Node.js', 'NPM', 'Security Research', 'Responsible Disclosure'],
-    details: [
-      'Identified misconfigured .npmrc file in public repository',
-      'Analyzed potential attack vectors and impact',
-      'Coordinated responsible disclosure with maintainers',
-      'CVE pending assignment',
-    ],
-    outcomes: [
-      'Prevented potential supply chain attack affecting thousands',
-      'Improved security awareness in open source community',
-      'Contributing to CVE database',
-    ],
-  },
-  'certprotector': {
-    title: 'CertProtector - SSL/TLS Monitoring Platform',
-    fullDescription: `Built a production-ready monitoring platform that tracks SSL/TLS certificate lifecycles and alerts on expiration. Demonstrates full-stack development capabilities and understanding of security monitoring needs.`,
-    timeline: 'December 2024 - Present',
-    technologies: ['React', 'Node.js', 'Supabase', 'GitHub Actions', 'RESEND API'],
-    details: [
-      'Automated certificate scanning and validation',
-      'Multi-tier alerting system (7-day, 1-day, expiration)',
-      'API-driven architecture for enterprise integration',
-      'Scalable to monitor 1000+ domains',
-    ],
-    outcomes: [
-      'Prevents certificate-related outages',
-      'Reduces manual monitoring overhead',
-      'Enterprise-ready architecture',
-    ],
-    liveDemo: 'https://certprotector.com',
-  },
-  'soc-lab': {
-    title: 'Enterprise SOC Home Lab',
-    fullDescription: `Designed and deployed a comprehensive Security Operations Center environment for testing and skill development. Features enterprise-grade tools and realistic attack simulations.`,
-    timeline: 'June 2024 - Present',
-    technologies: ['Splunk', 'Active Directory', 'Sysmon', 'pfSense', 'VMware'],
-    details: [
-      'Splunk SIEM with 45+ custom detection rules',
-      'Active Directory with honeytokens',
-      'Network segmentation with pfSense',
-      'Sysmon enhanced logging',
-      'MITRE ATT&CK mapped detections',
-    ],
-    outcomes: [
-      'Reduced false positive rate by 40%',
-      'Created reusable detection content',
-      'Documented security playbooks',
-    ],
-  },
-  'honeypot': {
-    title: 'T-Pot Honeypot Threat Intelligence',
-    fullDescription: `Deployed and managed a distributed honeypot infrastructure to collect threat intelligence and analyze attack patterns. Generated actionable intelligence for defensive improvements.`,
-    timeline: 'September 2024',
-    technologies: ['T-Pot', 'Docker', 'ELK Stack', 'Kibana', 'Ubuntu Server'],
-    details: [
-      'Multi-honeypot deployment (Cowrie, Dionaea, Conpot)',
-      'Collected 45,000+ attacks over 2 weeks',
-      'Identified 12 new attack vectors',
-      'Created custom Kibana dashboards',
-      'Extracted and analyzed malware samples',
-    ],
-    outcomes: [
-      '89 new IOCs identified',
-      'Created 12 detection rules from findings',
-      'Improved understanding of current threat landscape',
-    ],
-  },
-  'cybershell': {
-    title: 'CyberShell - Autonomous Exploitation Framework',
-    fullDescription: `Developed an automated security testing framework that combines traditional scanning with ML-powered analysis for continuous security assessment.`,
-    timeline: 'October 2024 - Present',
-    technologies: ['Python', 'Machine Learning', 'LLM Integration', 'Automation'],
-    details: [
-      'Automated vulnerability discovery',
-      'ML-powered exploitation attempts',
-      'Comprehensive reporting system',
-      'CI/CD pipeline integration',
-      'Business impact analysis',
-    ],
-    outcomes: [
-      'Reduced manual testing time by 70%',
-      'Improved vulnerability coverage',
-      'Automated compliance reporting',
-    ],
-    github: 'https://github.com/CyberShellCode/cybershell',
-  },
-}
+// Import the project data from the separate file
+import { projectDetails } from './projectData'
 
 export default function ProjectDetailPage() {
   const params = useParams()
@@ -119,7 +28,7 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="min-h-screen pt-20 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-6xl">
           <h1 className="text-3xl font-bold mb-4">Project Not Found</h1>
           <Link href="/" className="text-cyan-400 hover:text-cyan-300">
             ← Back to Home
@@ -129,10 +38,20 @@ export default function ProjectDetailPage() {
     )
   }
 
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'critical': return 'text-red-400 bg-red-900/20 border-red-800/50'
+      case 'high': return 'text-orange-400 bg-orange-900/20 border-orange-800/50'
+      case 'medium': return 'text-yellow-400 bg-yellow-900/20 border-yellow-800/50'
+      case 'low': return 'text-blue-400 bg-blue-900/20 border-blue-800/50'
+      default: return 'text-slate-400 bg-slate-900/20 border-slate-800/50'
+    }
+  }
+
   return (
     <div className="min-h-screen pt-20">
       <section className="py-12 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-6xl">
           <Link href="/#projects" className="inline-flex items-center text-cyan-400 hover:text-cyan-300 mb-6">
             <ChevronLeft className="w-5 h-5 mr-1" />
             Back to Projects
@@ -142,11 +61,11 @@ export default function ProjectDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
             <p className="text-xl text-slate-400 mb-8">{project.timeline}</p>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mb-8">
+            <div className="flex flex-wrap gap-4 mb-8">
               {project.liveDemo && (
                 <a
                   href={project.liveDemo}
@@ -171,10 +90,37 @@ export default function ProjectDetailPage() {
               )}
             </div>
 
+            {/* Metrics Dashboard - if available */}
+            {project.metrics && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8"
+              >
+                {project.metrics.map((metric, idx) => (
+                  <div key={idx} className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-4">
+                    <p className="text-sm text-slate-400 mb-1">{metric.label}</p>
+                    <p className={`text-2xl font-bold ${
+                      metric.color === 'red' ? 'text-red-400' :
+                      metric.color === 'orange' ? 'text-orange-400' :
+                      metric.color === 'green' ? 'text-green-400' :
+                      metric.color === 'blue' ? 'text-blue-400' :
+                      metric.color === 'purple' ? 'text-purple-400' :
+                      'text-cyan-400'
+                    }`}>{metric.value}</p>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+
             {/* Project Description */}
             <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Overview</h2>
-              <p className="text-slate-300 text-lg">{project.fullDescription}</p>
+              <h2 className="text-2xl font-bold mb-4 flex items-center">
+                <Activity className="w-6 h-6 mr-2 text-cyan-400" />
+                Overview
+              </h2>
+              <p className="text-slate-300 text-lg leading-relaxed">{project.fullDescription}</p>
             </div>
 
             {/* Technologies */}
@@ -194,7 +140,7 @@ export default function ProjectDetailPage() {
 
             {/* Project Details */}
             <div className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-8 mb-8">
-              <h2 className="text-2xl font-bold mb-4">Key Features</h2>
+              <h2 className="text-2xl font-bold mb-4">Key Features & Findings</h2>
               <ul className="space-y-3">
                 {project.details.map((detail, idx) => (
                   <li key={idx} className="flex items-start">
@@ -205,8 +151,107 @@ export default function ProjectDetailPage() {
               </ul>
             </div>
 
-            {/* Outcomes */}
-            <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-800/50 rounded-xl p-8">
+            {/* Security Findings - if available */}
+            {project.findings && project.findings.length > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="mb-8"
+              >
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <AlertTriangle className="w-6 h-6 mr-2 text-orange-400" />
+                  Security Findings & CVE Discoveries
+                </h2>
+                <div className="grid gap-4">
+                  {project.findings.map((finding, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`rounded-xl p-6 border ${getSeverityColor(finding.severity)}`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-xl font-semibold">{finding.title}</h3>
+                        {finding.cve && (
+                          <span className="px-3 py-1 bg-slate-800/50 rounded-full text-xs">
+                            {finding.cve}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-slate-300">{finding.description}</p>
+                      <div className="mt-3">
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                          finding.severity === 'critical' ? 'bg-red-900/50 text-red-300' :
+                          finding.severity === 'high' ? 'bg-orange-900/50 text-orange-300' :
+                          finding.severity === 'medium' ? 'bg-yellow-900/50 text-yellow-300' :
+                          'bg-blue-900/50 text-blue-300'
+                        }`}>
+                          {finding.severity.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Additional Sections */}
+            {project.additionalSections && project.additionalSections.map((section, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + idx * 0.1 }}
+                className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-8 mb-8"
+              >
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  {section.icon || <Shield className="w-6 h-6 mr-2 text-cyan-400" />}
+                  <span className="ml-2">{section.title}</span>
+                </h2>
+                <ul className="space-y-3">
+                  {section.content.map((item, itemIdx) => (
+                    <li key={itemIdx} className="flex items-start">
+                      <span className="text-cyan-400 mr-3 mt-1">▸</span>
+                      <span className="text-slate-300">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+
+            {/* Blog Posts / Research Papers */}
+            {project.blogs && project.blogs.length > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-8 mb-8"
+              >
+                <h2 className="text-2xl font-bold mb-6 flex items-center">
+                  <BookOpen className="w-6 h-6 mr-2 text-cyan-400" />
+                  Related Research & Articles
+                </h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {project.blogs.map((blog, idx) => (
+                    <Link 
+                      key={idx}
+                      href={blog.link}
+                      className="block p-4 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-colors"
+                    >
+                      <h3 className="text-lg font-semibold mb-2 text-cyan-400 hover:text-cyan-300">
+                        {blog.title}
+                      </h3>
+                      <p className="text-sm text-slate-400">{blog.description}</p>
+                      <span className="inline-flex items-center mt-3 text-xs text-cyan-400">
+                        Read More →
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Outcomes / Business Impact */}
+            <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-800/50 rounded-xl p-8 mb-8">
               <h2 className="text-2xl font-bold mb-4 text-green-400">Business Impact</h2>
               <ul className="space-y-3">
                 {project.outcomes.map((outcome, idx) => (
@@ -218,10 +263,47 @@ export default function ProjectDetailPage() {
               </ul>
             </div>
 
-            {/* Gallery Placeholder */}
-            <div className="mt-8 p-8 bg-slate-800/30 rounded-xl text-center">
-              <p className="text-slate-500">Project screenshots and demonstrations coming soon</p>
-            </div>
+            {/* Gallery Section with Screenshots */}
+            {slug === 'honeypot' && (
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+                <div className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Attack Dashboard</h3>
+                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
+                    <span className="text-slate-500">T-Pot Dashboard Screenshot</span>
+                  </div>
+                </div>
+                <div className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Geographic Distribution</h3>
+                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
+                    <span className="text-slate-500">Attack Map Visualization</span>
+                  </div>
+                </div>
+                <div className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Attack Analytics</h3>
+                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
+                    <span className="text-slate-500">Kibana Analytics</span>
+                  </div>
+                </div>
+                <div className="bg-slate-800/30 rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-3">Threat Intelligence</h3>
+                  <div className="aspect-video bg-slate-900 rounded-lg flex items-center justify-center">
+                    <span className="text-slate-500">AbuseIPDB Reports</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Default Gallery Placeholder for other projects */}
+            {slug !== 'honeypot' && (
+              <div className="mt-8 p-8 bg-slate-800/30 rounded-xl text-center">
+                <p className="text-slate-500">
+                  {slug === 'blind-xss-server' ?
+                    'XSS hunter dashboard, payload generator, and capture screenshots coming soon' :
+                    'Project screenshots and demonstrations coming soon'
+                  }
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
