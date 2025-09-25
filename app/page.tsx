@@ -126,7 +126,7 @@ export default function Home() {
               <Search className="w-10 h-10 text-cyan-400 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Vulnerability Research</h3>
               <p className="text-slate-400">
-                Active security researcher with pending CVE. Discovered critical supply chain vulnerabilities affecting thousands.
+                Active security researcher in the cybersecurity community. Discovered critical supply chain vulnerabilities affecting thousands.
               </p>
               <span className="text-green-400 text-sm mt-4 inline-block">CVE-2024-PENDING</span>
             </motion.div>
