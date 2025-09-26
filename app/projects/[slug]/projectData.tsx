@@ -36,21 +36,75 @@ export interface Project {
 
 const projectDetails: Record<string, Project> = {
   'vulnerability-research': {
-    title: 'NPM Supply Chain Vulnerability Discovery',
+    title: 'NPM Registry MITM Supply Chain Attack Discovery',
     fullDescription:
-      `Discovered a critical vulnerability in a public NPM package that could enable remote code execution through dependency confusion attacks. This finding highlighted the importance of supply chain security and proper package configuration.`,
+      `Discovered a critical supply chain vulnerability in a public repository where an insecure NPM registry configuration allowed Man-in-the-Middle attacks, enabling remote code execution through malicious package injection. Successfully demonstrated how attackers could poison the npm supply chain by exploiting HTTP transport instead of HTTPS, potentially compromising developer machines and CI/CD pipelines. Initially triaged as P4 but escalated after demonstrating the RCE attack vector.`,
     timeline: 'August 2024 - Present',
-    technologies: ['Node.js', 'NPM', 'Security Research', 'Responsible Disclosure'],
+    technologies: ['Node.js', 'NPM', 'MITM Attacks', 'Supply Chain Security', 'Bugcrowd', 'Responsible Disclosure'],
     details: [
-      'Identified misconfigured .npmrc file in public repository',
-      'Analyzed potential attack vectors and impact',
-      'Coordinated responsible disclosure with maintainers',
-      'CVE pending assignment',
+      'Identified insecure .npmrc configuration using HTTP (registry=http://registry.npmjs.org/) in public GitHub repository',
+      'Developed proof-of-concept demonstrating Remote Code Execution through package substitution',
+      'Used mitmproxy to intercept HTTP traffic and inject malicious npm packages with post-install scripts',
+      'Demonstrated how attackers could leverage DNS spoofing or cache poisoning to redirect npm traffic',
+      'Showed injection of backdoored dependencies like lodash with arbitrary code execution capabilities',
+      'Coordinated responsible disclosure through Bugcrowd platform',
+      'Successfully argued for severity escalation from P4 to higher priority due to demonstrated RCE impact',
+    ],
+    metrics: [
+      { label: 'Attack Vector', value: 'Network (MITM)', color: 'red' },
+      { label: 'Initial Triage', value: 'P4', color: 'yellow' },
+      { label: 'Escalated To', value: 'Higher Priority', color: 'orange' },
+      { label: 'Impact', value: 'RCE', color: 'red' },
+    ],
+    findings: [
+      {
+        title: 'Insecure NPM Registry Configuration',
+        severity: 'critical',
+        description: 'Public .npmrc file configured to use unencrypted HTTP connection to npm registry, allowing MITM attacks to inject malicious packages with post-install scripts achieving Remote Code Execution. Initially triaged as P4 (Server Security Misconfiguration) but severity escalated after RCE demonstration.',
+        cve: 'Pending Assignment',
+      },
+    ],
+    additionalSections: [
+      {
+        title: 'Attack Chain',
+        icon: <AlertTriangle className="w-5 h-5" />,
+        content: [
+          'Step 1: Attacker identifies HTTP registry configuration in public repository',
+          'Step 2: Position MITM proxy between victim and npm registry via DNS spoofing or network control',
+          'Step 3: Intercept npm install requests over unencrypted HTTP',
+          'Step 4: Serve malicious package tarballs with embedded post-install scripts',
+          'Step 5: Achieve Remote Code Execution on developer machines or CI/CD systems',
+        ],
+      },
+      {
+        title: 'Proof of Concept',
+        icon: <Shield className="w-5 h-5" />,
+        content: [
+          'Configured mitmproxy with --map-local to substitute legitimate packages',
+          'Created malicious lodash package with post-install RCE payload',
+          'Successfully demonstrated code execution: "node -e \\"require(\'child_process\').exec(\'echo hacked > hacked.txt\')\\"" ',
+          'Proved ability to steal credentials, access internal resources, and establish persistence',
+          'Documented full exploitation chain for Bugcrowd submission',
+        ],
+      },
+      {
+        title: 'Impact Assessment',
+        icon: <Database className="w-5 h-5" />,
+        content: [
+          'Developer machine compromise through poisoned dependencies',
+          'CI/CD pipeline infiltration affecting production deployments',
+          'Potential for widespread supply chain attack',
+          'Credential theft and lateral movement opportunities',
+          'Long-term persistent access through backdoored packages',
+        ],
+      },
     ],
     outcomes: [
-      'Prevented potential supply chain attack affecting thousands',
-      'Improved security awareness in open source community',
-      'Contributing to CVE database',
+      'Successfully demonstrated Remote Code Execution through supply chain attack',
+      'Prevented potential compromise of developer and infrastructure systems',
+      'Achieved responsible disclosure and remediation (HTTPS enforcement)',
+      'Severity escalated from initial P4 triage after proving RCE capability',
+      'Contributed to supply chain security awareness in open source community',
     ],
   },
 
@@ -163,7 +217,7 @@ const projectDetails: Record<string, Project> = {
     ],
     details: [
       'Detected exploitation attempts for URGENT/11 (CVE-2019-12255/12260/12261/12263) and Citrix Workspace CVE-2020-11900',
-      'Captured SIP INVITE floods (UDP/5060) with spoofed “Cisco-SIPGateway” identity from GoDaddy AS398101, targeting premium international routes',
+      'Captured SIP INVITE floods (UDP/5060) with spoofed "Cisco-SIPGateway" identity from GoDaddy AS398101, targeting premium international routes',
       'Observed TLS session establishment on high, non-standard port 64297 from M247 Europe (AS9009), indicative of targeted reconnaissance and potential honeypot fingerprinting',
       'Identified systematic ONYPHE (AS213412) scanning on port 9770 with clean handshake and immediate RST after banner grab',
       'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
