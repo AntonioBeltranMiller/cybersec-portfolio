@@ -73,8 +73,8 @@ export default function Home() {
     {
       id: 'honeypot',
       title: 'T-Pot Threat Intelligence Platform',
-      description: 'Deployed distributed honeypot infrastructure collecting 45,000+ attacks for threat intelligence analysis',
-      impact: '12 New Attack Vectors Discovered • 89 IOCs Identified • 3 CVE Reports Filed',
+      description: 'Deployed distributed honeypot infrastructure collecting 33,000+ attacks for threat intelligence analysis',
+      impact: '8 New Attack Vectors Discovered • 89 IOCs Identified • 4 CVE Signatures Detected',
       tags: ['Threat Intelligence', 'Honeypot', 'T-Pot', 'Analysis'],
       icon: <Search className="w-6 h-6" />,
       images: [
