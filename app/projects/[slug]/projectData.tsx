@@ -38,7 +38,7 @@ const projectDetails: Record<string, Project> = {
   'vulnerability-research': {
     title: 'NPM Registry MITM Supply Chain Attack Discovery',
     fullDescription:
-      `Discovered a critical supply chain vulnerability in a public repository where an insecure NPM registry configuration allowed Man-in-the-Middle attacks, enabling remote code execution through malicious package injection. Successfully demonstrated how attackers could poison the npm supply chain by exploiting HTTP transport instead of HTTPS, potentially compromising developer machines and CI/CD pipelines. Initially triaged as P4 but escalated after demonstrating the RCE attack vector.`,
+      `Discovered a critical supply chain vulnerability in a public repository where an insecure NPM registry configuration allowed Man-in-the-Middle attacks, enabling remote code execution through malicious package injection. Successfully demonstrated how attackers could poison the npm supply chain by exploiting HTTP transport instead of HTTPS, potentially compromising developer machines and CI/CD pipelines. Initially triaged as P4-Low but escalated after demonstrating the RCE attack vector.`,
     timeline: 'August 2024 - Present',
     technologies: ['Node.js', 'NPM', 'MITM Attacks', 'Supply Chain Security', 'Bugcrowd', 'Responsible Disclosure'],
     details: [
@@ -48,19 +48,19 @@ const projectDetails: Record<string, Project> = {
       'Demonstrated how attackers could leverage DNS spoofing or cache poisoning to redirect npm traffic',
       'Showed injection of backdoored dependencies like lodash with arbitrary code execution capabilities',
       'Coordinated responsible disclosure through Bugcrowd platform',
-      'Successfully argued for severity escalation from P4 to higher priority due to demonstrated RCE impact',
+      'Successfully argued for severity escalation from P4 to P2-high due to demonstrated RCE impact',
     ],
     metrics: [
       { label: 'Attack Vector', value: 'Network (MITM)', color: 'red' },
-      { label: 'Initial Triage', value: 'P4', color: 'yellow' },
-      { label: 'Escalated To', value: 'Higher Priority', color: 'orange' },
+      { label: 'Initial Triage', value: 'P4-Low', color: 'yellow' },
+      { label: 'Escalated To', value: 'P2-High', color: 'orange' },
       { label: 'Impact', value: 'RCE', color: 'red' },
     ],
     findings: [
       {
         title: 'Insecure NPM Registry Configuration',
         severity: 'critical',
-        description: 'Public .npmrc file configured to use unencrypted HTTP connection to npm registry, allowing MITM attacks to inject malicious packages with post-install scripts achieving Remote Code Execution. Initially triaged as P4 (Server Security Misconfiguration) but severity escalated after RCE demonstration.',
+        description: 'Public .npmrc file configured to use unencrypted HTTP connection to npm registry, allowing MITM attacks to inject malicious packages with post-install scripts achieving Remote Code Execution. Initially triaged as P4-Low (Server Security Misconfiguration) but severity escalated after RCE demonstration.',
         cve: 'Pending Assignment',
       },
     ],
