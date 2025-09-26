@@ -181,4 +181,43 @@ export default function VoipTollFraudCaseStudy() {
             </div>
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
               <h3 className="font-semibold text-cyan-400 mb-3">Methodology & Intent</h3>
-              <ul className="space-y-2">{methodology.map((x) => <li key={x} className="text-slate-300
+              <ul className="space-y-2">{methodology.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
+              <div className="mt-4 p-3 rounded border border-yellow-800/50 bg-yellow-900/20 text-yellow-200 flex items-start gap-2">
+                <AlertTriangle className="w-5 h-5 mt-0.5" />
+                Financial exposure can reach six figures before business hours on Monday.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact & Recommendations */}
+      <section className="py-12 px-4 bg-slate-900/30">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-3">Real-World Impact</h3>
+              <ul className="space-y-2">{impact.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
+            </div>
+            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-3">Recommendations</h3>
+              <ul className="space-y-2">{recommendations.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <h2 className="text-2xl font-bold mb-4">Run VoIP infra? Let’s reduce your exposure.</h2>
+          <p className="text-slate-400 mb-8">I can help lock down PBX configs and build detections that stop toll-fraud fast.</p>
+          <Link href="/#contact" className="inline-flex items-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-lg transition-colors">
+            Get in Touch
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </Link>
+        </div>
+      </section>
+    </div>
+  )
+}
