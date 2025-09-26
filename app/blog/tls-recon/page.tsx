@@ -1,83 +1,73 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Shield, Clock, AlertTriangle, CheckCircle, ChevronRight, Globe } from 'lucide-react'
+import { Server, AlertTriangle, CheckCircle, Clock, ChevronRight, Share2 } from 'lucide-react'
 import Link from 'next/link'
 
-export default function TLSReconCaseStudy() {
+export default function OnypheScannerCaseStudy() {
+  const scanCharacteristics = [
+    'Target port: 9770/TCP (non-standard, high-entropy)',
+    'Connection: TCP SYN → banner grab → immediate RST',
+    'Duration: ~98ms total interaction time',
+    'Bytes: ~128 sent / 74 received',
+    'Behavior: Clean handshake with controlled termination',
+  ]
+
+  const scannerFacts = [
+    'Organization: ONYPHE SAS — commercial threat intelligence provider',
+    'Network: AS213412; traffic observed from 91.231.89.129 (OVH/Gravelines region)',
+    'Reputation: Labeled “mass scanner” across multiple threat feeds',
+    'Model: Sells access to discovered services, banners, certificates',
+  ]
+
+  const paradox = [
+    'Legally operated scanners mirror attacker recon behavior',
+    'Blocking them can reduce researcher visibility while attackers still find paths',
+    'Their datasets can be purchased by threat actors (“reconnaissance-as-a-service”)',
+  ]
+
+  const recommendations = [
+    'Respond with decoy banners or delayed/variable responses to pollute commercial datasets',
+    'Correlate scans with later targeted traffic; raise priority when correlation exists',
+    'Use honeytokens that only appear after indexing — detect downstream consumption',
+    'Segment deception infra so cataloging doesn’t reveal production fingerprints',
+  ]
+
   const timeline = [
     {
       time: 'T+00:00',
       phase: 'Detection',
-      severity: 'medium',
-      description: 'Suricata flagged anomalous TLS traffic on non-standard port 64297',
-      actions: ['Alert triaged in SIEM', 'Pulled Suricata event + PCAP metadata', 'Correlated with host firewall logs'],
+      severity: 'low',
+      description: 'Suricata flagged inbound probe to 9770/TCP',
+      actions: ['Event triaged', 'Session reconstructed', 'Confirmed banner grab + RST'],
     },
     {
-      time: 'T+00:05',
+      time: 'T+00:04',
       phase: 'Attribution',
-      severity: 'high',
-      description: 'Source attributed to 146.70.185.71 (M247 Europe SRL, AS9009)',
-      actions: ['ASN + reputation lookups', 'Checked for related activity in past 30 days', 'Tagged source as VPN/proxy exit'],
+      severity: 'medium',
+      description: 'IP linked to ONYPHE SAS (AS213412), known commercial scanner',
+      actions: ['ASN + org lookups', 'Checked existing sightings in TI feeds', 'Tagged as “mass scanner”'],
     },
     {
-      time: 'T+00:12',
-      phase: 'Deep Dive',
-      severity: 'high',
-      description: 'Confirmed full TCP/TLS session on non-standard port; short-lived but clean negotiation',
-      actions: [
-        'Bytes: 3,418 sent / 744 recv across 14 packets',
-        'Duration ~240ms with graceful FIN/ACK',
-        'No application payload beyond TLS setup',
-      ],
-    },
-    {
-      time: 'T+00:20',
+      time: 'T+00:10',
       phase: 'Assessment',
-      severity: 'high',
-      description: 'Likely targeted reconnaissance or honeypot fingerprinting attempt',
-      actions: [
-        'Hypotheses: hidden admin/backdoor discovery, C2 discovery, sensor fingerprinting',
-        'Marked IOC for monitoring + correlation',
-      ],
+      severity: 'medium',
+      description: 'Non-targeted internet-wide enumeration; low immediate risk but high OSINT impact',
+      actions: ['Categorized as mapping activity', 'Evaluated exposure of deception fingerprints'],
     },
     {
-      time: 'T+00:30',
+      time: 'T+00:18',
       phase: 'Response',
       severity: 'resolved',
-      description: 'Hardened decoys and added watch rules without burning the sensor',
-      actions: [
-        'Deployed non-deterministic TLS fingerprints on decoys',
-        'Added targeted detection for repeat sessions on high ports',
-        'Shared IOC to internal feed',
-      ],
+      description: 'Implemented scanner-specific responses and tracking',
+      actions: ['Decoy banner rotation enabled', 'Honeytoken beacon prepared', 'Correlation alert created'],
     },
-  ]
-
-  const connectionProfile = {
-    Protocol: 'TLS over TCP on port 64297 (non-standard)',
-    'Data Exchange': '3,418 bytes sent / 744 bytes received, 14 packets',
-    Duration: '~240ms (complete TCP handshake and termination)',
-    Behavior: 'Successful TLS negotiation on unusual high port',
-    Source: '146.70.185.71 (M247 Europe SRL, AS9009)',
-  }
-
-  const implications = [
-    'Operating on non-standard ports to sidestep coarse firewall rules',
-    'Encrypted protocols reduce DPI efficacy and signature coverage',
-    'Use of VPN/proxy hosting increases anonymization and repeatability',
-  ]
-
-  const takeaways = [
-    'Modern recon frequently uses full TLS handshakes on odd ports — treat these as priority triage, not noise.',
-    'Honeypots can surface pre-exploitation behaviors (admin/backdoor discovery, C2 probing) that production logs miss.',
-    'Fingerprint hardening (varying certs/ciphers/timing) frustrates honeypot identification without losing visibility.',
   ]
 
   return (
     <div className="min-h-screen pt-20">
       {/* Hero */}
-      <section className="py-12 px-4 bg-gradient-to-b from-blue-900/10 to-transparent">
+      <section className="py-12 px-4 bg-gradient-to-b from-violet-900/10 to-transparent">
         <div className="container mx-auto max-w-4xl">
           <Link href="/blog" className="inline-flex items-center text-cyan-400 hover:text-cyan-300 mb-6">
             ← Back to Blog
@@ -85,27 +75,27 @@ export default function TLSReconCaseStudy() {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-blue-500/10 rounded-lg">
-                <Shield className="w-8 h-8 text-blue-400" />
+              <div className="p-3 bg-violet-500/10 rounded-lg">
+                <Server className="w-8 h-8 text-violet-400" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold mb-2">Honeypot Detection: Suspicious TLS Reconnaissance</h1>
-                <p className="text-xl text-slate-400">Non-standard TLS session on port 64297 from AS9009 (M247)</p>
+                <h1 className="text-4xl font-bold mb-2">Honeypot Detection: Commercial Threat Intel Mapping (ONYPHE)</h1>
+                <p className="text-xl text-slate-400">Systematic scan on 9770/TCP with banner grab and controlled RST</p>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="bg-slate-900/50 rounded-lg p-4 text-center">
-                <p className="text-2xl font-bold text-cyan-400">64297/TCP</p>
-                <p className="text-sm text-slate-400">Non-standard TLS Port</p>
+                <p className="text-2xl font-bold text-cyan-400">9770/TCP</p>
+                <p className="text-sm text-slate-400">Target Port</p>
               </div>
               <div className="bg-slate-900/50 rounded-lg p-4 text-center">
-                <p className="text-2xl font-bold text-purple-400">AS9009</p>
-                <p className="text-sm text-slate-400">M247 Europe SRL</p>
+                <p className="text-2xl font-bold text-purple-400">AS213412</p>
+                <p className="text-sm text-slate-400">ONYPHE SAS</p>
               </div>
               <div className="bg-slate-900/50 rounded-lg p-4 text-center">
-                <p className="text-2xl font-bold text-green-400">240ms</p>
-                <p className="text-sm text-slate-400">Session Duration</p>
+                <p className="text-2xl font-bold text-green-400">~98 ms</p>
+                <p className="text-sm text-slate-400">Interaction Time</p>
               </div>
             </div>
           </motion.div>
@@ -115,17 +105,12 @@ export default function TLSReconCaseStudy() {
       {/* Executive Summary */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-8 mb-12"
-          >
-            <h2 className="text-2xl font-bold mb-4">Incident Summary</h2>
+          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="bg-slate-900/50 border border-slate-800 rounded-xl p-8 mb-12">
+            <h2 className="text-2xl font-bold mb-4">Executive Summary</h2>
             <p className="text-slate-300">
-              During routine monitoring of my T-Pot deployment, Suricata detected a full TLS negotiation on an unusual
-              high port (64297/TCP) from <span className="font-mono">146.70.185.71</span> ({' '}
-              <span className="inline-flex items-center gap-1"><Globe className="w-4 h-4" />M247 Europe, AS9009</span> ).
-              The behavior is consistent with targeted reconnaissance, honeypot fingerprinting, or C2 discovery.
+              Suricata detected internet-wide reconnaissance by ONYPHE (commercial scanner). The probe executed a clean
+              TCP handshake, captured a banner, and immediately reset — classic cataloging behavior for sale in a
+              commercial database. While not malicious per se, this activity enables both defenders and adversaries.
             </p>
           </motion.div>
         </div>
@@ -134,26 +119,16 @@ export default function TLSReconCaseStudy() {
       {/* Timeline */}
       <section className="py-12 px-4 bg-slate-900/30">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-2xl font-bold mb-8">Incident Timeline</h2>
+          <h2 className="text-2xl font-bold mb-8">Observation Timeline</h2>
           <div className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-500 to-green-500" />
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-violet-500 via-cyan-500 to-green-500" />
             {timeline.map((ev, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="relative flex items-start mb-8"
-              >
-                <div
-                  className={`absolute left-0 w-16 h-16 rounded-full flex items-center justify-center border-2 ${
-                    ev.severity === 'high'
-                      ? 'bg-orange-900 border-orange-500'
-                      : ev.severity === 'resolved'
-                      ? 'bg-green-900 border-green-500'
-                      : 'bg-blue-900 border-blue-500'
-                  }`}
-                >
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }} className="relative flex items-start mb-8">
+                <div className={`absolute left-0 w-16 h-16 rounded-full flex items-center justify-center border-2 ${
+                  ev.severity === 'resolved' ? 'bg-green-900 border-green-500' :
+                  ev.severity === 'medium' ? 'bg-yellow-900 border-yellow-500' :
+                  'bg-slate-900 border-slate-500'
+                }`}>
                   {ev.severity === 'resolved' ? <CheckCircle className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
                 </div>
                 <div className="ml-24 flex-1">
@@ -181,57 +156,35 @@ export default function TLSReconCaseStudy() {
         </div>
       </section>
 
-      {/* Technical Analysis */}
+      {/* Technical Analysis & Strategy */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-2xl font-bold mb-6">Technical Analysis</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-              <h3 className="font-semibold text-cyan-400 mb-3">Connection Profile</h3>
-              <ul className="space-y-2">
-                {Object.entries(connectionProfile).map(([k, v]) => (
-                  <li key={k} className="flex items-start">
-                    <span className="text-green-400 mr-2">•</span>
-                    <span className="text-slate-300"><span className="text-slate-400">{k}:</span> {v}</span>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="font-semibold text-cyan-400 mb-3">Scan Characteristics</h3>
+              <ul className="space-y-2">{scanCharacteristics.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
             </div>
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-              <h3 className="font-semibold text-cyan-400 mb-3">Threat Assessment</h3>
-              <ul className="space-y-2">
-                <li className="text-slate-300">Targeted search for hidden admin/backdoor services</li>
-                <li className="text-slate-300">Potential honeypot fingerprinting attempts</li>
-                <li className="text-slate-300">Command-and-control (C2) discovery</li>
-              </ul>
+              <h3 className="font-semibold text-cyan-400 mb-3">Scanner Infrastructure</h3>
+              <ul className="space-y-2">{scannerFacts.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
               <div className="mt-4 p-3 rounded border border-yellow-800/50 bg-yellow-900/20 text-yellow-200 flex items-start gap-2">
                 <AlertTriangle className="w-5 h-5 mt-0.5" />
-                The source ASN frequently hosts VPN/proxy exits — raises likelihood of deliberate anonymization.
+                Findings may be re-sold — assume your deception fingerprints are catalogued.
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Implications & Takeaways */}
-      <section className="py-12 px-4 bg-slate-900/30">
-        <div className="container mx-auto max-w-4xl">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="mt-8 grid md:grid-cols-2 gap-6">
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-3">Security Implications</h3>
-              <ul className="space-y-2">
-                {implications.map((x) => (
-                  <li key={x} className="text-slate-300">• {x}</li>
-                ))}
-              </ul>
+              <h3 className="text-xl font-semibold mb-3">The Researcher Paradox</h3>
+              <ul className="space-y-2">{paradox.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
             </div>
             <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-3">Key Takeaways</h3>
-              <ul className="space-y-2">
-                {takeaways.map((x) => (
-                  <li key={x} className="text-slate-300">• {x}</li>
-                ))}
-              </ul>
+              <h3 className="text-xl font-semibold mb-3">Strategic Recommendations</h3>
+              <ul className="space-y-2">{recommendations.map((x) => <li key={x} className="text-slate-300">• {x}</li>)}</ul>
+              <p className="mt-3 text-xs text-slate-500 flex items-center gap-2">
+                <Share2 className="w-4 h-4" /> Consider sharing noisy decoy intel to dilute value while tracking reuse.
+              </p>
             </div>
           </div>
         </div>
@@ -240,10 +193,8 @@ export default function TLSReconCaseStudy() {
       {/* CTA */}
       <section className="py-12 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold mb-4">Need help hardening against covert recon?</h2>
-          <p className="text-slate-400 mb-8">
-            I design honeypots and detections that surface targeted activity before exploitation.
-          </p>
+          <h2 className="text-2xl font-bold mb-4">Want deception that outsmarts scanners?</h2>
+          <p className="text-slate-400 mb-8">I build honey services that waste adversary time and feed your intel loop.</p>
           <Link href="/#contact" className="inline-flex items-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-lg transition-colors">
             Get in Touch
             <ChevronRight className="w-5 h-5 ml-2" />
