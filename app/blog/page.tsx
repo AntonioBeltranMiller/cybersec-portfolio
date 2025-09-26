@@ -8,13 +8,43 @@ const blogPosts = [
   {
     slug: 'incident-response',
     title: 'Critical Incident Response: WordPress Compromise & Recovery',
-    excerpt: 'A detailed case study of identifying, containing, and recovering from an active website compromise in under 3 hours.',
+    excerpt:
+      'A detailed case study of identifying, containing, and recovering from an active website compromise in under 3 hours.',
     date: '2024-11-15',
     readTime: '8 min read',
     category: 'Incident Response',
     featured: true,
   },
-  // Add more blog posts here as you create them
+  {
+    slug: 'tls-recon',
+    title: 'Honeypot Detection: Suspicious TLS Reconnaissance on 64297/TCP',
+    excerpt:
+      'Suricata flagged a full TLS handshake on a non-standard high port from M247 (AS9009) — likely targeted recon, C2 discovery, or honeypot fingerprinting.',
+    date: '2025-09-20',
+    readTime: '6 min read',
+    category: 'Network Recon',
+    featured: false,
+  },
+  {
+    slug: 'voip-toll-fraud',
+    title: 'Honeypot Detection: Sophisticated VoIP Toll Fraud Campaign',
+    excerpt:
+      'Sentrypeer captured SIP INVITE floods from GoDaddy (AS398101) with Cisco-SIPGateway spoofing and sequential premium-rate targets — classic revenue-share fraud.',
+    date: '2025-09-22',
+    readTime: '7 min read',
+    category: 'VoIP Security',
+    featured: false,
+  },
+  {
+    slug: 'onyphe-scanner',
+    title: 'Honeypot Detection: Commercial Threat Intel Mapping (ONYPHE)',
+    excerpt:
+      'Clean TCP handshake → banner grab → immediate RST on 9770/TCP from ONYPHE (AS213412): how commercial scanners catalog your services — and how to respond.',
+    date: '2025-09-24',
+    readTime: '6 min read',
+    category: 'Threat Intelligence',
+    featured: false,
+  },
 ]
 
 export default function BlogPage() {
@@ -26,10 +56,7 @@ export default function BlogPage() {
             ← Back to Home
           </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-4xl font-bold mb-4">Security Blog</h1>
             <p className="text-xl text-slate-400 mb-12">
               Case studies, technical writeups, and security research findings
@@ -41,10 +68,10 @@ export default function BlogPage() {
                   key={post.slug}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                   className={`group relative ${
-                    post.featured 
-                      ? 'bg-gradient-to-r from-cyan-900/10 to-blue-900/10 border-cyan-800/50' 
+                    post.featured
+                      ? 'bg-gradient-to-r from-cyan-900/10 to-blue-900/10 border-cyan-800/50'
                       : 'bg-slate-900/50 border-slate-800'
                   } backdrop-blur border rounded-xl p-8 hover:border-cyan-700/50 transition-colors`}
                 >
@@ -60,33 +87,31 @@ export default function BlogPage() {
                     <div className="p-3 bg-cyan-500/10 rounded-lg">
                       <Shield className="w-6 h-6 text-cyan-400" />
                     </div>
-                    
+
                     <div className="flex-1">
                       <h2 className="text-2xl font-bold mb-2 group-hover:text-cyan-400 transition-colors">
                         {post.title}
                       </h2>
-                      
+
                       <p className="text-slate-400 mb-4">{post.excerpt}</p>
-                      
+
                       <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {new Date(post.date).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric' 
+                          {new Date(post.date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
                           })}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           {post.readTime}
                         </span>
-                        <span className="px-2 py-1 bg-slate-800 rounded">
-                          {post.category}
-                        </span>
+                        <span className="px-2 py-1 bg-slate-800 rounded">{post.category}</span>
                       </div>
-                      
-                      <Link 
+
+                      <Link
                         href={`/blog/${post.slug}`}
                         className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-semibold"
                       >
@@ -98,12 +123,6 @@ export default function BlogPage() {
                 </motion.article>
               ))}
             </div>
-
-            {blogPosts.length === 1 && (
-              <div className="mt-12 p-8 bg-slate-900/30 rounded-xl text-center">
-                <p className="text-slate-500">More security writeups and case studies coming soon</p>
-              </div>
-            )}
           </motion.div>
         </div>
       </section>
