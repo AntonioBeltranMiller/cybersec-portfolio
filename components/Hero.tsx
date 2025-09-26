@@ -41,7 +41,7 @@ export default function Hero() {
                 2000,
                 'Security Researcher',
                 2000,
-                'Incident Response Lead',
+                'Incident Responder',
                 2000,
                 'Security Tool Developer',
                 2000,
