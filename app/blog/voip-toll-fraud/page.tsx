@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Shield, PhoneCall, AlertTriangle, CheckCircle, Clock, ChevronRight } from 'lucide-react'
+import { PhoneCall, AlertTriangle, CheckCircle, Clock, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default function VoipTollFraudCaseStudy() {
