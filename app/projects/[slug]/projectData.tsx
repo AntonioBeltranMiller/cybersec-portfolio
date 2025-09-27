@@ -52,8 +52,8 @@ const projectDetails: Record<string, Project> = {
     ],
     metrics: [
       { label: 'Attack Vector', value: 'Network (MITM)', color: 'red' },
-      { label: 'Initial Triage', value: 'P4-Low', color: 'yellow' },
-      { label: 'Escalated To', value: 'P2-High', color: 'orange' },
+      { label: 'Initial Triage', value: 'P4-LOW', color: 'yellow' },
+      { label: 'Escalated To', value: 'P2-HIGH', color: 'orange' },
       { label: 'Impact', value: 'RCE', color: 'red' },
     ],
     findings: [
