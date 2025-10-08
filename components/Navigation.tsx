@@ -19,11 +19,23 @@ export default function Navigation() {
 
   const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Experience', href: '#experience' },
+    { label: 'Projects', href: '/#projects' },
+    { label: 'Skills', href: '/#skills' },
+    { label: 'Experience', href: '/#experience' },
     { label: 'Blog', href: '/blog' },
   ]
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('/#')) {
+      e.preventDefault()
+      const id = href.substring(2)
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+      setIsMobileOpen(false)
+    }
+  }
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all ${
@@ -34,7 +46,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Shield className="w-6 h-6 text-cyan-400" />
-            <span className="font-bold text-lg hidden sm:block">Antonio B-M</span>
+            <span className="font-bold text-lg hidden sm:block">Antonio Beltran-Miller</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -43,6 +55,7 @@ export default function Navigation() {
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="text-slate-300 hover:text-cyan-400 transition-colors"
               >
                 {item.label}
@@ -83,7 +96,7 @@ export default function Navigation() {
                 key={item.label}
                 href={item.href}
                 className="block py-2 text-slate-300 hover:text-cyan-400 transition-colors"
-                onClick={() => setIsMobileOpen(false)}
+                onClick={(e) => handleNavClick(e, item.href)}
               >
                 {item.label}
               </Link>
