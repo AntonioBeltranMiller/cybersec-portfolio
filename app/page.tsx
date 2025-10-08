@@ -6,69 +6,30 @@ import SkillsMatrix from '@/components/SkillsMatrix'
 import ExperienceTimeline from '@/components/Timeline'
 import MetricsBar from '@/components/MetricsBar'
 import { motion } from 'framer-motion'
-import { Shield, Terminal, Search, AlertCircle, Lock, Eye } from 'lucide-react'
+import { Shield, Terminal, Search, AlertCircle, Activity } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
   const projects = [
     {
-      id: 'vulnerability-research',
-      title: 'Supply Chain Vulnerability Discovery',
-      description: 'Discovered critical NPM package vulnerability enabling RCE via dependency confusion',
-      impact: 'Public Disclosure Pending • Prevented potential supply chain attack',
-      tags: ['Security Research', 'Responsible Disclosure', 'Supply Chain'],
-      icon: <AlertCircle className="w-6 h-6" />,
+      id: 'soc-automation',
+      title: 'AI-Powered SOC Automation Platform',
+      description: 'End-to-end SOC automation using Splunk, N8N, and GPT-4 for intelligent threat detection and response with real-time enrichment',
+      impact: '10 Detection Rules • 85% Faster Triage • AI-Powered Analysis • Real Attack Validation',
+      tags: ['Splunk', 'N8N', 'GPT-4', 'MITRE ATT&CK', 'Threat Intelligence', 'Automation'],
+      icon: <Activity className="w-6 h-6" />,
       featured: true,
       images: [
-        '/images/projects/npm-vuln-1.png',
-        '/images/projects/npm-vuln-2.png',
+        '/images/projects/soc-slack-alert.png',
+        '/images/projects/soc-ai-prompt.png',
+        '/images/projects/soc-slack-alerts-2.png',
+        '/images/projects/soc-n8n-workflow.png',
+        '/images/projects/soc-splunk-registry.png',
+        '/images/projects/soc-splunk-alerts.png',
+        '/images/projects/soc-slack-meterpreter.png',
+        '/images/projects/soc-process-injection.png',
       ],
-      demoLink: '/projects/vulnerability-research',
-    },
-    {
-      id: 'blind-xss-server',
-      title: 'Blind XSS Detection Platform',
-      description: 'Custom XSS hunter platform with SSL-encrypted dashboard, payload generation, and real-time capture monitoring - deployed from a single bash script',
-      impact: 'Zero to Production in 60 seconds • Captures stored XSS in real-time',
-      tags: ['XSS', 'Web Security', 'Automation', 'Bash'],
-      icon: <Eye className="w-6 h-6" />,
-      featured: true,
-      images: [
-        '/images/projects/blind-xss-dashboard.png',
-        '/images/projects/blind-xss-payloads.png',
-        '/images/projects/blind-xss-captures.png',
-      ],
-      github: 'https://github.com/CyberShellCode/blind-xss-server',
-      demoLink: '/projects/blind-xss-server',
-    },
-    {
-      id: 'certprotector',
-      title: 'CertProtector Platform',
-      description: 'Production-ready SSL/TLS monitoring platform with automated alerting',
-      impact: 'Enterprise-scale capability • API-driven automation',
-      tags: ['Full-Stack', 'Security Automation', 'Monitoring'],
-      icon: <Lock className="w-6 h-6" />,
-      images: [
-        '/images/projects/certprotector-dashboard.png',
-        '/images/projects/certprotector-alerts.png',
-        '/images/projects/certprotector-arch.png',
-      ],
-      liveDemo: 'https://certprotector.com',
-      demoLink: '/projects/certprotector',
-    },
-    {
-      id: 'soc-lab',
-      title: 'Enterprise Security Operations Lab',
-      description: 'Comprehensive SOC environment with Splunk SIEM and custom detection rules',
-      impact: '45+ Detection Rules • Full Attack Simulation',
-      tags: ['Splunk', 'Detection Engineering', 'SIEM'],
-      icon: <Shield className="w-6 h-6" />,
-      images: [
-        '/images/projects/soc-lab-network.png',
-        '/images/projects/soc-lab-splunk.png',
-        '/images/projects/soc-lab-alerts.png',
-      ],
-      demoLink: '/projects/soc-lab',
+      demoLink: '/projects/soc-automation',
     },
     {
       id: 'honeypot',
@@ -85,18 +46,34 @@ export default function Home() {
       demoLink: '/projects/honeypot',
     },
     {
-      id: 'cybershell',
-      title: 'CyberShell Framework',
-      description: 'Autonomous security testing framework with ML-powered vulnerability discovery',
-      impact: 'Automated Testing • CI/CD Integration',
-      tags: ['Automation', 'ML/AI', 'Security Testing'],
-      icon: <Terminal className="w-6 h-6" />,
+      id: 'vulnerability-research',
+      title: 'Supply Chain Vulnerability Discovery',
+      description: 'Discovered critical NPM package vulnerability enabling RCE via dependency confusion',
+      impact: 'Multiple Accepted Bug Bounty Reports • Prevented potential supply chain attack',
+      tags: ['Security Research', 'Responsible Disclosure', 'Supply Chain'],
+      icon: <AlertCircle className="w-6 h-6" />,
+      featured: true,
       images: [
-        '/images/projects/cybershell-arch.png',
-        '/images/projects/cybershell-scan.png',
+        '/images/projects/npm-vuln-1.png',
+        '/images/projects/npm-vuln-2.png',
       ],
-      github: 'https://github.com/CyberShellCode/cybershell',
-      demoLink: '/projects/cybershell',
+      demoLink: '/projects/vulnerability-research',
+    },
+    {
+      id: 'blind-xss-server',
+      title: 'Blind XSS Detection Platform & Setup Script',
+      description: 'Custom XSS hunter platform with SSL-encrypted dashboard, payload generation, and real-time capture monitoring - deployed from a single bash script',
+      impact: 'Zero to Production in 60 seconds • Captures stored XSS in real-time',
+      tags: ['XSS', 'Web Security', 'Automation', 'Bash'],
+      icon: <Terminal className="w-6 h-6" />,
+      featured: true,
+      images: [
+        '/images/projects/blind-xss-dashboard.png',
+        '/images/projects/blind-xss-payloads.png',
+        '/images/projects/blind-xss-captures.png',
+      ],
+      github: 'https://github.com/CyberShellCode/blind-xss-server',
+      demoLink: '/projects/blind-xss-server',
     },
   ]
 
@@ -144,7 +121,7 @@ export default function Home() {
               <p className="text-slate-400">
                 Active security researcher in the cybersecurity community. Discovered critical supply chain vulnerabilities affecting thousands.
               </p>
-              <span className="text-green-400 text-sm mt-4 inline-block">CVE-2024-PENDING</span>
+              <span className="text-green-400 text-sm mt-4 inline-block">Multiple Accepted Reports</span>
             </motion.div>
 
             <motion.div 
@@ -164,7 +141,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-20 px-4 bg-slate-900/30">
+      <section id="projects" className="py-20 px-4 bg-slate-900/30">
         <div className="container mx-auto max-w-6xl">
           <motion.h2 
             initial={{ opacity: 0 }}
@@ -183,10 +160,14 @@ export default function Home() {
       </section>
 
       {/* Technical Skills Matrix */}
-      <SkillsMatrix />
+      <section id="skills">
+        <SkillsMatrix />
+      </section>
 
       {/* Experience Timeline */}
-      <ExperienceTimeline />
+      <section id="experience">
+        <ExperienceTimeline />
+      </section>
 
       {/* Call to Action */}
       <section className="py-20 px-4">
