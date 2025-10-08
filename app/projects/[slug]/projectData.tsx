@@ -1,6 +1,6 @@
 // app/projects/[slug]/projectData.tsx
 import React from 'react'
-import { Shield, AlertTriangle, Database, TrendingUp } from 'lucide-react'
+import { Shield, AlertTriangle, Database, TrendingUp, Activity, Zap, Brain } from 'lucide-react'
 
 export interface Project {
   title: string
@@ -35,6 +35,127 @@ export interface Project {
 }
 
 const projectDetails: Record<string, Project> = {
+  'soc-automation': {
+    title: 'AI-Powered SOC Automation Platform',
+    fullDescription:
+      `Built an end-to-end Security Operations Center (SOC) automation platform that detects, analyzes, and responds to security threats using AI-powered intelligence enrichment. Successfully simulated real-world attacks and demonstrated automated threat detection across 10+ attack vectors mapped to MITRE ATT&CK framework. The platform reduces alert triage time from 15 minutes to under 2 minutes through intelligent automation.`,
+    timeline: 'October 2024 - January 2025',
+    technologies: ['Splunk Enterprise', 'N8N', 'GPT-4', 'VirusTotal API', 'AbuseIPDB API', 'Sysmon', 'Windows 10', 'Kali Linux', 'Metasploit', 'Hydra', 'Slack', 'VMware'],
+    details: [
+      'Created 10 production-ready detection rules covering credential dumping, process injection, PowerShell abuse, and brute-force attacks',
+      'Integrated GPT-4 for automated threat analysis with natural language intelligence summaries and MITRE ATT&CK mapping',
+      'Automated IOC enrichment using VirusTotal (file hash reputation) and AbuseIPDB (IP reputation scoring)',
+      'Deployed Sysmon with SwiftOnSecurity configuration for enhanced endpoint visibility (15+ event types)',
+      'Validated detection capabilities using real attack tools: Metasploit, Meterpreter, Hydra for RDP brute-force',
+      'Real-time Slack notifications with comprehensive alert details and remediation recommendations',
+      'N8N workflow automation orchestrating data flow from Splunk → AI Analysis → Threat Intel → Slack',
+      'Successfully detected 9/10 simulated attack scenarios with minimal false positives',
+    ],
+    metrics: [
+      { label: 'Detection Rules', value: '10', color: 'cyan' },
+      { label: 'Triage Time Reduction', value: '85%', color: 'green' },
+      { label: 'Attack Detection Rate', value: '90%', color: 'blue' },
+      { label: 'MITRE ATT&CK Tactics', value: '6', color: 'purple' },
+    ],
+    findings: [
+      {
+        title: 'Credential Dumping Attempts (LSASS Access)',
+        severity: 'critical',
+        description: 'Detected unauthorized access to LSASS process memory, indicating potential credential harvesting attempts. Mapped to MITRE T1003.001 with automatic AI-powered impact assessment and containment recommendations.',
+      },
+      {
+        title: 'Meterpreter Payload Indicators',
+        severity: 'critical',
+        description: 'Identified Meterpreter command execution patterns through Sysmon process creation events. AI analysis provided detailed attack chain reconstruction and lateral movement predictions.',
+      },
+      {
+        title: 'Process Injection Detection',
+        severity: 'high',
+        description: 'Captured remote thread creation events (Sysmon EventCode 8) indicating code injection techniques. Automated enrichment confirmed malicious payload characteristics.',
+      },
+      {
+        title: 'Suspicious PowerShell Execution',
+        severity: 'high',
+        description: 'Detected encoded PowerShell commands and download cradles. GPT-4 analysis decoded obfuscation and identified C2 communication patterns.',
+      },
+      {
+        title: 'RDP Brute-Force Campaign',
+        severity: 'medium',
+        description: 'Identified multiple failed authentication attempts followed by successful login from malicious IP (100% abuse confidence from AbuseIPDB). Automated blocking recommendation generated.',
+      },
+    ],
+    additionalSections: [
+      {
+        title: 'Technical Architecture',
+        icon: <Database className="w-5 h-5" />,
+        content: [
+          'Windows 10 Pro with Sysmon forwarding logs to Splunk via Universal Forwarder',
+          'Splunk Enterprise detection rules trigger webhooks to N8N automation engine',
+          'N8N workflow orchestrates GPT-4 analysis, VirusTotal lookups, and AbuseIPDB queries',
+          'Real-time Slack notifications with formatted threat intelligence summaries',
+          'Kali Linux attack platform for realistic threat simulation and validation',
+        ],
+      },
+      {
+        title: 'AI-Powered Threat Analysis',
+        icon: <Brain className="w-5 h-5" />,
+        content: [
+          'GPT-4 integration for natural language alert triage and threat contextualization',
+          'Automatic MITRE ATT&CK tactic and technique mapping (T1003, T1055, T1059, T1110)',
+          'Severity assessment based on IOC reputation and attack patterns',
+          'Actionable remediation steps tailored to specific threat types',
+          'Threat actor TTPs identification and kill chain analysis',
+        ],
+      },
+      {
+        title: 'Detection Engineering',
+        icon: <Activity className="w-5 h-5" />,
+        content: [
+          'Credential-Dumping-Attempt: LSASS access monitoring (MITRE T1003.001)',
+          'Meterpreter-Indicators: Command execution pattern detection (T1059)',
+          'Process-Injection-Detected: Remote thread creation monitoring (T1055)',
+          'Suspicious-PowerShell-Execution: Encoded commands and download cradles (T1059.001)',
+          'Brute-Force-Success: Failed + successful login correlation (T1110)',
+          'Registry-Persistence: Run key modifications detection (T1547.001)',
+          'Suspicious-Service-Installation: Malicious service creation (T1543.003)',
+          'Suspicious-Network-Connections: Unusual outbound traffic patterns (T1071)',
+          'Suspicious-File-Creation: Executable drops in temp folders (T1204)',
+          'RDP-Brute-Force: Multiple failed authentication attempts (T1110)',
+        ],
+      },
+      {
+        title: 'Threat Intelligence Integration',
+        icon: <Shield className="w-5 h-5" />,
+        content: [
+          'VirusTotal API: Automated file hash reputation (SHA256/MD5/SHA1) with detection ratios',
+          'AbuseIPDB API: Real-time IP abuse confidence scoring and historical attack patterns',
+          'Geolocation and ASN enrichment for source IP attribution',
+          'Malware family identification and behavior analysis from VirusTotal',
+          'Community threat intelligence integration for IOC validation',
+        ],
+      },
+      {
+        title: 'Attack Simulation & Validation',
+        icon: <Zap className="w-5 h-5" />,
+        content: [
+          'Metasploit Framework: Exploited vulnerabilities and generated reverse shells',
+          'Meterpreter Payloads: Process injection, credential dumping, lateral movement',
+          'Hydra: Simulated RDP brute-force attacks with EventCode 4625 detection',
+          'Custom PowerShell: Download cradles, encoded commands, fileless attacks',
+          'Successfully triggered 9/10 detection rules with authentic IOCs',
+        ],
+      },
+    ],
+    outcomes: [
+      'Reduced alert triage time by 85% (from 15 minutes to under 2 minutes)',
+      'Achieved 90% detection rate across simulated real-world attack scenarios',
+      'Eliminated manual threat intelligence enrichment through full automation',
+      'Generated production-ready detection rules aligned with MITRE ATT&CK framework',
+      'Demonstrated Tier 1-2 SOC Analyst capabilities with enterprise-grade tooling',
+      'Created reusable automation framework for incident response workflows',
+    ],
+  },
+
   'vulnerability-research': {
     title: 'NPM Registry MITM Supply Chain Attack Discovery',
     fullDescription:
@@ -165,46 +286,6 @@ const projectDetails: Record<string, Project> = {
     github: 'https://github.com/CyberShellCode/blind-xss-server',
   },
 
-  'certprotector': {
-    title: 'CertProtector - SSL/TLS Monitoring Platform',
-    fullDescription:
-      `Built a production-ready monitoring platform that tracks SSL/TLS certificate lifecycles and alerts on expiration. Demonstrates full-stack development capabilities and understanding of security monitoring needs.`,
-    timeline: 'December 2024 - Present',
-    technologies: ['React', 'Node.js', 'Supabase', 'GitHub Actions', 'RESEND API'],
-    details: [
-      'Automated certificate scanning and validation',
-      'Multi-tier alerting system (7-day, 1-day, expiration)',
-      'API-driven architecture for enterprise integration',
-      'Scalable to monitor 1000+ domains',
-    ],
-    outcomes: [
-      'Prevents certificate-related outages',
-      'Reduces manual monitoring overhead',
-      'Enterprise-ready architecture',
-    ],
-    liveDemo: 'https://certprotector.com',
-  },
-
-  'soc-lab': {
-    title: 'Enterprise SOC Home Lab',
-    fullDescription:
-      `Designed and deployed a comprehensive Security Operations Center environment for testing and skill development. Features enterprise-grade tools and realistic attack simulations.`,
-    timeline: 'June 2024 - Present',
-    technologies: ['Splunk', 'Active Directory', 'Sysmon', 'pfSense', 'VMware'],
-    details: [
-      'Splunk SIEM with 45+ custom detection rules',
-      'Active Directory with honeytokens',
-      'Network segmentation with pfSense',
-      'Sysmon enhanced logging',
-      'MITRE ATT&CK mapped detections',
-    ],
-    outcomes: [
-      'Reduced false positive rate by 40%',
-      'Created reusable detection content',
-      'Documented security playbooks',
-    ],
-  },
-
   'honeypot': {
     title: 'T-Pot Honeypot Threat Intelligence Platform',
     fullDescription:
@@ -223,10 +304,10 @@ const projectDetails: Record<string, Project> = {
       'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
     ],
     metrics: [
-      { label: 'Honeypot Attacks', value: '33,000+*', color: 'red' },
-      { label: 'Top Attacker ASNs', value: 'DigitalOcean, GoDaddy, Host Europe, Google Cloud', color: 'orange' },
-      { label: 'Most-Triggered Sig', value: 'SURICATA SSH invalid banner', color: 'blue' },
-      { label: 'Peak Categories', value: 'Generic protocol, misc activity, attempted admin', color: 'purple' },
+      { label: 'Honeypot Attacks', value: '33,000+', color: 'red' },
+      { label: 'IOCs Identified', value: '89', color: 'orange' },
+      { label: 'CVE Signatures', value: '4', color: 'blue' },
+      { label: 'Attack Vectors', value: '8', color: 'purple' },
     ],
     findings: [
       {
@@ -254,12 +335,6 @@ const projectDetails: Record<string, Project> = {
         severity: 'medium',
         description:
           'Complete TLS handshake and short exchange on TCP/64297 from 146.70.185.71 (M247 Europe/AS9009), likely targeted recon or C2 discovery; demonstrates encrypted probing beyond basic scans.',
-      },
-      {
-        title: 'Commercial Mass Scanning by ONYPHE',
-        severity: 'low',
-        description:
-          'Systematic port 9770 scan from ONYPHE (AS213412) with banner grab and immediate RST; commercial reconnaissance cataloging honeypot responses.',
       },
     ],
     additionalSections: [
@@ -290,37 +365,6 @@ const projectDetails: Record<string, Project> = {
           'Custom dashboards for ASNs, top signatures, port histograms, and geo distribution',
         ],
       },
-      {
-        title: 'SOC Value Demonstration',
-        icon: <Shield className="w-5 h-5" />,
-        content: [
-          'Early-warning telemetry for exploit campaigns and reconnaissance',
-          'Clear linkage from raw signals → IOCs → abuse reporting',
-          'Reusable detections and interview-ready deep-dives (packet-level analysis of URGENT/11, SIP fraud TTPs)',
-        ],
-      },
-    ],
-    blogs: [
-      {
-        title: 'URGENT/11: Why 5-Year-Old Vulnerabilities Still Matter',
-        link: '/blog/honeypot/urgent11-analysis',
-        description: 'Impact of persistent VxWorks exploitation in IoT/OT and how to detect it',
-      },
-      {
-        title: 'Anatomy of a VoIP Toll Fraud Campaign',
-        link: '/blog/honeypot/voip-toll-fraud',
-        description: 'How INVITE floods monetize via premium-rate routes and how to spot them',
-      },
-      {
-        title: 'Threat Intelligence Sharing: From Detection to Action',
-        link: '/blog/honeypot/threat-intel-sharing',
-        description: 'Turning honeypot detections into community protection via reporting',
-      },
-      {
-        title: 'Commercial Scanners: The Double-Edged Sword',
-        link: '/blog/honeypot/commercial-scanners',
-        description: 'Research vs. reconnaissance and why ONYPHE-style scans matter',
-      },
     ],
     outcomes: [
       'Verified active exploitation attempts of legacy CVEs and documented packet-level indicators',
@@ -328,27 +372,6 @@ const projectDetails: Record<string, Project> = {
       'Demonstrated differentiation between mass-scan, targeted recon, and fraud campaigns',
       'Built interview-ready artifacts: dashboards, signatures, and written analyses',
     ],
-  },
-
-  'cybershell': {
-    title: 'CyberShell - Autonomous Exploitation Framework',
-    fullDescription:
-      `Developed an automated security testing framework that combines traditional scanning with ML-powered analysis for continuous security assessment.`,
-    timeline: 'October 2024 - Present',
-    technologies: ['Python', 'Machine Learning', 'LLM Integration', 'Automation'],
-    details: [
-      'Automated vulnerability discovery',
-      'ML-powered exploitation attempts',
-      'Comprehensive reporting system',
-      'CI/CD pipeline integration',
-      'Business impact analysis',
-    ],
-    outcomes: [
-      'Reduced manual testing time by 70%',
-      'Improved vulnerability coverage',
-      'Automated compliance reporting',
-    ],
-    github: 'https://github.com/CyberShellCode/cybershell',
   },
 }
 
