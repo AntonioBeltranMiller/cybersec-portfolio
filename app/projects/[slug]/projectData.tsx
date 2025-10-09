@@ -324,8 +324,8 @@ const projectDetails: Record<string, Project> = {
   'honeypot': {
     title: 'T-Pot Honeypot Threat Intelligence Platform',
     fullDescription:
-      `Deployed a distributed T-Pot honeypot and captured/analysed large-scale hostile activity, including active exploitation attempts against URGENT/11 VxWorks CVEs, Citrix Workspace probing, a VoIP toll-fraud campaign, scanner activity from ONYPHE, and advanced TLS reconnaissance on a non-standard port.`,
-    timeline: 'September 2024 – Present',
+      `Deployed a distributed T-Pot honeypot platform and captured over 424,000 hostile attacks across multiple honeypot sensors. Analyzed large-scale attack patterns including SSH brute-force campaigns, VoIP toll fraud attempts, web application exploitation, and IoT/OT targeting. Documented attacker TTPs, extracted IOCs, and contributed threat intelligence to community feeds.`,
+    timeline: 'August 2025 – Present | Individual Project',
     technologies: [
       'T-Pot Platform', 'Docker', 'Elasticsearch', 'Logstash', 'Kibana',
       'Suricata IDS', 'Cowrie', 'Dionaea', 'Sentrypeer',
