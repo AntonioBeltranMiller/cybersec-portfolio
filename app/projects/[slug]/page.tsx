@@ -297,8 +297,11 @@ export default function ProjectDetailPage() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <AlertTriangle className="w-6 h-6 text-orange-400" />
-                <h2 className="text-2xl font-bold">Security Findings & CVE Discoveries</h2>
+                <h2 className="text-2xl font-bold">Attack Simulations & Detections</h2>
               </div>
+              <p className="text-slate-400 text-sm mb-6 italic">
+                Note: This project was built in a controlled lab environment for educational and portfolio demonstration purposes.
+              </p>
               <div className="grid md:grid-cols-2 gap-6">
                 {project.findings.map((f, i) => (
                   <div
