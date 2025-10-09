@@ -367,59 +367,137 @@ export default function ProjectDetailPage() {
           {/* GALLERY FOR T-POT */}
           {slug === 'honeypot' && (
             <section className="mb-10">
-              <h3 className="text-2xl font-bold mb-4">Screenshots</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <figure className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-                  <h4 className="text-sm font-medium text-slate-300 mb-3">Attack Dashboard</h4>
-                  <div className="relative aspect-video">
+              <h3 className="text-2xl font-bold mb-4">Platform Dashboards & Analysis</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { src: '/images/projects/tpot-real-time-attacks.png', title: 'Real-time Attack Monitoring' },
+                  { src: '/images/projects/tpot-dashboard.png', title: 'T-Pot Main Dashboard' },
+                  { src: '/images/projects/tpot-attack-overview.png', title: 'Attack Overview & Statistics' },
+                  { src: '/images/projects/tpot-port-analysis.png', title: 'Port-based Attack Analysis' },
+                  { src: '/images/projects/tpot-honeypot-distribution.png', title: 'Honeypot Attack Distribution' },
+                  { src: '/images/projects/tpot-web-attacks.png', title: 'Web Application Attacks' },
+                  { src: '/images/projects/tpot-attack-analytics.png', title: 'Attack Analytics & Patterns' },
+                  { src: '/images/projects/tpot-credential-analysis.png', title: 'Credential Stuffing Analysis' },
+                ].map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="group relative aspect-video rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden cursor-pointer hover:border-cyan-600/50 transition-colors"
+                    onClick={() => {
+                      setLightboxImage(idx)
+                      setLightboxOpen(true)
+                    }}
+                  >
                     <Image
-                      src="/images/projects/tpot-dashboard.png"
-                      alt="T-Pot main dashboard"
+                      src={img.src}
+                      alt={img.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="rounded-lg object-contain"
-                      priority
+                      className="object-contain group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                      <Maximize2 className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                      <p className="text-sm text-white font-medium">{img.title}</p>
+                    </div>
                   </div>
-                </figure>
-                <figure className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-                  <h4 className="text-sm font-medium text-slate-300 mb-3">Kibana Visualizations</h4>
-                  <div className="relative aspect-video">
-                    <Image
-                      src="/images/projects/tpot-attacks.png"
-                      alt="Kibana visualizations of captured attacks"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="rounded-lg object-contain"
-                    />
-                  </div>
-                </figure>
-                <figure className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-                  <h4 className="text-sm font-medium text-slate-300 mb-3">Geographic Distribution</h4>
-                  <div className="relative aspect-video">
-                    <Image
-                      src="/images/projects/tpot-analysis.png"
-                      alt="Attack maps and geographic data"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="rounded-lg object-contain"
-                    />
-                  </div>
-                </figure>
-                <figure className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
-                  <h4 className="text-sm font-medium text-slate-300 mb-3">VirusTotal Detection</h4>
-                  <div className="relative aspect-video">
-                    <Image
-                      src="/images/projects/tpot-virustotal.png"
-                      alt="VirusTotal detection screenshot"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="rounded-lg object-contain"
-                    />
-                  </div>
-                </figure>
+                ))}
               </div>
             </section>
+          )}
+
+          {/* LIGHTBOX FOR T-POT */}
+          {lightboxOpen && slug === 'honeypot' && (
+            <div 
+              className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+              onClick={closeLightbox}
+            >
+              <button
+                onClick={closeLightbox}
+                className="absolute top-4 right-4 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+                aria-label="Close lightbox"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  const images = [
+                    '/images/projects/tpot-real-time-attacks.png',
+                    '/images/projects/tpot-dashboard.png',
+                    '/images/projects/tpot-attack-overview.png',
+                    '/images/projects/tpot-port-analysis.png',
+                    '/images/projects/tpot-honeypot-distribution.png',
+                    '/images/projects/tpot-web-attacks.png',
+                    '/images/projects/tpot-attack-analytics.png',
+                    '/images/projects/tpot-credential-analysis.png',
+                  ]
+                  setLightboxImage((prev) => (prev - 1 + images.length) % images.length)
+                }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+                aria-label="Previous image"
+              >
+                <ChevronLeftIcon className="w-6 h-6" />
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  const images = [
+                    '/images/projects/tpot-real-time-attacks.png',
+                    '/images/projects/tpot-dashboard.png',
+                    '/images/projects/tpot-attack-overview.png',
+                    '/images/projects/tpot-port-analysis.png',
+                    '/images/projects/tpot-honeypot-distribution.png',
+                    '/images/projects/tpot-web-attacks.png',
+                    '/images/projects/tpot-attack-analytics.png',
+                    '/images/projects/tpot-credential-analysis.png',
+                  ]
+                  setLightboxImage((prev) => (prev + 1) % images.length)
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+
+              <div 
+                className="relative max-w-7xl max-h-[90vh] w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={[
+                    '/images/projects/tpot-real-time-attacks.png',
+                    '/images/projects/tpot-dashboard.png',
+                    '/images/projects/tpot-attack-overview.png',
+                    '/images/projects/tpot-port-analysis.png',
+                    '/images/projects/tpot-honeypot-distribution.png',
+                    '/images/projects/tpot-web-attacks.png',
+                    '/images/projects/tpot-attack-analytics.png',
+                    '/images/projects/tpot-credential-analysis.png',
+                  ][lightboxImage]}
+                  alt={`Screenshot ${lightboxImage + 1}`}
+                  width={1920}
+                  height={1080}
+                  className="object-contain max-h-[90vh] w-auto mx-auto"
+                />
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-800/90 px-4 py-2 rounded-lg">
+                  <p className="text-sm text-slate-300">
+                    {lightboxImage + 1} of 8 - {[
+                      'Real-time Attack Monitoring',
+                      'T-Pot Main Dashboard',
+                      'Attack Overview & Statistics',
+                      'Port-based Attack Analysis',
+                      'Honeypot Attack Distribution',
+                      'Web Application Attacks',
+                      'Attack Analytics & Patterns',
+                      'Credential Stuffing Analysis',
+                    ][lightboxImage]}
+                  </p>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* BLOGS */}
