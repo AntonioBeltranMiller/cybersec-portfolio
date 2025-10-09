@@ -38,8 +38,8 @@ const projectDetails: Record<string, Project> = {
   'soc-automation': {
     title: 'AI-Powered SOC Automation Platform',
     fullDescription:
-      `Built an end-to-end Security Operations Center (SOC) automation platform in a controlled lab environment that detects, analyzes, and responds to security threats using AI-powered intelligence enrichment. Successfully simulated real-world attacks and demonstrated automated threat detection across 10+ attack vectors mapped to MITRE ATT&CK framework. The platform reduces alert triage time through intelligent automation.`,
-    timeline: 'October 2025',
+      `Built an end-to-end Security Operations Center (SOC) automation platform in a controlled lab environment that detects, analyzes, and responds to security threats using AI-powered intelligence enrichment. Successfully simulated real-world attacks and demonstrated automated threat detection across 10+ attack vectors mapped to MITRE ATT&CK framework. The platform reduces estimated alert triage time from 15 minutes to under 2 minutes through intelligent automation.`,
+    timeline: 'October 2025 | Individual Project',
     technologies: ['Splunk Enterprise', 'N8N', 'GPT-4', 'VirusTotal API', 'AbuseIPDB API', 'Sysmon', 'Windows 10', 'Kali Linux', 'Metasploit', 'Hydra', 'Slack', 'VMware'],
     details: [
       'Created 10 production-ready detection rules covering credential dumping, process injection, PowerShell abuse, and brute-force attacks',
@@ -53,38 +53,73 @@ const projectDetails: Record<string, Project> = {
     ],
     metrics: [
       { label: 'Detection Rules', value: '10', color: 'cyan' },
-      { label: 'Triage Time Reduction', value: '85%', color: 'green' },
-      { label: 'Attack Detection Rate', value: '90%', color: 'blue' },
+      { label: 'Alert Triage Time', value: '<2 min', color: 'green' },
+      { label: 'Attack Scenarios', value: '9+', color: 'blue' },
       { label: 'MITRE ATT&CK Tactics', value: '6', color: 'purple' },
     ],
     findings: [
       {
         title: 'Credential Dumping Attempts (LSASS Access)',
         severity: 'critical',
-        description: 'Detected unauthorized access to LSASS process memory, indicating potential credential harvesting attempts. Mapped to MITRE T1003.001 with automatic AI-powered impact assessment and containment recommendations.',
+        description: 'Detected unauthorized access to LSASS process memory through simulated attack, indicating potential credential harvesting attempts. Mapped to MITRE T1003.001 with automatic AI-powered impact assessment and containment recommendations.',
       },
       {
         title: 'Meterpreter Payload Indicators',
         severity: 'critical',
-        description: 'Identified Meterpreter command execution patterns through Sysmon process creation events. AI analysis provided detailed attack chain reconstruction and lateral movement predictions.',
+        description: 'Identified Meterpreter command execution patterns through Sysmon process creation events during testing. AI analysis provided detailed attack chain reconstruction and lateral movement predictions.',
       },
       {
         title: 'Process Injection Detection',
         severity: 'high',
-        description: 'Captured remote thread creation events (Sysmon EventCode 8) indicating code injection techniques. Automated enrichment confirmed malicious payload characteristics.',
+        description: 'Captured remote thread creation events (Sysmon EventCode 8) indicating code injection techniques. Automated enrichment confirmed malicious payload characteristics in lab environment.',
       },
       {
         title: 'Suspicious PowerShell Execution',
         severity: 'high',
-        description: 'Detected encoded PowerShell commands and download cradles. GPT-4 analysis decoded obfuscation and identified C2 communication patterns.',
+        description: 'Detected encoded PowerShell commands and download cradles during attack simulation. GPT-4 analysis decoded obfuscation and identified C2 communication patterns.',
       },
       {
         title: 'RDP Brute-Force Campaign',
         severity: 'medium',
-        description: 'Identified multiple failed authentication attempts followed by successful login from malicious IP (100% abuse confidence from AbuseIPDB). Automated blocking recommendation generated.',
+        description: 'Identified multiple failed authentication attempts followed by successful login from test IP. Automated blocking recommendation generated with 100% abuse confidence from AbuseIPDB enrichment.',
+      },
+      {
+        title: 'Key Challenges & Solutions',
+        icon: <Zap className="w-5 h-5" />,
+        content: [
+          'Challenge: Integrating multiple APIs with different authentication methods → Solution: Designed modular N8N workflow with reusable credential management',
+          'Challenge: High false positive rate in initial detection rules → Solution: Refined SPL queries using iterative testing with real attack tools',
+          'Challenge: Sysmon log volume overwhelming Splunk indexer → Solution: Implemented selective logging with SwiftOnSecurity baseline configuration',
+          'Challenge: AI prompt engineering for consistent threat analysis → Solution: Developed structured prompts with specific output format requirements',
+          'Challenge: Correlating alerts across multiple data sources → Solution: Created unified event schema with normalized IOC extraction',
+        ],
+      },
+      {
+        title: 'Future Enhancements',
+        icon: <TrendingUp className="w-5 h-5" />,
+        content: [
+          'Integration with SOAR platform (e.g., Shuffle) for automated response actions',
+          'Machine learning model for behavioral anomaly detection on user activity',
+          'Extended coverage for cloud-native attacks targeting AWS/Azure environments',
+          'Custom Sysmon configuration tuned for specific threat actor TTPs',
+          'Automated threat hunting queries based on MITRE ATT&CK navigator',
+          'Integration with ticketing systems (JIRA/ServiceNow) for incident tracking',
+        ],
       },
     ],
     additionalSections: [
+      {
+        title: 'Project Metrics',
+        icon: <Activity className="w-5 h-5" />,
+        content: [
+          '100+ hours of development, testing, and documentation',
+          '4 VMs orchestrated in complex network topology (Windows 10, Splunk, N8N, Kali Linux)',
+          '1,000+ security events processed during validation testing',
+          '32GB RAM allocated for realistic enterprise-scale simulation',
+          '10 production-ready detection rules mapped to MITRE ATT&CK',
+          '3 external APIs integrated (GPT-4, VirusTotal, AbuseIPDB)',
+        ],
+      },
       {
         title: 'Technical Architecture',
         icon: <Database className="w-5 h-5" />,
@@ -304,7 +339,7 @@ const projectDetails: Record<string, Project> = {
       'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
     ],
     metrics: [
-      { label: 'Honeypot Attacks', value: '424,000+', color: 'red' },
+      { label: 'Honeypot Attacks', value: '33,000+', color: 'red' },
       { label: 'IOCs Identified', value: '89', color: 'orange' },
       { label: 'CVE Signatures', value: '4', color: 'blue' },
       { label: 'Attack Vectors', value: '8', color: 'purple' },
