@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ExternalLink, Github, Play } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Project {
   id: string
@@ -119,22 +120,14 @@ export default function ProjectShowcase({ project, index }: { project: Project; 
         <div className="relative">
           {project.images && project.images.length > 0 ? (
             <div className="relative h-[300px] bg-slate-800 rounded-lg overflow-hidden">
-              {/* Placeholder for actual images */}
-              <div className="absolute inset-0 flex items-center justify-center text-slate-600">
-                <div className="text-center">
-                  <div className="text-4xl mb-2">📸</div>
-                  <p className="text-sm">{project.images[currentImage]}</p>
-                  <p className="text-xs mt-2">Image {currentImage + 1} of {project.images.length}</p>
-                </div>
-              </div>
-              
-              {/* When you have actual images, replace above with: */}
-              {/* <Image
+              {/* Actual Image */}
+              <Image
                 src={project.images[currentImage]}
                 alt={`${project.title} screenshot ${currentImage + 1}`}
                 fill
-                className="object-cover"
-              /> */}
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
 
               {/* Carousel Controls */}
               {project.images.length > 1 && (
