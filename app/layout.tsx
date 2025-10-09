@@ -41,7 +41,7 @@ export default function RootLayout({
           </main>
           <footer className="border-t border-slate-800 py-8 mt-20">
             <div className="container mx-auto px-4 text-center text-slate-400">
-              <p> Antonio Beltran-Miller's Professional Portfolio.</p>
+              <p> Antonio Beltran-Miller's Professional Portfolio. </p>
             </div>
           </footer>
         </div>
