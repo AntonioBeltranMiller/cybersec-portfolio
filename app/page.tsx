@@ -68,9 +68,9 @@ export default function Home() {
       icon: <Terminal className="w-6 h-6" />,
       featured: true,
       images: [
-        '/images/projects/blind-xss-dashboard.png',
-        '/images/projects/blind-xss-payloads.png',
-        '/images/projects/blind-xss-captures.png',
+        '/images/projects/blind-xss-capture.png',
+        '/images/projects/blind-xss-payload.png',
+        '/images/projects/blind-xss-active.png',
       ],
       github: 'https://github.com/CyberShellCode/blind-xss-server',
       demoLink: '/projects/blind-xss-server',
