@@ -34,14 +34,14 @@ export default function Home() {
     {
       id: 'honeypot',
       title: 'T-Pot Threat Intelligence Platform',
-      description: 'Deployed distributed honeypot infrastructure collecting 33,000+ attacks for threat intelligence analysis',
-      impact: '8 New Attack Vectors Discovered • 89 IOCs Identified • 4 CVE Signatures Detected',
+      description: 'Deployed distributed honeypot infrastructure capturing 424,000+ attacks for comprehensive threat intelligence analysis',
+      impact: '424K+ Attacks Captured • 15K+ Unique IPs • 200+ IOCs Extracted • 10+ CVE Signatures',
       tags: ['Threat Intelligence', 'Honeypot', 'T-Pot', 'Analysis'],
       icon: <Search className="w-6 h-6" />,
       images: [
+        '/images/projects/tpot-real-time-attacks.png',
         '/images/projects/tpot-dashboard.png',
-        '/images/projects/tpot-attacks.png',
-        '/images/projects/tpot-analysis.png',
+        '/images/projects/tpot-attack-overview.png',
       ],
       demoLink: '/projects/honeypot',
     },
