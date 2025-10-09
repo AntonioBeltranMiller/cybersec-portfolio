@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -12,6 +13,10 @@ import {
   AlertTriangle,
   Activity,
   BookOpen,
+  X,
+  Maximize2,
+  ChevronRight,
+  ChevronLeft as ChevronLeftIcon,
 } from 'lucide-react'
 
 // Import the project data from the separate file
@@ -21,6 +26,9 @@ export default function ProjectDetailPage() {
   const params = useParams()
   const slug = params.slug as string
   const project = projectDetails[slug]
+  
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxImage, setLightboxImage] = useState(0)
 
   if (!project) {
     return (
@@ -42,6 +50,47 @@ export default function ProjectDetailPage() {
       case 'medium': return 'text-yellow-400 bg-yellow-900/20 border-yellow-800/50'
       case 'low': return 'text-blue-400 bg-blue-900/20 border-blue-800/50'
       default: return 'text-slate-400 bg-slate-900/20 border-slate-800/50'
+    }
+  }
+
+  const openLightbox = (index: number) => {
+    setLightboxImage(index)
+    setLightboxOpen(true)
+  }
+
+  const closeLightbox = () => {
+    setLightboxOpen(false)
+  }
+
+  const nextImage = () => {
+    if (slug === 'soc-automation') {
+      const images = [
+        '/images/projects/soc-slack-alert.png',
+        '/images/projects/soc-ai-prompt.png',
+        '/images/projects/soc-slack-alerts-2.png',
+        '/images/projects/soc-n8n-workflow.png',
+        '/images/projects/soc-splunk-registry.png',
+        '/images/projects/soc-splunk-alerts.png',
+        '/images/projects/soc-slack-meterpreter.png',
+        '/images/projects/soc-process-injection.png',
+      ]
+      setLightboxImage((prev) => (prev + 1) % images.length)
+    }
+  }
+
+  const prevImage = () => {
+    if (slug === 'soc-automation') {
+      const images = [
+        '/images/projects/soc-slack-alert.png',
+        '/images/projects/soc-ai-prompt.png',
+        '/images/projects/soc-slack-alerts-2.png',
+        '/images/projects/soc-n8n-workflow.png',
+        '/images/projects/soc-splunk-registry.png',
+        '/images/projects/soc-splunk-alerts.png',
+        '/images/projects/soc-slack-meterpreter.png',
+        '/images/projects/soc-process-injection.png',
+      ]
+      setLightboxImage((prev) => (prev - 1 + images.length) % images.length)
     }
   }
 
@@ -194,6 +243,50 @@ export default function ProjectDetailPage() {
             </ul>
           </motion.section>
 
+          {/* IMAGE GALLERY - ONLY FOR SOC AUTOMATION */}
+          {slug === 'soc-automation' && (
+            <motion.section
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.16 }}
+              className="mb-10"
+            >
+              <h3 className="text-2xl font-bold mb-4">Platform Screenshots</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { src: '/images/projects/soc-slack-alert.png', title: 'AI-Powered Brute Force Alert' },
+                  { src: '/images/projects/soc-ai-prompt.png', title: 'AI SOC Analyst Prompt' },
+                  { src: '/images/projects/soc-slack-alerts-2.png', title: 'Multiple Security Alerts' },
+                  { src: '/images/projects/soc-n8n-workflow.png', title: 'N8N Automation Workflow' },
+                  { src: '/images/projects/soc-splunk-registry.png', title: 'Splunk Registry Persistence Query' },
+                  { src: '/images/projects/soc-splunk-alerts.png', title: 'Splunk Alerts Dashboard' },
+                  { src: '/images/projects/soc-slack-meterpreter.png', title: 'Meterpreter Detection Alert' },
+                  { src: '/images/projects/soc-process-injection.png', title: 'Process Injection Alert' },
+                ].map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="group relative aspect-video rounded-lg border border-slate-800 bg-slate-900/50 overflow-hidden cursor-pointer hover:border-cyan-600/50 transition-colors"
+                    onClick={() => openLightbox(idx)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.title}
+                      fill
+                      className="object-contain group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                      <Maximize2 className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                      <p className="text-sm text-white font-medium">{img.title}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
           {/* SECURITY FINDINGS */}
           {project.findings && project.findings.length > 0 && (
             <motion.section
@@ -268,7 +361,7 @@ export default function ProjectDetailPage() {
             </div>
           )}
 
-          {/* GALLERY */}
+          {/* GALLERY FOR T-POT */}
           {slug === 'honeypot' && (
             <section className="mb-10">
               <h3 className="text-2xl font-bold mb-4">Screenshots</h3>
@@ -371,6 +464,80 @@ export default function ProjectDetailPage() {
 
         </div>
       </section>
+
+      {/* LIGHTBOX MODAL */}
+      {lightboxOpen && slug === 'soc-automation' && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+            aria-label="Close lightbox"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              prevImage()
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+            aria-label="Previous image"
+          >
+            <ChevronLeftIcon className="w-6 h-6" />
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              nextImage()
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors z-10"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          <div 
+            className="relative max-w-7xl max-h-[90vh] w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={[
+                '/images/projects/soc-slack-alert.png',
+                '/images/projects/soc-ai-prompt.png',
+                '/images/projects/soc-slack-alerts-2.png',
+                '/images/projects/soc-n8n-workflow.png',
+                '/images/projects/soc-splunk-registry.png',
+                '/images/projects/soc-splunk-alerts.png',
+                '/images/projects/soc-slack-meterpreter.png',
+                '/images/projects/soc-process-injection.png',
+              ][lightboxImage]}
+              alt={`Screenshot ${lightboxImage + 1}`}
+              width={1920}
+              height={1080}
+              className="object-contain max-h-[90vh] w-auto mx-auto"
+            />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-800/90 px-4 py-2 rounded-lg">
+              <p className="text-sm text-slate-300">
+                {lightboxImage + 1} of 8 - {[
+                  'AI-Powered Brute Force Alert',
+                  'AI SOC Analyst Prompt',
+                  'Multiple Security Alerts',
+                  'N8N Automation Workflow',
+                  'Splunk Registry Persistence Query',
+                  'Splunk Alerts Dashboard',
+                  'Meterpreter Detection Alert',
+                  'Process Injection Alert',
+                ][lightboxImage]}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
