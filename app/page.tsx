@@ -20,10 +20,10 @@ export default function Home() {
       icon: <Activity className="w-6 h-6" />,
       featured: true,
       images: [
+        '/images/projects/soc-n8n-workflow.png',
         '/images/projects/soc-slack-alert.png',
         '/images/projects/soc-ai-prompt.png',
         '/images/projects/soc-slack-alerts-2.png',
-        '/images/projects/soc-n8n-workflow.png',
         '/images/projects/soc-splunk-registry.png',
         '/images/projects/soc-splunk-alerts.png',
         '/images/projects/soc-slack-meterpreter.png',
