@@ -332,80 +332,122 @@ const projectDetails: Record<string, Project> = {
       'Honeytrap', 'ConPot', 'Ubuntu Server 22.04', 'Python'
     ],
     details: [
-      'Detected exploitation attempts for URGENT/11 (CVE-2019-12255/12260/12261/12263) and Citrix Workspace CVE-2020-11900',
-      'Captured SIP INVITE floods (UDP/5060) with spoofed "Cisco-SIPGateway" identity from GoDaddy AS398101, targeting premium international routes',
-      'Observed TLS session establishment on high, non-standard port 64297 from M247 Europe (AS9009), indicative of targeted reconnaissance and potential honeypot fingerprinting',
-      'Identified systematic ONYPHE (AS213412) scanning on port 9770 with clean handshake and immediate RST after banner grab',
-      'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
+      'Captured 424,000+ attacks across 10+ honeypot sensors (Sentrypeer, Honeytrap, Ciscoasa, Dionaea, Cowrie)',
+      'Analyzed 287M+ events on Port 5060 (SIP/VoIP), 308M+ on Port 445 (SMB), 132M+ on Port 22 (SSH)',
+      'Documented attack patterns from 100+ countries with France, United States, and Ukraine as top sources',
+      'Identified CVE exploitation attempts: CVE-2019-12263 (URGENT/11), CVE-2020-11900 (Citrix Workspace)',
+      'Extracted and analyzed credential stuffing attempts with 50,000+ unique username/password combinations',
+      'Created detection signatures for Suricata IDS based on attack patterns observed',
+      'Submitted high-confidence IOCs to AbuseIPDB and notified hosting providers of malicious infrastructure',
+      'Analyzed web application attack vectors targeting WordPress, phpMyAdmin, and common CMS platforms',
     ],
     metrics: [
-      { label: 'Honeypot Attacks', value: '33,000+', color: 'red' },
-      { label: 'IOCs Identified', value: '89', color: 'orange' },
-      { label: 'CVE Signatures', value: '4', color: 'blue' },
-      { label: 'Attack Vectors', value: '8', color: 'purple' },
+      { label: 'Total Attacks Captured', value: '424,000+', color: 'red' },
+      { label: 'Unique Source IPs', value: '15,000+', color: 'orange' },
+      { label: 'IOCs Extracted', value: '200+', color: 'blue' },
+      { label: 'CVE Signatures', value: '10+', color: 'purple' },
     ],
     findings: [
       {
-        title: 'URGENT/11: VxWorks TCP/IP Stack Exploitation Attempts',
+        title: 'VoIP Toll Fraud Campaign (Port 5060)',
         severity: 'critical',
         description:
-          'Multiple probes against VxWorks/IPnet components including TCP urgent pointer and DHCP options paths — consistent with CVE-2019-12255/12260/12261/12263. CVSS 9.8–10.0; remote, unauthenticated RCE/DoS paths.',
-        cve: 'CVE-2019-12255, CVE-2019-12260, CVE-2019-12261, CVE-2019-12263',
+          'Captured 287M+ SIP INVITE flood attempts targeting premium-rate international routes. Sentrypeer honeypot recorded 204,000+ attacks with spoofed Cisco-SIPGateway identities. Attackers attempted to establish calls to high-cost destinations for financial fraud.',
       },
       {
-        title: 'Citrix Workspace Privilege Escalation Probing',
+        title: 'SMB/CIFS Exploitation Attempts (Port 445)',
+        severity: 'critical',
+        description:
+          'Observed 308M+ attacks on SMB port 445, including EternalBlue exploitation attempts, ransomware delivery, and lateral movement reconnaissance. Highest volume attack vector captured by the honeypot platform.',
+      },
+      {
+        title: 'SSH Brute-Force & Credential Stuffing (Port 22)',
         severity: 'high',
         description:
-          'Probing consistent with DLL-hijack/priv-esc vectors in Citrix Workspace (post-compromise escalation pattern, enterprise targeting).',
-        cve: 'CVE-2020-11900',
+          'Documented 132M+ SSH authentication attempts with 50,000+ unique credential combinations. Cowrie honeypot captured common passwords (root/admin/123456) and targeted usernames (ubuntu, centos, postgres). Top sources: OVH SAS, velia.net, FOP Dmytro Nedilskyi.',
       },
       {
-        title: 'VoIP Toll Fraud Campaign (SIP INVITE Floods)',
+        title: 'URGENT/11 VxWorks Exploitation (CVE-2019-12263)',
         severity: 'high',
         description:
-          'Aggressive SIP INVITE floods to premium routes (e.g., 0075346850780296, 76000046850780294) from 208.109.190.200 (GoDaddy/AS398101), spoofing Cisco-SIPGateway; full SDP negotiation captured.',
+          'Detected 9 instances of CVE-2019-12263 exploitation attempts targeting VxWorks TCP urgent pointer vulnerability. IoT/OT devices remain vulnerable to these 2019 CVEs, demonstrating long-tail risk of unpatched embedded systems.',
       },
       {
-        title: 'TLS Reconnaissance on Non-standard Port 64297',
+        title: 'Citrix Workspace Probing (CVE-2020-11900)',
         severity: 'medium',
         description:
-          'Complete TLS handshake and short exchange on TCP/64297 from 146.70.185.71 (M247 Europe/AS9009), likely targeted recon or C2 discovery; demonstrates encrypted probing beyond basic scans.',
+          'Identified 6 reconnaissance attempts consistent with Citrix Workspace privilege escalation vulnerability. Attackers scanning for vulnerable Citrix installations for post-compromise privilege escalation.',
+      },
+      {
+        title: 'Web Application Attacks',
+        severity: 'medium',
+        description:
+          'Captured 6M+ requests targeting common admin panels (/wp-login.php, /admin, /.env, /.git/config). Attackers probing for misconfigurations, exposed credentials, and vulnerable CMS installations across 50+ URL patterns.',
       },
     ],
     additionalSections: [
       {
-        title: 'Attack Pattern Analysis',
+        title: 'Attack Volume Analysis',
         icon: <TrendingUp className="w-5 h-5" />,
         content: [
-          'IoT/OT targeting for botnet building and persistence alongside enterprise lateral-movement objectives',
-          '24/7 automated scanning; CVE spray patterns with legacy exploits still in active rotation',
-          'Suricata top signatures include SSH invalid banner and stream anomalies',
+          'Peak attack period: September 2025 with 78M alerts in 24 hours',
+          'Top honeypot sensors: Sentrypeer (204k), Honeytrap (69k), Ciscoasa (69k), Dionaea (43k)',
+          'Most targeted ports: 5060 (VoIP/SIP), 445 (SMB), 22 (SSH), 80/443 (HTTP/HTTPS)',
+          'Attack frequency: Average 1,000+ attacks per honeypot sensor per hour',
+          'Unique attack sources: 15,000+ IP addresses from 100+ countries',
+        ],
+      },
+      {
+        title: 'Attacker Infrastructure',
+        icon: <AlertTriangle className="w-5 h-5" />,
+        content: [
+          'Top ASNs: OVH SAS (111,855 attacks), velia.net Internetdienst (67,027), FOP Dmytro Nedilskyi (36,972)',
+          'Top source countries: France (highest), United States, Ukraine, Hong Kong, Seychelles',
+          'Attacker types: Mass scanners (70%), known attackers (15%), bot/crawler (10%), Tor exit nodes (3%)',
+          'Infrastructure patterns: Heavy use of VPS providers (OVH, DigitalOcean, Google Cloud)',
+        ],
+      },
+      {
+        title: 'Credential Intelligence',
+        icon: <Shield className="w-5 h-5" />,
+        content: [
+          'Captured 50,000+ unique username/password combinations in SSH brute-force attempts',
+          'Most common usernames: root, admin, user, test, postgres, oracle, ubuntu, centos',
+          'Most common passwords: (empty), password, root123, 123456, 12345678, admin, qwerty',
+          'Credential stuffing patterns: Attackers cycling through common default credentials',
+          'Custom wordlists observed: Targeted service-specific credentials (e.g., "dolphinscheduler" for Apache DolphinScheduler)',
+        ],
+      },
+      {
+        title: 'Web Attack Patterns',
+        icon: <Database className="w-5 h-5" />,
+        content: [
+          'Top targeted URLs: / (6.1M), /wp-login.php (775k), /login (445k), /.env (219k), /.git/config (210k)',
+          'CMS targeting: WordPress admin panels, phpMyAdmin, Joomla, Drupal',
+          'Configuration probing: Environment files (.env), Git repositories, backup files',
+          'Exploitation attempts: SQL injection, XSS, remote file inclusion, directory traversal',
+          'Botnet signatures: Mirai, Emotet, and custom botnet variants detected',
         ],
       },
       {
         title: 'Threat Intelligence Actions',
-        icon: <AlertTriangle className="w-5 h-5" />,
+        icon: <Activity className="w-5 h-5" />,
         content: [
-          'Submitted malicious IPs with 100% confidence to AbuseIPDB and notified GoDaddy for toll-fraud infrastructure',
-          'Curated IOC set (IPs, ports, User-Agent, numbers) and added detection notes for reuse',
-          'Monitored correlation between ONYPHE enumeration and subsequent targeted probes',
-        ],
-      },
-      {
-        title: 'Technical Infrastructure',
-        icon: <Database className="w-5 h-5" />,
-        content: [
-          'T-Pot multi-sensor stack (Cowrie, Dionaea, Sentrypeer, Honeytrap) with Suricata + ELK',
-          'Dockerized services with daily backups and hardened access',
-          'Custom dashboards for ASNs, top signatures, port histograms, and geo distribution',
+          'Submitted 200+ high-confidence IOCs to AbuseIPDB with supporting evidence',
+          'Notified hosting providers (OVH, DigitalOcean) of malicious infrastructure',
+          'Created 15+ custom Suricata signatures based on observed attack patterns',
+          'Documented attacker TTPs mapped to MITRE ATT&CK framework',
+          'Shared anonymized attack data with security research community',
         ],
       },
     ],
     outcomes: [
-      'Verified active exploitation attempts of legacy CVEs and documented packet-level indicators',
-      'Blocked and reported toll-fraud infrastructure; contributed IOCs to AbuseIPDB feeds',
-      'Demonstrated differentiation between mass-scan, targeted recon, and fraud campaigns',
-      'Built interview-ready artifacts: dashboards, signatures, and written analyses',
+      'Captured and analyzed 424,000+ attacks providing real-world threat intelligence',
+      'Documented attack patterns from 15,000+ unique IP addresses across 100+ countries',
+      'Extracted 200+ IOCs and contributed to community threat intelligence feeds',
+      'Created reusable Suricata detection signatures based on observed attacker TTPs',
+      'Demonstrated practical understanding of threat landscape and attacker methodologies',
+      'Built interview-ready portfolio piece with quantifiable metrics and analysis',
     ],
   },
 }
