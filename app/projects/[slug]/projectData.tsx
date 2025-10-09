@@ -38,8 +38,8 @@ const projectDetails: Record<string, Project> = {
   'soc-automation': {
     title: 'AI-Powered SOC Automation Platform',
     fullDescription:
-      `Built an end-to-end Security Operations Center (SOC) automation platform that detects, analyzes, and responds to security threats using AI-powered intelligence enrichment. Successfully simulated real-world attacks and demonstrated automated threat detection across 10+ attack vectors mapped to MITRE ATT&CK framework. The platform reduces alert triage time from 15 minutes to under 2 minutes through intelligent automation.`,
-    timeline: 'October 2024 - January 2025',
+      `Built an end-to-end Security Operations Center (SOC) automation platform in a controlled lab environment that detects, analyzes, and responds to security threats using AI-powered intelligence enrichment. Successfully simulated real-world attacks and demonstrated automated threat detection across 10+ attack vectors mapped to MITRE ATT&CK framework. The platform reduces alert triage time through intelligent automation.`,
+    timeline: 'October 2025',
     technologies: ['Splunk Enterprise', 'N8N', 'GPT-4', 'VirusTotal API', 'AbuseIPDB API', 'Sysmon', 'Windows 10', 'Kali Linux', 'Metasploit', 'Hydra', 'Slack', 'VMware'],
     details: [
       'Created 10 production-ready detection rules covering credential dumping, process injection, PowerShell abuse, and brute-force attacks',
@@ -147,11 +147,11 @@ const projectDetails: Record<string, Project> = {
       },
     ],
     outcomes: [
-      'Reduced alert triage time by 85% (from 15 minutes to under 2 minutes)',
-      'Achieved 90% detection rate across simulated real-world attack scenarios',
+      'Reduced alert triage time by 85% (from estimated 15 minutes to under 2 minutes) through automated enrichment and AI analysis',
+      'Successfully validated detection capabilities across 9+ attack scenarios including credential dumping, process injection, and brute-force attacks',
       'Eliminated manual threat intelligence enrichment through full automation',
       'Generated production-ready detection rules aligned with MITRE ATT&CK framework',
-      'Demonstrated Tier 1-2 SOC Analyst capabilities with enterprise-grade tooling',
+      'Demonstrated Tier 1-2 SOC Analyst capabilities with enterprise-grade tooling in controlled lab environment',
       'Created reusable automation framework for incident response workflows',
     ],
   },
@@ -304,7 +304,7 @@ const projectDetails: Record<string, Project> = {
       'Documented attacker behavior, created detection notes, and shared IOCs via AbuseIPDB and provider abuse channels'
     ],
     metrics: [
-      { label: 'Honeypot Attacks', value: '33,000+', color: 'red' },
+      { label: 'Honeypot Attacks', value: '424,000+', color: 'red' },
       { label: 'IOCs Identified', value: '89', color: 'orange' },
       { label: 'CVE Signatures', value: '4', color: 'blue' },
       { label: 'Attack Vectors', value: '8', color: 'purple' },
