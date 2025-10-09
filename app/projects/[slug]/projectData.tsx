@@ -83,29 +83,6 @@ const projectDetails: Record<string, Project> = {
         severity: 'medium',
         description: 'Identified multiple failed authentication attempts followed by successful login from test IP. Automated blocking recommendation generated with 100% abuse confidence from AbuseIPDB enrichment.',
       },
-      {
-        title: 'Key Challenges & Solutions',
-        icon: <Zap className="w-5 h-5" />,
-        content: [
-          'Challenge: Integrating multiple APIs with different authentication methods → Solution: Designed modular N8N workflow with reusable credential management',
-          'Challenge: High false positive rate in initial detection rules → Solution: Refined SPL queries using iterative testing with real attack tools',
-          'Challenge: Sysmon log volume overwhelming Splunk indexer → Solution: Implemented selective logging with SwiftOnSecurity baseline configuration',
-          'Challenge: AI prompt engineering for consistent threat analysis → Solution: Developed structured prompts with specific output format requirements',
-          'Challenge: Correlating alerts across multiple data sources → Solution: Created unified event schema with normalized IOC extraction',
-        ],
-      },
-      {
-        title: 'Future Enhancements',
-        icon: <TrendingUp className="w-5 h-5" />,
-        content: [
-          'Integration with SOAR platform (e.g., Shuffle) for automated response actions',
-          'Machine learning model for behavioral anomaly detection on user activity',
-          'Extended coverage for cloud-native attacks targeting AWS/Azure environments',
-          'Custom Sysmon configuration tuned for specific threat actor TTPs',
-          'Automated threat hunting queries based on MITRE ATT&CK navigator',
-          'Integration with ticketing systems (JIRA/ServiceNow) for incident tracking',
-        ],
-      },
     ],
     additionalSections: [
       {
@@ -178,6 +155,29 @@ const projectDetails: Record<string, Project> = {
           'Hydra: Simulated RDP brute-force attacks with EventCode 4625 detection',
           'Custom PowerShell: Download cradles, encoded commands, fileless attacks',
           'Successfully triggered 9/10 detection rules with authentic IOCs',
+        ],
+      },
+      {
+        title: 'Key Challenges & Solutions',
+        icon: <Zap className="w-5 h-5" />,
+        content: [
+          'Challenge: Integrating multiple APIs with different authentication methods → Solution: Designed modular N8N workflow with reusable credential management',
+          'Challenge: High false positive rate in initial detection rules → Solution: Refined SPL queries using iterative testing with real attack tools',
+          'Challenge: Sysmon log volume overwhelming Splunk indexer → Solution: Implemented selective logging with SwiftOnSecurity baseline configuration',
+          'Challenge: AI prompt engineering for consistent threat analysis → Solution: Developed structured prompts with specific output format requirements',
+          'Challenge: Correlating alerts across multiple data sources → Solution: Created unified event schema with normalized IOC extraction',
+        ],
+      },
+      {
+        title: 'Future Enhancements',
+        icon: <TrendingUp className="w-5 h-5" />,
+        content: [
+          'Integration with SOAR platform (e.g., Shuffle) for automated response actions',
+          'Machine learning model for behavioral anomaly detection on user activity',
+          'Extended coverage for cloud-native attacks targeting AWS/Azure environments',
+          'Custom Sysmon configuration tuned for specific threat actor TTPs',
+          'Automated threat hunting queries based on MITRE ATT&CK navigator',
+          'Integration with ticketing systems (JIRA/ServiceNow) for incident tracking',
         ],
       },
     ],
