@@ -170,6 +170,11 @@ export default function Home() {
         <ExperienceTimeline />
       </section>
 
+      {/* Certifications Section */}
+      <section id="certifications">
+        <CertificationsShowcase />
+      </section>
+
       {/* Call to Action */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
