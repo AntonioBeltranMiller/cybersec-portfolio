@@ -8,28 +8,28 @@ export default function SkillsMatrix() {
 
   const skills = {
     'Security Operations': [
-      { name: 'Splunk SIEM', level: 85, projects: ['SOC Lab', 'T-Pot Integration'] },
+      { name: 'Splunk SIEM', level: 85, projects: ['SOC Automation', 'T-Pot Integration'] },
       { name: 'Incident Response', level: 90, projects: ['WordPress Recovery', 'Breach Containment'] },
-      { name: 'Threat Hunting', level: 75, projects: ['T-Pot Analysis', 'Log Analysis'] },
-      { name: 'Detection Engineering', level: 85, projects: ['45+ Custom Rules', 'MITRE Mapping'] },
+      { name: 'Threat Hunting', level: 80, projects: ['T-Pot Analysis', '424K+ Attacks'] },
+      { name: 'Detection Engineering', level: 85, projects: ['10 Custom Rules', 'MITRE ATT&CK'] },
     ],
     'Cloud & Infrastructure': [
       { name: 'AWS Security', level: 80, projects: ['GuardDuty', 'Security Hub', 'IAM'] },
       { name: 'Azure Security', level: 70, projects: ['Sentinel', 'Azure AD'] },
-      { name: 'Kubernetes', level: 65, projects: ['Container Security', 'Pod Policies'] },
       { name: 'Network Security', level: 85, projects: ['pfSense', 'Firewall Rules'] },
+      { name: 'Kubernetes', level: 65, projects: ['Container Security', 'Pod Policies'] },
     ],
     'Development & Automation': [
-      { name: 'Python', level: 85, projects: ['CyberShell', 'Automation Scripts'] },
+      { name: 'Python', level: 85, projects: ['Automation Scripts', 'API Integration'] },
       { name: 'PowerShell', level: 80, projects: ['AD Management', 'IR Scripts'] },
-      { name: 'APIs & Integration', level: 90, projects: ['CertProtector', 'Webhooks'] },
+      { name: 'APIs & Integration', level: 90, projects: ['N8N Workflows', 'Webhooks'] },
       { name: 'CI/CD Security', level: 75, projects: ['GitHub Actions', 'Security Scanning'] },
     ],
     'Security Research': [
-      { name: 'Vulnerability Assessment', level: 85, projects: ['NPM Discovery', 'Web App Testing'] },
+      { name: 'Vulnerability Assessment', level: 85, projects: ['NPM Discovery', 'Bug Bounty'] },
       { name: 'Penetration Testing', level: 80, projects: ['OWASP Top 10', 'Network Pentesting'] },
       { name: 'Malware Analysis', level: 70, projects: ['Sandbox Analysis', 'IOC Extraction'] },
-      { name: 'OSINT', level: 75, projects: ['Threat Intelligence', 'Attack Attribution'] },
+      { name: 'Threat Intelligence', level: 80, projects: ['T-Pot', '200+ IOCs'] },
     ],
   }
 
@@ -74,20 +74,20 @@ export default function SkillsMatrix() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-6"
+              className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-6 hover:border-cyan-600/50 transition-colors"
             >
               <div className="flex justify-between items-start mb-3">
                 <h3 className="font-semibold text-lg">{skill.name}</h3>
-                <span className="text-cyan-400 font-mono">{skill.level}%</span>
+                <span className="text-cyan-400 font-mono text-xl">{skill.level}%</span>
               </div>
               
               {/* Progress Bar */}
-              <div className="w-full bg-slate-800 rounded-full h-2 mb-3">
+              <div className="w-full bg-slate-800 rounded-full h-3 mb-4">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${skill.level}%` }}
                   transition={{ duration: 1, delay: index * 0.05 }}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 h-3 rounded-full"
                 />
               </div>
               
@@ -96,7 +96,7 @@ export default function SkillsMatrix() {
                 {skill.projects.map((project) => (
                   <span
                     key={project}
-                    className="text-xs px-2 py-1 bg-slate-800/50 rounded text-slate-400"
+                    className="text-xs px-3 py-1 bg-slate-800/50 rounded-full text-slate-400 hover:text-cyan-400 transition-colors"
                   >
                     {project}
                   </span>
@@ -105,22 +105,6 @@ export default function SkillsMatrix() {
             </motion.div>
           ))}
         </div>
-
-        {/* Tech Stack Alignment */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="mt-16 p-8 bg-gradient-to-r from-cyan-900/10 to-blue-900/10 border border-cyan-800/30 rounded-xl"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center">Enterprise Tool Experience</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            {['Splunk', 'CrowdStrike', 'Palo Alto', 'ServiceNow', 'AWS', 'Azure', 'Terraform', 'Kubernetes'].map((tool) => (
-              <div key={tool} className="p-3 bg-slate-900/50 rounded-lg">
-                <span className="text-cyan-400">✓</span> {tool}
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   )
