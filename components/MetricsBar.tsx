@@ -11,10 +11,10 @@ export default function MetricsBar() {
   }, [])
 
   const metrics = [
-    { label: 'Incidents Resolved', value: 150, suffix: '+' },
-    { label: 'Detection Rules Created', value: 45, suffix: '' },
-    { label: 'MTTR Improvement', value: 60, suffix: '%' },
-    { label: 'Security Assessments', value: 12, suffix: '' },
+    { label: 'Active Certifications', value: 8, suffix: '' },
+    { label: 'Security Tools', value: 25, suffix: '+' },
+    { label: 'Hands-On Labs', value: 200, suffix: '+' },
+    { label: 'Training Hours', value: 500, suffix: '+' },
   ]
 
   return (
