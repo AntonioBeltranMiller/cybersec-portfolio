@@ -16,21 +16,21 @@ export default function OnypheScannerCaseStudy() {
   const scannerFacts = [
     'Organization: ONYPHE SAS — commercial threat intelligence provider',
     'Network: AS213412; traffic observed from 91.231.89.129 (OVH/Gravelines region)',
-    'Reputation: Labeled “mass scanner” across multiple threat feeds',
+    'Reputation: Labeled "mass scanner" across multiple threat feeds',
     'Model: Sells access to discovered services, banners, certificates',
   ]
 
   const paradox = [
     'Legally operated scanners mirror attacker recon behavior',
     'Blocking them can reduce researcher visibility while attackers still find paths',
-    'Their datasets can be purchased by threat actors (“reconnaissance-as-a-service”)',
+    'Their datasets can be purchased by threat actors ("reconnaissance-as-a-service")',
   ]
 
   const recommendations = [
     'Respond with decoy banners or delayed/variable responses to pollute commercial datasets',
     'Correlate scans with later targeted traffic; raise priority when correlation exists',
     'Use honeytokens that only appear after indexing — detect downstream consumption',
-    'Segment deception infra so cataloging doesn’t reveal production fingerprints',
+    'Segment deception infra so cataloging doesn't reveal production fingerprints',
   ]
 
   const timeline = [
@@ -46,7 +46,7 @@ export default function OnypheScannerCaseStudy() {
       phase: 'Attribution',
       severity: 'medium',
       description: 'IP linked to ONYPHE SAS (AS213412), known commercial scanner',
-      actions: ['ASN + org lookups', 'Checked existing sightings in TI feeds', 'Tagged as “mass scanner”'],
+      actions: ['ASN + org lookups', 'Checked existing sightings in TI feeds', 'Tagged as "mass scanner"'],
     },
     {
       time: 'T+00:10',
@@ -189,5 +189,6 @@ export default function OnypheScannerCaseStudy() {
           </div>
         </div>
       </section>
+    </div>
   )
 }
