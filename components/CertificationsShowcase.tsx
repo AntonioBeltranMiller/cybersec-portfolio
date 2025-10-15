@@ -25,7 +25,7 @@ export default function CertificationsShowcase() {
     {
       name: 'CompTIA Security+',
       issuer: 'CompTIA',
-      date: 'January 2025',
+      date: 'October 2025',
       status: 'completed',
       skills: ['Threat Detection & Response', 'Risk Assessment', 'Network Security', 'SIEM Operations', 'Vulnerability Management', 'Cryptography & PKI'],
       color: 'from-red-500 via-orange-500 to-red-600',
