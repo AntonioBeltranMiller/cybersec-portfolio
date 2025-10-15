@@ -21,6 +21,7 @@ export default function Navigation() {
     { label: 'Home', href: '/' },
     { label: 'Projects', href: '/#projects' },
     { label: 'Skills', href: '/#skills' },
+    { label: 'Certifications', href: '/#certifications' },
     { label: 'Experience', href: '/#experience' },
     { label: 'Blog', href: '/blog' },
   ]
