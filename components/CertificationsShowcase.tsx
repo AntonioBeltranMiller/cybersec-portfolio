@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Award, CheckCircle, ExternalLink, Clock, Shield } from 'lucide-react'
+import { CheckCircle, ExternalLink, Clock, Shield } from 'lucide-react'
 import { useState } from 'react'
 import Image from 'next/image'
 
@@ -200,8 +200,9 @@ export default function CertificationsShowcase() {
                       height={80}
                       className="object-contain"
                       onError={(e) => {
-                        // Fallback if image doesn't load
-                        e.currentTarget.style.display = 'none'
+                        // Fallback to show colored background if image doesn't load
+                        const target = e.currentTarget as HTMLImageElement
+                        target.style.display = 'none'
                       }}
                     />
                   </div>
