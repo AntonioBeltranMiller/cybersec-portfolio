@@ -189,18 +189,5 @@ export default function OnypheScannerCaseStudy() {
           </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="py-12 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold mb-4">Want deception that outsmarts scanners?</h2>
-          <p className="text-slate-400 mb-8">I build honey services that waste adversary time and feed your intel loop.</p>
-          <Link href="/#contact" className="inline-flex items-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-lg transition-colors">
-            Get in Touch
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </Link>
-        </div>
-      </section>
-    </div>
   )
 }
