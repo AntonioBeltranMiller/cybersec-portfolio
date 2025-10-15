@@ -30,7 +30,7 @@ export default function OnypheScannerCaseStudy() {
     'Respond with decoy banners or delayed/variable responses to pollute commercial datasets',
     'Correlate scans with later targeted traffic; raise priority when correlation exists',
     'Use honeytokens that only appear after indexing — detect downstream consumption',
-    'Segment deception infra so cataloging doesn't reveal production fingerprints',
+    "Segment deception infra so cataloging doesn't reveal production fingerprints",
   ]
 
   const timeline = [
