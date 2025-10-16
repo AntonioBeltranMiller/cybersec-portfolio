@@ -40,7 +40,7 @@ export default function ExperienceTimeline() {
       icon: <Code className="w-5 h-5" />,
       highlights: [
         'Built CertProtector - SSL/TLS monitoring platform (Python/React)',
-        'Developed CyberShell - penetration testing framework',
+        'Developed CyberShell  - penetration testing framework',
         'Created enterprise SOC lab with SIEM integration',
         'Published security research on GitHub (10+ repositories)',
         'Contributed to open-source security tools',
@@ -56,7 +56,7 @@ export default function ExperienceTimeline() {
         'B.S. in Cybersecurity (Expected 2026)',
         '8 active industry certifications achieved',
         '500+ hours of hands-on security training',
-        'AWS, Google, Fortinet, CompTIA, ISC2 credentials',
+        'AWS, Google, Fortinet, CompTIA, Sailpoint',
         'Specialized in cloud security and identity management',
       ],
       impact: 'Top 5% completion rate in certification programs',
