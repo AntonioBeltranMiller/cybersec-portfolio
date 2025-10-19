@@ -138,29 +138,5 @@ export default function ExperienceTimeline() {
             </motion.div>
           ))}
         </div>
-
-        {/* Call to Action */}
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  className="mt-16 text-center"
->
-  <div className="inline-flex flex-col items-center gap-4 p-8 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-purple-900/20 rounded-2xl border border-cyan-800/30">
-    <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-      Ready for New Challenges
-    </h3>
-    <p className="text-slate-400 max-w-lg">
-      Seeking SOC Analyst or Security Engineer roles where I can apply my hands-on experience and certifications to protect critical infrastructure
-    </p>
-    <div className="flex justify-center">
-      <a
-        href="/resume.pdf"
-        className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium rounded-lg hover:from-cyan-500 hover:to-blue-500 transition-all shadow-lg hover:shadow-cyan-500/25"
-      >
-        Download Resume
-      </a>
-    </div>
-  </div>
-</motion.div>
   )
 }
