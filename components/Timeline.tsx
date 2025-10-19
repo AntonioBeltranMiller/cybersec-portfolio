@@ -97,9 +97,7 @@ export default function ExperienceTimeline() {
             >
               {/* Timeline dot */}
               <div className="hidden md:flex absolute left-0 w-16 h-16 bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-cyan-500 rounded-full items-center justify-center shadow-lg shadow-cyan-500/20">
-                <div className="text-cyan-400">
-                  {exp.icon}
-                </div>
+                <div className="text-cyan-400">{exp.icon}</div>
               </div>
 
               {/* Content */}
@@ -138,5 +136,7 @@ export default function ExperienceTimeline() {
             </motion.div>
           ))}
         </div>
+      </div>         
+    </section>         
   )
 }
