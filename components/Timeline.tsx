@@ -21,15 +21,14 @@ export default function ExperienceTimeline() {
     },
     {
       title: 'IT Support & Security Specialist',
-      company: 'ALM Freight (Amazon DSP)',
+      company: 'ALM Freight',
       period: 'Sep 2021 - May 2024',
       icon: <Briefcase className="w-5 h-5" />,
       highlights: [
         'Secured 150+ endpoint fleet with 95% patch compliance',
         'Reduced security incidents by 40% through proactive monitoring',
         'Implemented Zero Trust network access controls',
-        'Managed Active Directory security and group policies',
-        'Led incident response for ransomware prevention',
+        'Managed Active Directory security and group policies'
       ],
       impact: 'Transformed reactive IT support into proactive security operations',
     },
