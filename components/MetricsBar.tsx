@@ -1,22 +1,17 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-
 export default function MetricsBar() {
   const [isVisible, setIsVisible] = useState(false)
-
   useEffect(() => {
     setIsVisible(true)
   }, [])
-
   const metrics = [
     { label: 'Active Certifications', value: 8, suffix: '' },
-    { label: 'Security Tools', value: 25, suffix: '+' },
-    { label: 'Hands-On Labs', value: 200, suffix: '+' },
-    { label: 'Training Hours', value: 500, suffix: '+' },
+    { label: 'Honeypot Attacks Analyzed', value: 424000, suffix: '+' },
+    { label: 'Vulnerabilities Found', value: 6, suffix: '+' },
+    { label: 'Endpoints Secured', value: 150, suffix: '+' },
   ]
-
   return (
     <div className="fixed top-16 w-full bg-slate-900/95 backdrop-blur-lg border-b border-slate-800 z-40">
       <div className="container mx-auto px-4">
@@ -42,16 +37,13 @@ export default function MetricsBar() {
     </div>
   )
 }
-
 function CountUp({ end, suffix }: { end: number; suffix: string }) {
   const [count, setCount] = useState(0)
-
   useEffect(() => {
     const duration = 2000
     const steps = 60
     const increment = end / steps
     let current = 0
-
     const timer = setInterval(() => {
       current += increment
       if (current >= end) {
@@ -61,9 +53,7 @@ function CountUp({ end, suffix }: { end: number; suffix: string }) {
         setCount(Math.floor(current))
       }
     }, duration / steps)
-
     return () => clearInterval(timer)
   }, [end])
-
-  return <>{count}{suffix}</>
+  return <>{count.toLocaleString()}{suffix}</>
 }
