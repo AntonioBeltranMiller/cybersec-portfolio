@@ -165,6 +165,11 @@ export default function Home() {
         <SkillsMatrix />
       </section>
 
+      {/* Certifications Section - ADDED ABOVE TIMELINE */}
+      <section id="certifications">
+        <CertificationsShowcase />
+      </section>
+
       {/* Experience Timeline */}
       <section id="experience">
         <ExperienceTimeline />
