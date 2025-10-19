@@ -12,7 +12,7 @@ export default function ExperienceTimeline() {
       icon: <Shield className="w-5 h-5" />,
       highlights: [
         'CompTIA Security+ certified (DoD 8140 approved)',
-        'Completed 50+ real-world incident simulations via LetsDefend',
+        'Completed 100+ real-world incident simulations via LetsDefend',
         'Proficient in Splunk, QRadar, and CloudWatch SIEM platforms',
         'Experience with FortiGate, AWS Security Hub, and GuardDuty',
         'Active threat hunting and malware analysis skills',
