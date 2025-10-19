@@ -1,204 +1,533 @@
 'use client'
 
-import Hero from '@/components/Hero'
-import ProjectShowcase from '@/components/ProjectShowcase'
-import SkillsMatrix from '@/components/SkillsMatrix'
-import ExperienceTimeline from '@/components/Timeline'
-import MetricsBar from '@/components/MetricsBar'
-import CertificationsShowcase from '@/components/CertificationsShowcase'
 import { motion } from 'framer-motion'
-import { Shield, Terminal, Search, AlertCircle, Activity } from 'lucide-react'
-import Link from 'next/link'
+import { Award, CheckCircle, ExternalLink, Clock, Shield } from 'lucide-react'
+import { useState } from 'react'
+import Image from 'next/image'
 
-export default function Home() {
-  const projects = [
+interface Certification {
+  name: string
+  issuer: string
+  date: string
+  status: 'completed' | 'in-progress'
+  skills: string[]
+  verifyLink?: string
+  color: string
+  description: string
+  image: string
+  highlightLabel: string
+}
+
+export default function CertificationsShowcase() {
+  const [selectedCert, setSelectedCert] = useState<number | null>(null)
+
+  const certifications: Certification[] = [
     {
-      id: 'soc-automation',
-      title: 'AI-Powered SOC Automation Platform',
-      description: 'End-to-end SOC automation using Splunk, N8N, and GPT-4 for intelligent threat detection and response with real-time enrichment',
-      impact: '10 Detection Rules • 85% Faster Triage • AI-Powered Analysis • Real Attack Validation',
-      tags: ['Splunk', 'N8N', 'GPT-4', 'MITRE ATT&CK', 'Threat Intelligence', 'Automation'],
-      icon: <Activity className="w-6 h-6" />,
-      featured: true,
-      images: [
-        '/images/projects/soc-n8n-workflow.png',
-        '/images/projects/soc-slack-alert.png',
-        '/images/projects/soc-ai-prompt.png',
-        '/images/projects/soc-slack-alerts-2.png',
-        '/images/projects/soc-splunk-registry.png',
-        '/images/projects/soc-splunk-alerts.png',
-        '/images/projects/soc-slack-meterpreter.png',
-        '/images/projects/soc-process-injection.png',
-      ],
-      demoLink: '/projects/soc-automation',
+      name: 'CompTIA Security+',
+      issuer: 'CompTIA',
+      date: 'January 2025',
+      status: 'completed',
+      skills: ['Threat Detection & Response', 'Risk Assessment', 'Network Security', 'SIEM Operations', 'Vulnerability Management', 'Cryptography & PKI'],
+      color: 'from-red-500 via-orange-500 to-red-600',
+      description: 'Proves ability to detect security threats, implement network security controls, manage risk and vulnerabilities, and respond to incidents—meeting DoD 8140 requirements. The gold standard certification proving I have the hands-on skills employers need from day one.',
+      verifyLink: 'https://www.credly.com/badges/8771ef3b-bbff-4188-b2d2-c9069c939ca4/public_url',
+      image: '/images/certifications/comptia-security-plus.png',
+      highlightLabel: 'DoD 8140 Approved',
     },
     {
-      id: 'honeypot',
-      title: 'T-Pot Threat Intelligence Platform',
-      description: 'Deployed distributed honeypot infrastructure capturing 424,000+ attacks for comprehensive threat intelligence analysis',
-      impact: '424K+ Attacks Captured • 15K+ Unique IPs • 200+ IOCs Extracted • 10+ CVE Signatures',
-      tags: ['Threat Intelligence', 'Honeypot', 'T-Pot', 'Analysis'],
-      icon: <Search className="w-6 h-6" />,
-      images: [
-        '/images/projects/tpot-real-time-attacks.png',
-        '/images/projects/tpot-dashboard.png',
-        '/images/projects/tpot-attack-overview.png',
-      ],
-      demoLink: '/projects/honeypot',
+      name: 'LetsDefend SOC Analyst Learning Path',
+      issuer: 'LetsDefend',
+      date: 'February 2025',
+      status: 'completed',
+      skills: ['SIEM Analysis (Splunk/QRadar)', 'EDR & Endpoint Security', 'Real Incident Response', 'Malware Analysis', 'Network Forensics', 'Security Alert Triage'],
+      color: 'from-cyan-500 via-blue-500 to-cyan-600',
+      description: 'Demonstrates expertise through 50+ real-world security incident simulations. Gained practical experience analyzing SIEM alerts, triaging threats, performing malware analysis, and responding to live attacks—skills that prove I can hit the ground running in a SOC environment.',
+      verifyLink: 'https://app.letsdefend.io/certificate/show/3b48fd23-0ea8-4c67-aebd-e6cb407a54f1',
+      image: '/images/certifications/letsdefend-soc-analyst.png',
+      highlightLabel: 'Hands-On SOC Training',
     },
     {
-      id: 'vulnerability-research',
-      title: 'Supply Chain Vulnerability Discovery',
-      description: 'Discovered critical NPM package vulnerability enabling RCE via dependency confusion',
-      impact: 'Multiple Accepted Bug Bounty Reports • Prevented potential supply chain attack',
-      tags: ['Security Research', 'Responsible Disclosure', 'Supply Chain'],
-      icon: <AlertCircle className="w-6 h-6" />,
-      featured: true,
-      images: [
-        '/images/projects/npm-supply-chain-exploitation.png',
-        '/images/projects/npm-supply-chain-timeline.png',
-      ],
-      demoLink: '/projects/vulnerability-research',
+      name: 'Google Cybersecurity Professional Certificate',
+      issuer: 'Google',
+      date: 'January 2025',
+      status: 'completed',
+      skills: ['Python Security Automation', 'Linux & SQL', 'SIEM Tools (Splunk)', 'Incident Response', 'Network Security', 'Risk Frameworks (NIST)'],
+      color: 'from-blue-500 via-cyan-500 to-blue-600',
+      description: '170-hour program designed by Google covering Python automation, SIEM operations, and incident response. Connects graduates with 150+ hiring employers including Deloitte, Cognizant, and Walmart—proving I have foundational skills from an industry leader.',
+      verifyLink: 'https://www.credly.com/badges/0fab499b-10ed-4514-a5cd-37b40761120d/public_url',
+      image: '/images/certifications/google-cybersecurity-certificate.png',
+      highlightLabel: 'Industry Leader Training',
     },
     {
-      id: 'blind-xss-server',
-      title: 'Blind XSS Detection Platform & Setup Script',
-      description: 'Custom XSS hunter platform with SSL-encrypted dashboard, payload generation, and real-time capture monitoring - deployed from a single bash script',
-      impact: 'Zero to Production in 60 seconds • Captures stored XSS in real-time',
-      tags: ['XSS', 'Web Security', 'Automation', 'Bash'],
-      icon: <Terminal className="w-6 h-6" />,
-      featured: true,
-      images: [
-        '/images/projects/blind-xss-capture.png',
-        '/images/projects/blind-xss-payload.png',
-        '/images/projects/blind-xss-active.png',
-      ],
-      github: 'https://github.com/CyberShellCode/blind-xss-server',
-      demoLink: '/projects/blind-xss-server',
+      name: 'Fortinet Certified Associate Cybersecurity',
+      issuer: 'Fortinet',
+      date: 'August 2025',
+      status: 'completed',
+      skills: ['FortiGate Configuration', 'VPN Deployment (IPsec/SSL)', 'IPS/IDS Implementation', 'Security Policy Management', 'SSL Inspection', 'Threat Prevention Systems'],
+      color: 'from-red-600 via-red-500 to-orange-600',
+      description: 'Validates proven ability to configure and operate FortiGate security appliances used by 70% of Fortune 500 companies. Demonstrates hands-on expertise in firewall policies, VPN deployment, and threat prevention—enterprise firewall skills that translate directly to network security roles.',
+      verifyLink: 'https://www.credly.com/badges/cd35a869-2aee-45bb-ae85-2aaeefc40ccf/public_url',
+      image: '/images/certifications/fortinet-associate-cybersecurity.png',
+      highlightLabel: 'Enterprise Firewall Expertise',
+    },
+    {
+      name: 'SailPoint Identity Security Leader',
+      issuer: 'SailPoint',
+      date: '2025',
+      status: 'completed',
+      skills: ['Identity Governance & Administration', 'Access Management Strategy', 'IAM Program Implementation', 'Compliance & Risk-Based Access', 'Identity Lifecycle Management'],
+      color: 'from-indigo-500 via-purple-500 to-indigo-600',
+      description: 'Vendor-agnostic credential demonstrating understanding of identity governance strategy and access management frameworks. Shows ability to implement IAM programs that balance security with business needs—critical for organizations managing complex identity ecosystems.',
+      verifyLink: 'https://verify.skilljar.com/c/tt9wxqy96srx',
+      image: '/images/certifications/sailpoint-identity-leader.png',
+      highlightLabel: 'IAM Strategy Focus',
+    },
+    {
+      name: 'AWS Security Best Practices Specialization',
+      issuer: 'Amazon Web Services',
+      date: 'August - October 2025',
+      status: 'completed',
+      skills: ['CloudWatch & GuardDuty', 'VPC Security Architecture', 'IAM Best Practices', 'CloudTrail Monitoring', 'EC2 & Compute Security', 'Compliance Logging'],
+      color: 'from-orange-500 via-yellow-500 to-orange-600',
+      description: '4-course specialization proving ability to secure AWS environments using native security tools. Demonstrates expertise in monitoring (CloudWatch/GuardDuty), network controls (VPC), and IAM policies—skills needed to protect cloud infrastructure used by 32% of enterprises.',
+      verifyLink: '/certs/aws-security-monitoring.pdf',
+      image: '/images/certifications/aws-security-specialization.png',
+      highlightLabel: 'Cloud Security Skills',
+    },
+    {
+      name: 'Fortinet FortiGate 7.6 Operator',
+      issuer: 'Fortinet',
+      date: 'August 2025',
+      status: 'completed',
+      skills: ['FortiGate 7.6 Features', 'Firewall Operations', 'System Monitoring', 'Configuration Management'],
+      color: 'from-red-600 via-orange-500 to-red-700',
+      description: 'Validates hands-on proficiency with FortiGate 7.6, the latest version. Proves ability to operate and monitor enterprise firewalls with current features—showing commitment to staying updated with the latest security technologies.',
+      verifyLink: 'https://www.credly.com/badges/214c0777-f580-4ff3-b271-b30eab7b42af/public_url',
+      image: '/images/certifications/fortinet-fortigate-operator.png',
+      highlightLabel: 'Latest Version Expertise',
+    },
+    {
+      name: 'ISC2 Candidate',
+      issuer: 'ISC2',
+      date: 'Active until August 2026',
+      status: 'completed',
+      skills: ['CISSP Pathway', 'Professional Development', 'Industry Networking', 'Continuous Learning'],
+      color: 'from-green-600 via-emerald-500 to-green-700',
+      description: 'Demonstrates commitment to achieving CISSP or SSCP—the most respected certifications in cybersecurity. Grants access to ISC2 resources and professional community, showing ambition to reach senior-level credentials recognized by employers worldwide.',
+      verifyLink: 'https://www.credly.com/badges/53b3b7b1-4c5b-4043-ab40-66612e91c111/public_url',
+      image: '/images/certifications/isc2-candidate.png',
+      highlightLabel: 'CISSP Pathway',
     },
   ]
 
+  const completedCount = certifications.filter(c => c.status === 'completed').length
+  const inProgressCount = certifications.filter(c => c.status === 'in-progress').length
+
   return (
-    <>
-      <MetricsBar />
-      <Hero />
-      
-      {/* Core Competencies Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-3xl font-bold mb-12 text-center"
-          >
-            Security Expertise in Action
-          </motion.h2>
-          
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-6"
-            >
-              <Shield className="w-10 h-10 text-cyan-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Incident Response</h3>
-              <p className="text-slate-400">
-                Led breach containment and recovery operations. Prevented data exfiltration and restored operations in under 3 hours.
-              </p>
-              <Link href="/blog/incident-response" className="text-cyan-400 hover:text-cyan-300 mt-4 inline-block">
-                Read Case Study →
-              </Link>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-6"
-            >
-              <Search className="w-10 h-10 text-cyan-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Vulnerability Research</h3>
-              <p className="text-slate-400">
-                Active security researcher in the cybersecurity community. Discovered critical supply chain vulnerabilities affecting thousands.
-              </p>
-              <span className="text-green-400 text-sm mt-4 inline-block">Multiple Accepted Reports</span>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-slate-900/50 backdrop-blur border border-slate-800 rounded-lg p-6"
-            >
-              <Terminal className="w-10 h-10 text-cyan-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Security Engineering</h3>
-              <p className="text-slate-400">
-                Build production security tools and automation. Created platforms actively monitoring enterprise infrastructure.
-              </p>
-            </motion.div>
+    <section className="py-20 px-4 bg-gradient-to-b from-slate-950 to-slate-900">
+      <div className="container mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-cyan-900/20 border border-cyan-600/30 rounded-full">
+            <Shield className="w-5 h-5 text-cyan-400" />
+            <span className="text-cyan-400 font-medium">Professional Credentials</span>
           </div>
-        </div>
-      </section>
-
-      {/* Featured Projects Section */}
-      <section id="projects" className="py-20 px-4 bg-slate-900/30">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h2 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-3xl font-bold mb-12 text-center"
-          >
-            Security Projects & Research
-          </motion.h2>
-          
-          <div className="grid gap-8">
-            {projects.map((project, index) => (
-              <ProjectShowcase key={project.id} project={project} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Technical Skills Matrix */}
-      <section id="skills">
-        <SkillsMatrix />
-      </section>
-
-      {/* Experience Timeline */}
-      <section id="experience">
-        <ExperienceTimeline />
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border border-cyan-800/50 rounded-2xl p-12"
-          >
-            <h2 className="text-3xl font-bold mb-4">Ready to Strengthen Your Security Posture</h2>
-            <p className="text-xl text-slate-300 mb-8">
-              Bringing proven incident response, vulnerability research, and security engineering expertise to your team.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <a 
-                href="mailto:antoniobeltranmiller@gmail.com"
-                className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-semibold transition-colors"
-              >
-                Contact Me
-              </a>
-              <a 
-                href="/resume.pdf"
-                className="px-8 py-3 border border-cyan-600 hover:bg-cyan-600/10 rounded-lg font-semibold transition-colors"
-              >
-                Download Resume
-              </a>
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            Industry-Recognized Certifications
+          </h2>
+          <p className="text-slate-400 text-lg mb-8 max-w-2xl mx-auto">
+            {completedCount} active certifications demonstrating hands-on security expertise across SOC operations, cloud security, and network defense
+          </p>
+          <div className="flex justify-center gap-8">
+            <div className="flex items-center gap-2 px-4 py-2 bg-green-900/20 border border-green-600/30 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <span className="text-slate-300 font-medium">{completedCount} Completed</span>
             </div>
-          </motion.div>
+            {inProgressCount > 0 && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-yellow-900/20 border border-yellow-600/30 rounded-lg">
+                <Clock className="w-5 h-5 text-yellow-400" />
+                <span className="text-slate-300 font-medium">{inProgressCount} In Progress</span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {certifications.map((cert, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.08 }}
+              onClick={() => setSelectedCert(selectedCert === index ? null : index)}
+              className={`group relative bg-gradient-to-br from-slate-900/80 to-slate-800/50 backdrop-blur border rounded-xl p-6 cursor-pointer transition-all duration-300 ${
+                selectedCert === index 
+                  ? 'border-cyan-500 ring-2 ring-cyan-500/50 shadow-lg shadow-cyan-500/20' 
+                  : 'border-slate-700 hover:border-cyan-600/50 hover:shadow-lg'
+              }`}
+            >
+              {/* Highlight Label */}
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${cert.color} text-white shadow-lg`}>
+                  {cert.highlightLabel}
+                </span>
+              </div>
+
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4">
+                {cert.status === 'completed' ? (
+                  <div className="p-1.5 bg-green-900/30 border border-green-500/50 rounded-full">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  </div>
+                ) : (
+                  <div className="p-1.5 bg-yellow-900/30 border border-yellow-500/50 rounded-full">
+                    <Clock className="w-5 h-5 text-yellow-400" />
+                  </div>
+                )}
+              </div>
+
+              {/* Certification Badge with Image */}
+              <div className="flex justify-center mb-6 mt-4">
+                <div className={`relative w-24 h-24 rounded-full bg-gradient-to-br ${cert.color} p-1 shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden p-2">
+                    <Image
+                      src={cert.image}
+                      alt={`${cert.name} badge`}
+                      width={80}
+                      height={80}
+                      className="object-contain"
+                      onError={(e) => {
+                        // Fallback if image doesn't load
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Cert Info */}
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold mb-2 text-slate-100 group-hover:text-cyan-300 transition-colors">
+                  {cert.name}
+                </h3>
+                <p className="text-cyan-400 text-sm font-medium mb-1">{cert.issuer}</p>
+                <p className="text-slate-500 text-sm">{cert.date}</p>
+              </div>
+
+              {/* Description (shown when selected) */}
+              <motion.div
+                initial={false}
+                animate={{ height: selectedCert === index ? 'auto' : 0, opacity: selectedCert === index ? 1 : 0 }}
+                className="overflow-hidden"
+              >
+                <p className="text-slate-300 text-sm leading-relaxed mb-4 px-2">
+                  {cert.description}
+                </p>
+              </motion.div>
+
+              {/* Skills */}
+              <div className="flex flex-wrap gap-2 mb-4 justify-center">
+                {cert.skills.slice(0, selectedCert === index ? cert.skills.length : 3).map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-full text-slate-300 hover:bg-slate-700/80 hover:border-cyan-600/50 transition-colors"
+                  >
+                    {skill}
+                  </span>
+                ))}
+                {cert.skills.length > 3 && selectedCert !== index && (
+                  <span className="text-xs px-3 py-1 bg-cyan-900/30 border border-cyan-600/50 rounded-full text-cyan-400 font-medium">
+                    +{cert.skills.length - 3} more
+                  </span>
+                )}
+              </div>
+
+              {/* Verify Link */}
+              {cert.verifyLink && (
+                <a
+                  href={cert.verifyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center justify-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors group/link"
+                >
+                  <span>View Certificate</span>
+                  <ExternalLink className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              )}
+            </motion.div>
+          ))}
         </div>
-      </section>
-    </>
+
+        {/* Stats Summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="p-8 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-purple-900/20 border border-cyan-800/30 rounded-2xl shadow-xl"
+        >
+          <h3 className="text-2xl font-bold mb-8 text-center bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            Certification Highlights
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="text-4xl font-bold text-cyan-400 mb-2">{completedCount}</div>
+              <p className="text-slate-400 text-sm">Active Certifications</p>
+            </div>
+            <div className="text-center p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="text-4xl font-bold text-orange-400 mb-2">DoD</div>
+              <p className="text-slate-400 text-sm">8140 Approved</p>
+            </div>
+            <div className="text-center p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="text-4xl font-bold text-purple-400 mb-2">Multi</div>
+              <p className="text-slate-400 text-sm">Vendor Expertise</p>
+            </div>
+            <div className="text-center p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+              <div className="text-4xl font-bold text-green-400 mb-2">2025</div>
+              <p className="text-slate-400 text-sm">Latest Achievement</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+    {
+      name: 'CompTIA Security+',
+      issuer: 'CompTIA',
+      date: 'January 2025',
+      status: 'completed',
+      skills: ['Network Security', 'Threat Analysis', 'Risk Management', 'Cryptography', 'Identity Management'],
+      color: 'from-red-500 to-orange-500',
+      description: 'Industry-standard certification validating security fundamentals and hands-on skills',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+    {
+      name: 'LetsDefend SOC Analyst Learning Path',
+      issuer: 'LetsDefend',
+      date: 'February 12, 2025',
+      status: 'completed',
+      skills: ['SOC Operations', 'Incident Response', 'SIEM Analysis', 'Threat Detection', 'Security Monitoring'],
+      color: 'from-cyan-500 to-blue-600',
+      description: 'Comprehensive SOC analyst training covering real-world security operations scenarios',
+      verifyLink: 'https://app.letsdefend.io/certificate/show/3b48fd23-0ea8-4c67-aebd-e6cb407a54f1',
+    },
+    {
+      name: 'Google Cybersecurity Certificate',
+      issuer: 'Google',
+      date: 'January 20, 2025',
+      status: 'completed',
+      skills: ['SIEM Tools', 'Python', 'Linux', 'SQL', 'IDS', 'Risk Management'],
+      color: 'from-blue-500 to-cyan-500',
+      description: '8-course professional certificate with hands-on practice in cybersecurity fundamentals',
+      verifyLink: 'https://coursera.org/verify/professional-cert/4C8X6MTX0XMD',
+    },
+    {
+      name: 'Fortinet Certified Associate in Cybersecurity',
+      issuer: 'Fortinet',
+      date: 'August 29, 2025',
+      status: 'completed',
+      skills: ['Network Security', 'Firewall Configuration', 'IPS/IDS', 'VPN', 'Threat Prevention'],
+      color: 'from-red-600 to-red-700',
+      description: 'Associate-level cybersecurity certification covering network security fundamentals',
+      verifyLink: 'https://training.fortinet.com/admin/tool/certificate/index.php',
+    },
+    {
+      name: 'SailPoint Identity Security Leader',
+      issuer: 'SailPoint',
+      date: '2025',
+      status: 'completed',
+      skills: ['Identity Governance', 'Access Management', 'IGA', 'Compliance', 'Identity Security'],
+      color: 'from-indigo-500 to-purple-600',
+      description: 'Identity and access management certification focusing on governance and compliance',
+      verifyLink: 'http://verify.skilljar.com/c/tt9wxqy96srx',
+    },
+    {
+      name: 'Cisco Introduction to Cybersecurity',
+      issuer: 'Cisco Networking Academy',
+      date: 'August 25, 2025',
+      status: 'completed',
+      skills: ['Security Fundamentals', 'Threat Landscape', 'Network Security', 'Data Protection'],
+      color: 'from-blue-600 to-cyan-600',
+      description: 'Foundational cybersecurity concepts and industry best practices',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+    {
+      name: 'AWS Security Best Practices: Overview',
+      issuer: 'Amazon Web Services',
+      date: 'August 26, 2025',
+      status: 'completed',
+      skills: ['Cloud Security', 'AWS Security Services', 'Best Practices', 'Compliance'],
+      color: 'from-orange-500 to-yellow-500',
+      description: 'Comprehensive overview of AWS security fundamentals and architecture',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+    {
+      name: 'AWS Security Best Practices: Computing',
+      issuer: 'Amazon Web Services',
+      date: 'August 26, 2025',
+      status: 'completed',
+      skills: ['EC2 Security', 'Container Security', 'Serverless Security', 'Compute Hardening'],
+      color: 'from-orange-500 to-yellow-500',
+      description: 'Securing compute resources in AWS environments',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+    {
+      name: 'AWS Security Best Practices: Network Infrastructure',
+      issuer: 'Amazon Web Services',
+      date: 'August 26, 2025',
+      status: 'completed',
+      skills: ['VPC Security', 'Security Groups', 'NACLs', 'Network Segmentation', 'WAF'],
+      color: 'from-orange-500 to-yellow-500',
+      description: 'Network security architecture and controls in AWS',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+    {
+      name: 'AWS Security Best Practices: Monitoring and Alerting',
+      issuer: 'Amazon Web Services',
+      date: 'October 15, 2025',
+      status: 'completed',
+      skills: ['CloudWatch', 'GuardDuty', 'Security Hub', 'CloudTrail', 'Config'],
+      color: 'from-orange-500 to-yellow-500',
+      description: 'Implementing security monitoring and incident detection in AWS',
+      verifyLink: 'https://www.credly.com/users/antonio-beltran-miller',
+    },
+  ]
+
+  const completedCount = certifications.filter(c => c.status === 'completed').length
+  const inProgressCount = certifications.filter(c => c.status === 'in-progress').length
+
+  return (
+    <section className="py-20 px-4">
+      <div className="container mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-bold mb-4">Professional Certifications</h2>
+          <p className="text-slate-400 mb-6">
+            Industry-recognized credentials demonstrating security expertise
+          </p>
+          <div className="flex justify-center gap-8">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <span className="text-slate-300">{completedCount} Completed</span>
+            </div>
+            {inProgressCount > 0 && (
+              <div className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-yellow-400" />
+                <span className="text-slate-300">{inProgressCount} In Progress</span>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certifications.map((cert, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              onClick={() => setSelectedCert(selectedCert === index ? null : index)}
+              className={`relative bg-slate-900/50 backdrop-blur border border-slate-800 rounded-xl p-6 cursor-pointer transition-all hover:border-cyan-600/50 ${
+                selectedCert === index ? 'ring-2 ring-cyan-600' : ''
+              }`}
+            >
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4">
+                {cert.status === 'completed' ? (
+                  <CheckCircle className="w-6 h-6 text-green-400" />
+                ) : (
+                  <Clock className="w-6 h-6 text-yellow-400" />
+                )}
+              </div>
+
+              {/* Certification Badge */}
+              <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center mb-4`}>
+                <Award className="w-8 h-8 text-white" />
+              </div>
+
+              {/* Cert Info */}
+              <h3 className="text-xl font-bold mb-2">{cert.name}</h3>
+              <p className="text-cyan-400 text-sm mb-2">{cert.issuer}</p>
+              <p className="text-slate-400 text-sm mb-4">{cert.date}</p>
+
+              {/* Description (shown when selected) */}
+              {selectedCert === index && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="mb-4"
+                >
+                  <p className="text-slate-300 text-sm mb-4">{cert.description}</p>
+                </motion.div>
+              )}
+
+              {/* Skills */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {cert.skills.slice(0, selectedCert === index ? cert.skills.length : 3).map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs px-2 py-1 bg-slate-800/50 rounded text-slate-400"
+                  >
+                    {skill}
+                  </span>
+                ))}
+                {cert.skills.length > 3 && selectedCert !== index && (
+                  <span className="text-xs px-2 py-1 bg-slate-800/50 rounded text-cyan-400">
+                    +{cert.skills.length - 3} more
+                  </span>
+                )}
+              </div>
+
+              {/* Verify Link */}
+              {cert.verifyLink && (
+                <a
+                  href={cert.verifyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm transition-colors"
+                >
+                  <span>View Certification</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Stats Summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="mt-12 p-8 bg-gradient-to-r from-cyan-900/10 to-blue-900/10 border border-cyan-800/30 rounded-xl"
+        >
+          <h3 className="text-2xl font-bold mb-6 text-center">Certification Focus Areas</h3>
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-cyan-400 mb-2">{completedCount}</div>
+              <p className="text-slate-400">Certifications</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-cyan-400 mb-2">4</div>
+              <p className="text-slate-400">AWS Security</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-cyan-400 mb-2">3</div>
+              <p className="text-slate-400">Industry Standard</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-cyan-400 mb-2">2025</div>
+              <p className="text-slate-400">Latest Achievement</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   )
 }
