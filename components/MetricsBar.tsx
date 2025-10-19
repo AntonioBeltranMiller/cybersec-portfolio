@@ -8,7 +8,7 @@ export default function MetricsBar() {
   }, [])
   const metrics = [
     { label: 'Active Certifications', value: 8, suffix: '' },
-    { label: 'Honeypot Attacks Analyzed', value: 424000, suffix: '+' },
+    { label: 'Honeypot Attacks Captured', value: 424000, suffix: '+' },
     { label: 'Vulnerabilities Responsibly Disclosed', value: 6, suffix: '+' },
     { label: 'Endpoints Secured', value: 150, suffix: '+' },
   ]
