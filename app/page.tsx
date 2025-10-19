@@ -55,8 +55,8 @@ export default function Home() {
       icon: <AlertCircle className="w-6 h-6" />,
       featured: true,
       images: [
-        '/images/projects/npm-vuln-1.png',
-        '/images/projects/npm-vuln-2.png',
+        '/images/projects/npm-supply-chain-exploitation.png',
+        '/images/projects/npm-supply-chain-timeline.png',
       ],
       demoLink: '/projects/vulnerability-research',
     },
@@ -170,9 +170,34 @@ export default function Home() {
         <ExperienceTimeline />
       </section>
 
-      {/* Certifications Section */}
-      <section id="certifications">
-        <CertificationsShowcase />
+      {/* Call to Action */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            className="bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border border-cyan-800/50 rounded-2xl p-12"
+          >
+            <h2 className="text-3xl font-bold mb-4">Ready to Strengthen Your Security Posture</h2>
+            <p className="text-xl text-slate-300 mb-8">
+              Bringing proven incident response, vulnerability research, and security engineering expertise to your team.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <a 
+                href="mailto:antoniobeltranmiller@gmail.com"
+                className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-semibold transition-colors"
+              >
+                Contact Me
+              </a>
+              <a 
+                href="/resume.pdf"
+                className="px-8 py-3 border border-cyan-600 hover:bg-cyan-600/10 rounded-lg font-semibold transition-colors"
+              >
+                Download Resume
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </section>
     </>
   )
