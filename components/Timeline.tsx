@@ -32,6 +32,7 @@ export default function ExperienceTimeline() {
       ],
       impact: 'Transformed reactive IT support into proactive security operations',
     },
+    // ---- updated from your resume ----
     {
       title: 'Security Research & Engineering',
       company: 'Independent Projects',
@@ -39,7 +40,7 @@ export default function ExperienceTimeline() {
       icon: <Code className="w-5 h-5" />,
       highlights: [
         'Built CertProtector - SSL/TLS monitoring platform (Python/React)',
-        'Developed CyberShell  - penetration testing framework',
+        'Developed CyberShell - penetration testing framework',
         'Created enterprise SOC lab with SIEM integration',
         'Published security research on GitHub (10+ repositories)',
         'Contributed to open-source security tools',
@@ -135,7 +136,7 @@ export default function ExperienceTimeline() {
             </motion.div>
           ))}
         </div>
-      </div>         
-    </section>         
+      </div>
+    </section>
   )
 }
