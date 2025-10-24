@@ -199,7 +199,7 @@ export default function ProjectShowcase({ project, index }: { project: Project; 
         >
           <button
             onClick={() => setIsFullscreen(false)}
-            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-50"
+            className="absolute top-4 right-4 p-2 bg-cyan-600 hover:bg-cyan-500 rounded-full transition-colors z-50"
             aria-label="Close fullscreen"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,13 +207,13 @@ export default function ProjectShowcase({ project, index }: { project: Project; 
             </svg>
           </button>
 
-          <div className="relative w-full h-full flex items-center justify-center p-8">
+          <div className="relative w-2/3 h-2/3 flex items-center justify-center">
             <Image
               src={project.images[currentImage]}
               alt={`${project.title} screenshot ${currentImage + 1}`}
               fill
               className="object-contain"
-              sizes="100vw"
+              sizes="66vw"
               onClick={(e) => e.stopPropagation()}
             />
 
