@@ -58,9 +58,9 @@ export default function IncidentResponseCaseStudy() {
   ]
 
   const technicalFindings = {
-    'Attack Vector': 'Unpatched WordPress plugin (CVE-2021-XXXXX)',
+    'Attack Vector': 'Unpatched WordPress plugin (CVE-2021-32682)',
     'Compromise Depth': 'Web application layer with attempted lateral movement',
-    'Data at Risk': '5,000+ customer records, payment information',
+    'Data at Risk': '5,000+ customer records',
     'Persistence Mechanisms': ['Webshell backdoors', 'Modified core files', 'Hidden admin accounts'],
     'IOCs Identified': ['Malicious IPs', 'File hashes', 'Modified timestamps', 'Suspicious user agents'],
   }
