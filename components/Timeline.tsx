@@ -20,14 +20,14 @@ export default function ExperienceTimeline() {
       impact: 'Ready for L1/L2 SOC Analyst role with proven hands-on experience',
     },
     {
-      title: 'IT Support & Security Specialist',
+      title: 'IT Support & Dispatcher',
       company: 'ALM Freight',
       period: 'Sep 2021 - May 2024',
       icon: <Briefcase className="w-5 h-5" />,
       highlights: [
         'Secured 150+ endpoint fleet with 95% patch compliance',
         'Reduced security incidents by 40% through proactive monitoring',
-        'Implemented Zero Trust network access controls',
+        'Provided step-by-step remote troubleshooting',
         'Managed Active Directory security and group policies',
       ],
       impact: 'Transformed reactive IT support into proactive security operations',
@@ -53,7 +53,7 @@ export default function ExperienceTimeline() {
       period: '2021 – Present',
       icon: <Award className="w-5 h-5" />,
       highlights: [
-        'B.S. in Cybersecurity & Information Assurance — Expected late 2026',
+        'B.S. in Cybersecurity & Information Assurance — Expected late 2027',
         'CompTIA Security+ (Certified Oct 2025)',
         'Fortinet Certified Associate + FortiGate 7.6 Operator',
         'Google Cybersecurity Professional; AWS Security Best Practices (4 certs)',
