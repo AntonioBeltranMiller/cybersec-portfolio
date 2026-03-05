@@ -57,7 +57,7 @@ export default function ExperienceTimeline() {
         'CompTIA Security+ (Certified Oct 2025)',
         'Fortinet Certified Associate + FortiGate 7.6 Operator',
         'Google Cybersecurity Professional; AWS Security Best Practices (4 certs)',
-        'LetsDefend SOC Analyst Path; ongoing CTFs (HTB, TryHackMe, PicoCTF) & PortSwigger labs',
+        'LetsDefend SOC Analyst Path; ongoing CTFs (HTB, TryHackMe, PicoCTF, PortSwigger labs)',
       ],
       impact:
         'Sustained, hands-on upskilling aligned to SOC and detection engineering roles',
