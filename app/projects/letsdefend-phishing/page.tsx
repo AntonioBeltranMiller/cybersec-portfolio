@@ -389,7 +389,6 @@ export default function LetsDefendPhishingPage() {
             className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Projects
           </Link>
           <span className="text-xs text-slate-500 bg-slate-800 px-3 py-1 rounded-full">
             LetsDefend · SOC Analyst Lab
