@@ -4,7 +4,7 @@
 // FILE:  app/projects/letsdefend-phishing/page.tsx
 //
 // Drop this file into your Next.js app at the path above.
-// Images should be copied into:  public/images/projects/letsdefend/
+// Images should be copied into:  public/images/projects/
 //   ThePhishingEmail.png
 //   ThreatIntelShowsLumma.png
 //   affectedEndpoint.png
@@ -62,7 +62,7 @@ const steps: Step[] = [
     icon: <CheckCircle className="w-5 h-5" />,
     summary:
       'Before any investigation begins, ownership of the alert is taken. This is standard SOC procedure — claiming the ticket prevents duplicate work by other analysts and establishes accountability for the case.',
-    image: '/images/projects/letsdefend/Takeownership.png',
+    image: '/images/projects/Takeownership.png',
     imageAlt: 'LetsDefend alert panel showing ticket ownership being taken',
     details: [
       'Alert: SOC338 — Lumma Stealer - DLL Side-Loading via Click Fix Phishing',
@@ -81,7 +81,7 @@ const steps: Step[] = [
     icon: <Search className="w-5 h-5" />,
     summary:
       'A critical-severity alert fired for an email impersonating Microsoft, delivered from a third-party domain to dylan@letsdefend.io. Device action was Allowed — the email reached the inbox.',
-    image: '/images/projects/letsdefend/ThePhishingEmail.png',
+    image: '/images/projects/ThePhishingEmail.png',
     imageAlt: 'Phishing email displayed in LetsDefend Email Security panel',
     details: [
       'Sender: update@windows-update.site — not affiliated with Microsoft',
@@ -101,7 +101,7 @@ const steps: Step[] = [
     icon: <Shield className="w-5 h-5" />,
     summary:
       'LetsDefend Threat Intel lookup on 132.232.40.201 returned a direct hit tagged "Lumma, Lumma Stealer" — confirming the sending infrastructure is known malicious C2.',
-    image: '/images/projects/letsdefend/ThreatIntelShowsLumma.png',
+    image: '/images/projects/ThreatIntelShowsLumma.png',
     imageAlt: 'LetsDefend Threat Intel panel showing Lumma Stealer tag on 132.232.40.201',
     details: [
       '132.232.40.201 is indexed in LetsDefend Threat Intel as of Mar 13, 2025 at 04:58 PM',
@@ -124,7 +124,7 @@ const steps: Step[] = [
     icon: <Activity className="w-5 h-5" />,
     summary:
       'Dylan\'s endpoint was found via Endpoint Security. The host was running Windows 10 on IP 172.16.17.216. At this point containment was OFF — the machine was still live on the network.',
-    image: '/images/projects/letsdefend/affectedEndpoint.png',
+    image: '/images/projects/affectedEndpoint.png',
     imageAlt: 'LetsDefend Endpoint Security panel showing Dylan\'s host information',
     details: [
       'Hostname: Dylan | Domain: LetsDefend | IP: 172.16.17.216',
@@ -143,7 +143,7 @@ const steps: Step[] = [
     icon: <Terminal className="w-5 h-5" />,
     summary:
       'Terminal history confirmed Dylan manually executed a ClickFix clipboard payload. The obfuscated command reconstructs mshta.exe at runtime using PowerShell\'s -replace operator, then fetches the Lumma payload disguised as a .mp4 file.',
-    image: '/images/projects/letsdefend/ConfirmedPayloadExecution.png',
+    image: '/images/projects/ConfirmedPayloadExecution.png',
     imageAlt: 'LetsDefend terminal history showing obfuscated ClickFix PowerShell command',
     details: [
       'Command: PowerShell.exe -w 1 (-WindowStyle Hidden) — window was invisible to the user',
@@ -176,7 +176,7 @@ const steps: Step[] = [
     icon: <AlertTriangle className="w-5 h-5" />,
     summary:
       'Process logs confirmed mshta.exe (PID 7284) was spawned by powershell.exe at 23:26:20 and reached out to the C2 domain. This is a Living-off-the-Land Binary (LOLBin) — a legitimate, signed Microsoft executable abused to deliver malware.',
-    image: '/images/projects/letsdefend/mshta_Process_Fire.png',
+    image: '/images/projects/mshta_Process_Fire.png',
     imageAlt: 'LetsDefend process log showing mshta.exe PID 7284 spawned from powershell.exe',
     details: [
       'Process: mshta.exe | PID: 7284 | Parent: powershell.exe',
@@ -202,7 +202,7 @@ const steps: Step[] = [
     icon: <Search className="w-5 h-5" />,
     summary:
       'The file hash from the mshta.exe process log was submitted to VirusTotal. 22 of 58 security vendors flagged it as malicious. The popular threat label is trojan.sagent/emmenhtal — consistent with Lumma Stealer delivery via HTA.',
-    image: '/images/projects/letsdefend/VIrustotalHashLookup.png',
+    image: '/images/projects/VIrustotalHashLookup.png',
     imageAlt: 'VirusTotal showing 22/58 detections for the Lumma Stealer payload hash',
     details: [
       'Hash: 15c80b5be235bf2a8c38291eb697a702c07dde087eb459e9ea46a2bee17c5f03',
@@ -229,7 +229,7 @@ const steps: Step[] = [
     icon: <Network className="w-5 h-5" />,
     summary:
       'Network action logs showed 8 outbound connections during the execution window. The original phishing IP contacted Dylan\'s machine first. A suspicious Yandex-hosted IP appeared ~55 seconds post-execution — consistent with Lumma exfiltrating harvested credentials.',
-    image: '/images/projects/letsdefend/NetworkTrafficEvidence.png',
+    image: '/images/projects/NetworkTrafficEvidence.png',
     imageAlt: 'LetsDefend network action log showing outbound connections during Lumma execution',
     details: [
       '23:26:08 — 132.232.40.201: Original phishing sender IP — C2 beacon, 12 seconds before mshta.exe fired',
@@ -261,7 +261,7 @@ const steps: Step[] = [
     icon: <Lock className="w-5 h-5" />,
     summary:
       'Dylan\'s endpoint was contained via the LetsDefend Endpoint Security panel. The containment toggle was enabled, isolating the host from the network to prevent further C2 communication or lateral movement.',
-    image: '/images/projects/letsdefend/HostContained.png',
+    image: '/images/projects/HostContained.png',
     imageAlt: 'LetsDefend Endpoint Security panel showing Host Contained status enabled',
     details: [
       'Containment toggle activated — host isolated from network',
@@ -281,7 +281,7 @@ const steps: Step[] = [
     icon: <CheckCircle className="w-5 h-5" />,
     summary:
       'Alert closed as True Positive. This is one of many simulated SOC tickets completed on LetsDefend to document analyst methodology and build a portfolio of realistic investigation walkthroughs.',
-    image: '/images/projects/letsdefend/HostContained.png',
+    image: '/images/projects/HostContained.png',
     imageAlt: 'LetsDefend alert closed as True Positive with host contained',
     details: [
       'Classification: True Positive — Phishing with confirmed Lumma Stealer execution',
