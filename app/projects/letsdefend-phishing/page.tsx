@@ -1,20 +1,10 @@
 'use client'
 
-// ─────────────────────────────────────────────────────────────────────────────
 // FILE:  app/projects/letsdefend-phishing/page.tsx
-//
-// Drop this file into your Next.js app at the path above.
-// Images should be copied into:  public/images/projects/
-//   ThePhishingEmail.png
-//   ThreatIntelShowsLumma.png
-//   affectedEndpoint.png
-//   ConfirmedPayloadExecution.png
-//   mshta_Process_Fire.png
-//   VIrustotalHashLookup.png
-//   NetworkTrafficEvidence.png
-//   HostContained.png
-//   Takeownership.png
-// ─────────────────────────────────────────────────────────────────────────────
+// Images: public/images/projects/
+//   Takeownership.png, ThePhishingEmail.png, ThreatIntelShowsLumma.png,
+//   affectedEndpoint.png, ConfirmedPayloadExecution.png, mshta_Process_Fire.png,
+//   VIrustotalHashLookup.png, NetworkTrafficEvidence.png, HostContained.png
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -36,8 +26,6 @@ import {
   ArrowLeft,
 } from 'lucide-react'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface Step {
   id: number
   phase: string
@@ -52,25 +40,23 @@ interface Step {
   icon: React.ReactNode
 }
 
-// ─── Investigation Steps ─────────────────────────────────────────────────────
-
 const steps: Step[] = [
   {
     id: 1,
     phase: 'Ticket Ownership',
-    title: 'Alert Claimed — Investigation Started',
+    title: 'Alert Claimed',
     icon: <CheckCircle className="w-5 h-5" />,
     summary:
-      'Before any investigation begins, ownership of the alert is taken. This is standard SOC procedure — claiming the ticket prevents duplicate work by other analysts and establishes accountability for the case.',
+      'Before any investigation begins, ownership of the alert is taken. This is standard SOC practice. claiming the ticket prevents two analysts from working the same case and establishes a clear chain of accountability.',
     image: '/images/projects/Takeownership.png',
     imageAlt: 'LetsDefend alert panel showing ticket ownership being taken',
     details: [
-      'Alert: SOC338 — Lumma Stealer - DLL Side-Loading via Click Fix Phishing',
+      'Alert: SOC338 - Lumma Stealer - DLL Side-Loading via ClickFix Phishing',
       'EventID: 316 | Severity: Critical | Type: Data Leakage',
-      'Ticket claimed before any investigation steps are taken — this is non-negotiable SOC hygiene',
-      'Claiming prevents two analysts from running parallel investigations on the same alert',
-      'Rule level: Security Analyst — this alert is scoped to Tier 1 triage with Tier 2 escalation path',
-      'First read of the trigger reason: "Redirected site contains a ClickFix type script for Lumma Stealer distribution" — immediately indicates social engineering delivery, not a file attachment',
+      'Ticket is claimed before any investigation steps are taken. this is non-negotiable SOC hygiene',
+      'Claiming the ticket locks it to one analyst and prevents duplicate investigation work',
+      'Level: Security Analyst. scoped to Tier 1 triage with a clear Tier 2 escalation path',
+      'First read of the trigger reason: "Redirected site contains a ClickFix type script for Lumma Stealer distribution". this immediately signals social engineering delivery rather than a malicious attachment',
     ],
     verdict: 'suspicious',
   },
@@ -80,17 +66,17 @@ const steps: Step[] = [
     title: 'Phishing Email Reviewed',
     icon: <Search className="w-5 h-5" />,
     summary:
-      'A critical-severity alert fired for an email impersonating Microsoft, delivered from a third-party domain to dylan@letsdefend.io. Device action was Allowed — the email reached the inbox.',
+      'A critical-severity alert fired for an email impersonating Microsoft, sent from a third-party domain to dylan@letsdefend.io. The device action was Allowed, meaning the email was not blocked and landed in the inbox.',
     image: '/images/projects/ThePhishingEmail.png',
     imageAlt: 'Phishing email displayed in LetsDefend Email Security panel',
     details: [
-      'Sender: update@windows-update.site — not affiliated with Microsoft',
-      'Subject: "Upgrade your system to Windows 11 Pro for FREE" — classic urgency lure',
+      'Sender: update@windows-update.site. has no affiliation with Microsoft',
+      'Subject: "Upgrade your system to Windows 11 Pro for FREE". urgency-based lure',
       'SMTP Source IP: 132.232.40.201',
-      'Device Action: Allowed — email was not blocked and reached Dylan\'s mailbox',
-      'The email body mimics the Microsoft Windows 11 upgrade page with a countdown timer to manufacture urgency',
-      'Trigger reason: redirected site contains a ClickFix-type script for Lumma Stealer distribution',
-      'Key insight: because delivery is ClickFix-based, the malicious action happens on the redirected site — attachment scanning and email filtering provide no protection here',
+      'Device Action: Allowed. the email reached Dylan\'s mailbox unblocked',
+      'The email body mimics a Microsoft Windows 11 upgrade page and includes a countdown timer to push the user into acting fast',
+      'Trigger reason: the redirected site contains a ClickFix-type script for Lumma Stealer distribution',
+      'Because delivery is ClickFix-based, the malicious action happens entirely on the redirected site. Attachment scanning and email filtering provide no protection here.',
     ],
     verdict: 'malicious',
   },
@@ -100,15 +86,15 @@ const steps: Step[] = [
     title: 'Sender IP Confirmed as Lumma C2',
     icon: <Shield className="w-5 h-5" />,
     summary:
-      'LetsDefend Threat Intel lookup on 132.232.40.201 returned a direct hit tagged "Lumma, Lumma Stealer" — confirming the sending infrastructure is known malicious C2.',
+      'A Threat Intel lookup on 132.232.40.201 returned a direct hit tagged "Lumma, Lumma Stealer". confirming the sending infrastructure is known malicious C2.',
     image: '/images/projects/ThreatIntelShowsLumma.png',
     imageAlt: 'LetsDefend Threat Intel panel showing Lumma Stealer tag on 132.232.40.201',
     details: [
       '132.232.40.201 is indexed in LetsDefend Threat Intel as of Mar 13, 2025 at 04:58 PM',
-      'Tagged: Lumma, Lumma Stealer — a MaaS infostealer active since 2022',
+      'Tagged: Lumma, Lumma Stealer. a Malware-as-a-Service infostealer active since 2022',
       'Lumma Stealer targets browser credentials, session cookies, crypto wallets, and 2FA data',
-      'This confirms the email was sent from known Lumma C2 infrastructure, not a random spammer',
-      'At this point the alert is already a confirmed True Positive — investigation continues for full scope',
+      'This confirms the email originated from known Lumma C2 infrastructure, not an unrelated spammer',
+      'At this point the alert is already a confirmed True Positive. The rest of the investigation is about establishing full scope.',
     ],
     iocs: [
       { label: 'Malicious IP', value: '132.232.40.201' },
@@ -123,43 +109,43 @@ const steps: Step[] = [
     title: 'Affected Endpoint Located',
     icon: <Activity className="w-5 h-5" />,
     summary:
-      'Dylan\'s endpoint was found via Endpoint Security. The host was running Windows 10 on IP 172.16.17.216. At this point containment was OFF — the machine was still live on the network.',
+      "Dylan's endpoint was found in Endpoint Security. The host was running Windows 10 on IP 172.16.17.216. Containment was OFF at this point, meaning the machine was still live on the network.",
     image: '/images/projects/affectedEndpoint.png',
-    imageAlt: 'LetsDefend Endpoint Security panel showing Dylan\'s host information',
+    imageAlt: "LetsDefend Endpoint Security panel showing Dylan's host information",
     details: [
       'Hostname: Dylan | Domain: LetsDefend | IP: 172.16.17.216',
       'OS: Windows 10 64-bit | User: Dylan | Type: Client',
-      'Last Login: Mar 14, 2025, 12:05 PM — post-incident login confirms the user was active',
-      'Containment toggle was OFF at time of discovery — immediate action needed',
-      'EDR shows 87 processes, 28 network actions, 3 terminal history entries, 1 browser history entry',
-      '3 terminal history entries is a small number — each one became a critical artifact',
+      'Last Login: Mar 14, 2025, 12:05 PM. a post-incident login, confirming the user remained active after the alert fired',
+      'Containment was OFF at time of discovery. isolation needed immediately',
+      'EDR shows 87 processes, 28 network actions, 3 terminal history entries, and 1 browser history entry',
+      'Only 3 terminal history entries. a small number, but each one turned into a critical artifact',
     ],
     verdict: 'suspicious',
   },
   {
     id: 5,
     phase: 'Execution Evidence',
-    title: 'ClickFix Command Confirmed in Terminal History',
+    title: 'ClickFix Command Found in Terminal History',
     icon: <Terminal className="w-5 h-5" />,
     summary:
-      'Terminal history confirmed Dylan manually executed a ClickFix clipboard payload. The obfuscated command reconstructs mshta.exe at runtime using PowerShell\'s -replace operator, then fetches the Lumma payload disguised as a .mp4 file.',
+      "Terminal history confirmed Dylan manually ran a ClickFix clipboard payload. The command reconstructs mshta.exe at runtime to evade detection, then fetches the Lumma payload from a C2 URL disguised as a .mp4 file.",
     image: '/images/projects/ConfirmedPayloadExecution.png',
     imageAlt: 'LetsDefend terminal history showing obfuscated ClickFix PowerShell command',
     details: [
-      'Command: PowerShell.exe -w 1 (-WindowStyle Hidden) — window was invisible to the user',
-      'Obfuscation: "ms]]]ht]]]a]]].]]]exe" with -replace \']\' reconstructs "mshta.exe" at runtime',
-      'This breaks static AV/YARA signatures that scan for the literal string "mshta.exe"',
+      'PowerShell.exe ran with -w 1 (WindowStyle Hidden). no terminal window was visible to the user',
+      'Obfuscation method: "ms]]]ht]]]a]]].]]]exe" with -replace \']\' reconstructs "mshta.exe" at runtime',
+      'This technique breaks static AV and YARA signatures that scan for the literal string "mshta.exe"',
       'C2 payload URL: https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4',
-      'The .mp4 extension is a decoy — this is an HTA/PowerShell script, not a video file',
-      'Comment appended: # ✅ "I am not a robot - reCAPTCHA Verification ID: 3824"',
-      'That comment is the social engineering text shown on the fake CAPTCHA page — it was bundled into the clipboard payload to make the command look legitimate as the user pasted it',
-      'Two identical obfuscated entries suggest the user pasted and executed it twice',
+      'The .mp4 extension is a content filter bypass. the file is an HTA/PowerShell script, not a video',
+      'Comment in the command: # "I am not a robot - reCAPTCHA Verification ID: 3824"',
+      'That comment is the fake CAPTCHA text bundled into the clipboard payload to make the command look legitimate as the user pasted it. a social engineering layer built directly into the payload',
+      'Two identical obfuscated entries in terminal history suggest the user ran it twice',
     ],
     mitre: [
-      'T1566.002 — Spearphishing Link',
-      'T1204.002 — User Execution: Malicious File',
-      'T1027 — Obfuscated Files or Information',
-      'T1218.005 — Signed Binary Proxy Execution: Mshta',
+      'T1566.002 - Spearphishing Link',
+      'T1204.002 - User Execution: Malicious File',
+      'T1027 - Obfuscated Files or Information',
+      'T1218.005 - Signed Binary Proxy Execution: Mshta',
     ],
     iocs: [
       { label: 'C2 Domain', value: 'overcoatpassably.shop' },
@@ -172,47 +158,47 @@ const steps: Step[] = [
   {
     id: 6,
     phase: 'Process Analysis',
-    title: 'mshta.exe Spawned — Payload Fetched',
+    title: 'mshta.exe Spawned and Payload Fetched',
     icon: <AlertTriangle className="w-5 h-5" />,
     summary:
-      'Process logs confirmed mshta.exe (PID 7284) was spawned by powershell.exe at 23:26:20 and reached out to the C2 domain. This is a Living-off-the-Land Binary (LOLBin) — a legitimate, signed Microsoft executable abused to deliver malware.',
+      'Process logs confirmed mshta.exe (PID 7284) was spawned by powershell.exe and reached out to the C2 domain. mshta.exe is a Living-off-the-Land Binary (LOLBin), a legitimate signed Microsoft executable that threat actors abuse to deliver malware without triggering AV.',
     image: '/images/projects/mshta_Process_Fire.png',
     imageAlt: 'LetsDefend process log showing mshta.exe PID 7284 spawned from powershell.exe',
     details: [
       'Process: mshta.exe | PID: 7284 | Parent: powershell.exe',
-      'Image Path: C:\\Windows\\System32\\mshta.exe — legitimate Windows binary, not dropped malware',
-      'User context: EC2AMAZ-ILGVOIN\\LetsDefend — ran under Dylan\'s user account',
-      'Child process: conhost.exe 0xffffffff -ForceV1 — console host spawned, confirms execution completed',
+      'Image Path: C:\\Windows\\System32\\mshta.exe. a legitimate Windows binary, not a dropped file',
+      'User context: EC2AMAZ-ILGVOIN\\LetsDefend. ran under Dylan\'s standard user account',
+      'Child process: conhost.exe 0xffffffff -ForceV1. console host spawned, confirming execution completed',
       'File Hash: 15c80b5be235bf2a8c38291eb697a702c07dde087eb459e9ea46a2bee17c5f03',
-      'Note: hash belongs to the payload (maloy.mp4), not mshta.exe itself — see VirusTotal step',
+      'This hash belongs to the fetched payload (maloy.mp4), not mshta.exe itself. submitted to VirusTotal in the next step',
       'Process chain: powershell.exe → mshta.exe (PID 7284) → conhost.exe',
-      'Key timing: Defender updated signatures at 23:25:43 — payload still executed 37 seconds later, demonstrating LOLBin evasion effectiveness',
+      'Windows Defender updated its signatures at 23:25:43, just 37 seconds before mshta.exe fired. The payload still executed. a clear example of why LOLBin abuse is effective against signature-based detection.',
     ],
     mitre: [
-      'T1218.005 — Signed Binary Proxy Execution: Mshta',
-      'T1105 — Ingress Tool Transfer',
-      'T1574.002 — DLL Side-Loading (next stage)',
+      'T1218.005 - Signed Binary Proxy Execution: Mshta',
+      'T1105 - Ingress Tool Transfer',
+      'T1574.002 - DLL Side-Loading (next stage)',
     ],
     verdict: 'malicious',
   },
   {
     id: 7,
     phase: 'Malware Confirmation',
-    title: 'Payload Hash: 22/58 Vendors Detect Lumma Stealer',
+    title: 'Payload Hash: 22/58 Detections on VirusTotal',
     icon: <Search className="w-5 h-5" />,
     summary:
-      'The file hash from the mshta.exe process log was submitted to VirusTotal. 22 of 58 security vendors flagged it as malicious. The popular threat label is trojan.sagent/emmenhtal — consistent with Lumma Stealer delivery via HTA.',
+      'The file hash from the mshta.exe process log was submitted to VirusTotal. 22 of 58 vendors flagged it as malicious, with Ikarus explicitly labeling it Trojan.PowerShell.LummaStealer.',
     image: '/images/projects/VIrustotalHashLookup.png',
     imageAlt: 'VirusTotal showing 22/58 detections for the Lumma Stealer payload hash',
     details: [
       'Hash: 15c80b5be235bf2a8c38291eb697a702c07dde087eb459e9ea46a2bee17c5f03',
-      'Filename: maloy.mp4 — confirms the .mp4 extension was a content filter bypass, file is actually a trojan',
-      '22/58 vendors flagged malicious — lower detection rate reflects the obfuscated HTA delivery mechanism',
+      'Filename on VT: maloy.mp4. confirms the extension was purely a bypass, the file is a trojan',
+      '22/58 vendors detected it. the lower rate is expected given the obfuscated HTA delivery mechanism',
       'Popular threat label: trojan.sagent/emmenhtal',
-      'Family labels: sagent, emmenhtal, htadl — HTA-based dropper family used in Lumma campaigns',
-      'Notable detections: Ikarus → Trojan.PowerShell.LummaStealer (explicitly names Lumma)',
-      'Kaspersky → HEUR:Trojan.HTA.SAgent.gen | Sophos → Troj/HTADL-RC',
-      'File size: 2.35 MB | Last Analysis: 17 days before this alert',
+      'Family labels: sagent, emmenhtal, htadl. an HTA-based dropper family commonly used in Lumma campaigns',
+      'Ikarus: Trojan.PowerShell.LummaStealer. explicitly identifies the family',
+      'Kaspersky: HEUR:Trojan.HTA.SAgent.gen | Sophos: Troj/HTADL-RC',
+      'File size: 2.35 MB | Last analyzed: 17 days before this alert',
     ],
     iocs: [
       { label: 'Payload Hash (SHA256)', value: '15c80b5be235bf2a8c38291eb697a702c07dde087eb459e9ea46a2bee17c5f03' },
@@ -225,23 +211,23 @@ const steps: Step[] = [
   {
     id: 8,
     phase: 'Network Analysis',
-    title: 'Outbound C2 & Exfiltration Connections',
+    title: 'Outbound C2 Connections Identified',
     icon: <Network className="w-5 h-5" />,
     summary:
-      'Network action logs showed 8 outbound connections during the execution window. The original phishing IP contacted Dylan\'s machine first. A suspicious Yandex-hosted IP appeared ~55 seconds post-execution — consistent with Lumma exfiltrating harvested credentials.',
+      'Network logs showed 8 outbound connections during the execution window. The original phishing IP reached back to the machine before mshta.exe even fired. A Yandex-hosted IP appeared about 55 seconds after execution, which lines up with Lumma finishing a credential harvest and pushing data out.',
     image: '/images/projects/NetworkTrafficEvidence.png',
     imageAlt: 'LetsDefend network action log showing outbound connections during Lumma execution',
     details: [
-      '23:26:08 — 132.232.40.201: Original phishing sender IP — C2 beacon, 12 seconds before mshta.exe fired',
-      '23:26:16 — 142.250.190.35: Google infrastructure — benign (Chrome activity)',
-      '23:26:18 — 34.104.35.123: Google Cloud — benign',
-      '23:26:20 — 172.67.139.19: Cloudflare IP — likely overcoatpassably.shop behind CDN, payload delivery',
-      '23:26:23 — 172.31.12.250: RFC1918 private IP — internal AWS traffic, benign',
-      '23:26:36 — 35.190.80.1: Google Cloud load balancer — benign',
-      '23:27:15 — 77.88.21.119: Yandex infrastructure — suspicious, no legitimate reason to appear here',
-      '23:28:11 — 34.104.35.123: Repeat Google Cloud — benign',
-      'The ~55 second gap between execution (23:26:20) and Yandex connection (23:27:15) is consistent with Lumma completing its credential harvest before exfiltrating',
-      'Both suspicious IPs returned clean on VirusTotal — expected in a simulated environment; real-world next step would be PassiveDNS pivot and threat intel feed cross-reference',
+      '23:26:08 - 132.232.40.201: Original phishing sender IP, contacted 12 seconds before mshta.exe ran',
+      '23:26:16 - 142.250.190.35: Google infrastructure, benign Chrome activity',
+      '23:26:18 - 34.104.35.123: Google Cloud, benign',
+      '23:26:20 - 172.67.139.19: Cloudflare IP, likely overcoatpassably.shop fronted via CDN for payload delivery',
+      '23:26:23 - 172.31.12.250: RFC1918 private address, internal AWS traffic, benign',
+      '23:26:36 - 35.190.80.1: Google Cloud load balancer, benign',
+      '23:27:15 - 77.88.21.119: Yandex infrastructure, no legitimate reason for this to appear here',
+      '23:28:11 - 34.104.35.123: Repeat Google Cloud connection, benign',
+      'The 55-second gap between execution and the Yandex connection is consistent with Lumma completing its credential sweep before exfiltrating',
+      'Both suspicious IPs came back clean on VirusTotal, which is expected in a simulated lab. In a real case these would be pivoted on via PassiveDNS and threat intel feeds.',
     ],
     iocs: [
       { label: 'C2 Beacon IP', value: '132.232.40.201' },
@@ -249,8 +235,8 @@ const steps: Step[] = [
       { label: 'Suspected Exfil IP', value: '77.88.21.119 (Yandex)' },
     ],
     mitre: [
-      'T1041 — Exfiltration Over C2 Channel',
-      'T1555.003 — Credentials from Web Browsers',
+      'T1041 - Exfiltration Over C2 Channel',
+      'T1555.003 - Credentials from Web Browsers',
     ],
     verdict: 'malicious',
   },
@@ -260,42 +246,39 @@ const steps: Step[] = [
     title: 'Host Isolated',
     icon: <Lock className="w-5 h-5" />,
     summary:
-      'Dylan\'s endpoint was contained via the LetsDefend Endpoint Security panel. The containment toggle was enabled, isolating the host from the network to prevent further C2 communication or lateral movement.',
+      "Dylan's endpoint was isolated via the Endpoint Security panel. Containment cuts off all network access, stopping any further C2 communication or lateral movement attempts.",
     image: '/images/projects/HostContained.png',
     imageAlt: 'LetsDefend Endpoint Security panel showing Host Contained status enabled',
     details: [
-      'Containment toggle activated — host isolated from network',
-      'Status changed to "Host Contained" — confirmed by UI indicator',
+      'Containment toggle activated. host cut off from the network',
+      'Status confirmed as "Host Contained" in the UI',
       'Email quarantined from Dylan\'s mailbox',
-      '132.232.40.201 and overcoatpassably.shop blocked at email gateway and proxy',
+      '132.232.40.201 and overcoatpassably.shop blocked at the email gateway and web proxy',
       'Dylan\'s credentials and all active sessions flagged for reset and invalidation',
-      'Note: password reset alone is insufficient for infostealer incidents — Lumma steals session cookies, so active sessions must be separately invalidated',
-      'Escalated to Tier 2 / Incident Response for full forensic review of file drops and post-execution artifacts',
+      'Password reset alone is not enough for infostealer incidents. Lumma steals session cookies, so active sessions need to be invalidated separately',
+      'Escalated to Tier 2 for full forensic review of file drops and post-execution artifacts',
     ],
     verdict: 'confirmed',
   },
   {
     id: 10,
     phase: 'Alert Closure',
-    title: 'Alert Closed — True Positive',
+    title: 'Alert Closed as True Positive',
     icon: <CheckCircle className="w-5 h-5" />,
     summary:
       'Alert closed as True Positive. This is one of many simulated SOC tickets completed on LetsDefend to document analyst methodology and build a portfolio of realistic investigation walkthroughs.',
     image: '/images/projects/HostContained.png',
     imageAlt: 'LetsDefend alert closed as True Positive with host contained',
     details: [
-      'Classification: True Positive — Phishing with confirmed Lumma Stealer execution',
-      'Severity: Critical — infostealer with credential exfiltration capability, email reached inbox, user executed payload',
+      'Classification: True Positive. phishing with confirmed Lumma Stealer execution',
+      'Severity: Critical. infostealer with credential exfiltration capability reached the inbox and the user executed the payload',
       'Escalation: Tier 2 / Incident Response',
-      'Closing note documented: full attack chain from phishing email → ClickFix lure → mshta.exe execution → C2 contact → suspected exfiltration',
-      'This exercise was completed as part of the LetsDefend SOC Analyst learning path to document realistic triage methodology',
-      'Total dwell time from email delivery to execution: ~14 hours (09:44 AM → 23:26 PM)',
+      'Closing note: full attack chain documented from phishing email through ClickFix lure, mshta.exe execution, C2 contact, and suspected exfiltration',
+      'Completed as part of the LetsDefend SOC Analyst learning path to practice realistic Tier 1 triage methodology',
     ],
     verdict: 'confirmed',
   },
 ]
-
-// ─── MITRE ATT&CK Summary ────────────────────────────────────────────────────
 
 const allMitre = [
   { id: 'T1566.002', name: 'Spearphishing Link', tactic: 'Initial Access' },
@@ -323,8 +306,6 @@ const verdictConfig = {
   suspicious: { label: 'Suspicious', class: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40' },
   confirmed: { label: 'Confirmed', class: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' },
 }
-
-// ─── Image Lightbox ───────────────────────────────────────────────────────────
 
 function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
   return (
@@ -356,8 +337,6 @@ function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: ()
   )
 }
 
-// ─── Step Card ────────────────────────────────────────────────────────────────
-
 function StepCard({ step, isActive, onClick }: { step: Step; isActive: boolean; onClick: () => void }) {
   return (
     <button
@@ -387,8 +366,6 @@ function StepCard({ step, isActive, onClick }: { step: Step; isActive: boolean; 
   )
 }
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
-
 export default function LetsDefendPhishingPage() {
   const [activeStep, setActiveStep] = useState(0)
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null)
@@ -404,7 +381,7 @@ export default function LetsDefendPhishingPage() {
         <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />
       )}
 
-      {/* ── Header ── */}
+      {/* Header */}
       <div className="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-40">
         <div className="container mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
           <Link
@@ -422,7 +399,7 @@ export default function LetsDefendPhishingPage() {
 
       <div className="container mx-auto max-w-7xl px-4 py-10">
 
-        {/* ── Hero ── */}
+        {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -436,41 +413,41 @@ export default function LetsDefendPhishingPage() {
               True Positive
             </span>
             <span className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs text-slate-400">
-              EventID 316 · Mar 13, 2025
+              Alert #316 · Mar 13, 2025
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
-            SOC338 — Lumma Stealer
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+            Lumma Stealer
             <span className="text-cyan-400"> via ClickFix Phishing</span>
           </h1>
-          <p className="text-slate-400 max-w-3xl leading-relaxed">
-            This is one of many simulated SOC tickets I complete on LetsDefend to document my analyst methodology
-            and build a portfolio of realistic investigation walkthroughs. This particular alert was chosen because
-            it demonstrates the full attack chain — from a socially engineered phishing email through to confirmed
-            infostealer execution and C2 contact — across email, endpoint, process, and network evidence.
+
+          <p className="text-base text-slate-400 max-w-3xl leading-relaxed">
+            This is one of many simulated SOC tickets completed on LetsDefend to document my analyst methodology
+            and build a portfolio of realistic investigation walkthroughs. This particular alert was selected because
+            it covers the full attack chain. from a socially engineered phishing email through to confirmed
+            infostealer execution and C2 contact. across email, endpoint, process, and network evidence.
           </p>
 
           {/* Quick stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div className="grid grid-cols-3 gap-4 mt-8">
             {[
-              { label: 'Rule', value: 'SOC338' },
-              { label: 'Malware', value: 'Lumma Stealer' },
-              { label: 'Technique', value: 'ClickFix + mshta LOLBin' },
-              { label: 'Dwell Time', value: '~14 hours' },
+              { label: 'Alert Number', value: 'SOC338' },
+              { label: 'Malware Family', value: 'Lumma Stealer' },
+              { label: 'Delivery Method', value: 'ClickFix + mshta LOLBin' },
             ].map((s) => (
               <div key={s.label} className="bg-slate-900/60 border border-slate-800 rounded-lg p-4">
                 <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">{s.label}</div>
-                <div className="text-sm font-semibold text-slate-200">{s.value}</div>
+                <div className="text-base font-semibold text-slate-200">{s.value}</div>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* ── Main Layout: Sidebar + Detail ── */}
+        {/* Main Layout */}
         <div className="grid lg:grid-cols-[280px_1fr] gap-6">
 
-          {/* Sidebar — step navigator */}
+          {/* Sidebar */}
           <div className="space-y-2">
             <div className="text-xs text-slate-500 uppercase tracking-widest mb-3 px-1">
               Investigation Steps
@@ -507,20 +484,20 @@ export default function LetsDefendPhishingPage() {
                       <span>·</span>
                       <span>Step {step.id} of {steps.length}</span>
                     </div>
-                    <h2 className="text-xl font-bold text-slate-100">{step.title}</h2>
+                    <h2 className="text-2xl font-bold text-slate-100">{step.title}</h2>
                   </div>
                   {step.verdict && (
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${verdictConfig[step.verdict].class}`}>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${verdictConfig[step.verdict].class}`}>
                       {verdictConfig[step.verdict].label}
                     </span>
                   )}
                 </div>
-                <p className="text-slate-400 mt-3 leading-relaxed">{step.summary}</p>
+                <p className="text-base text-slate-300 mt-3 leading-relaxed">{step.summary}</p>
               </div>
 
               {/* Image */}
               <div
-                className="relative h-[320px] md:h-[400px] bg-slate-950 cursor-zoom-in group"
+                className="relative h-[320px] md:h-[420px] bg-slate-950 cursor-zoom-in group"
                 onClick={() => setLightbox({ src: step.image, alt: step.imageAlt })}
               >
                 <Image
@@ -540,12 +517,11 @@ export default function LetsDefendPhishingPage() {
 
               {/* Details */}
               <div className="p-6 grid md:grid-cols-2 gap-6">
-                {/* Findings list */}
                 <div>
                   <h3 className="text-xs text-slate-500 uppercase tracking-wider mb-3">Findings</h3>
                   <ul className="space-y-2">
                     {step.details.map((d, i) => (
-                      <li key={i} className="flex gap-2 text-sm text-slate-300">
+                      <li key={i} className="flex gap-2 text-base text-slate-300">
                         <span className="text-cyan-500 mt-0.5 flex-shrink-0">›</span>
                         <span>{d}</span>
                       </li>
@@ -553,7 +529,6 @@ export default function LetsDefendPhishingPage() {
                   </ul>
                 </div>
 
-                {/* IOCs + MITRE */}
                 <div className="space-y-5">
                   {step.iocs && step.iocs.length > 0 && (
                     <div>
@@ -562,7 +537,7 @@ export default function LetsDefendPhishingPage() {
                         {step.iocs.map((ioc) => (
                           <div key={ioc.label} className="bg-slate-950/60 rounded-lg p-3 border border-slate-800">
                             <div className="text-xs text-slate-500 mb-1">{ioc.label}</div>
-                            <div className="text-xs font-mono text-red-400 break-all">{ioc.value}</div>
+                            <div className="text-sm font-mono text-red-400 break-all">{ioc.value}</div>
                           </div>
                         ))}
                       </div>
@@ -574,7 +549,7 @@ export default function LetsDefendPhishingPage() {
                       <h3 className="text-xs text-slate-500 uppercase tracking-wider mb-3">MITRE ATT&CK</h3>
                       <div className="space-y-1.5">
                         {step.mitre.map((m) => (
-                          <div key={m} className="text-xs font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 rounded px-2 py-1.5">
+                          <div key={m} className="text-sm font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20 rounded px-2 py-1.5">
                             {m}
                           </div>
                         ))}
@@ -594,7 +569,7 @@ export default function LetsDefendPhishingPage() {
                   <ChevronLeft className="w-4 h-4" />
                   Previous
                 </button>
-                <span className="text-xs text-slate-600">{activeStep + 1} / {steps.length}</span>
+                <span className="text-sm text-slate-600">{activeStep + 1} / {steps.length}</span>
                 <button
                   onClick={next}
                   disabled={activeStep === steps.length - 1}
@@ -608,13 +583,13 @@ export default function LetsDefendPhishingPage() {
           </AnimatePresence>
         </div>
 
-        {/* ── MITRE ATT&CK Summary ── */}
+        {/* MITRE ATT&CK Summary */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="mt-12"
         >
-          <h2 className="text-xl font-bold mb-6">Full MITRE ATT&CK Coverage</h2>
+          <h2 className="text-2xl font-bold mb-6">MITRE ATT&CK Coverage</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {allMitre.map((t) => (
               <div
@@ -622,22 +597,22 @@ export default function LetsDefendPhishingPage() {
                 className={`p-4 rounded-lg border ${tacticColors[t.tactic] ?? 'border-slate-700 text-slate-400 bg-slate-800/30'}`}
               >
                 <div className="text-xs opacity-70 mb-1">{t.tactic}</div>
-                <div className="font-mono text-xs font-bold mb-1">{t.id}</div>
-                <div className="text-sm font-medium">{t.name}</div>
+                <div className="font-mono text-sm font-bold mb-1">{t.id}</div>
+                <div className="text-base font-medium">{t.name}</div>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* ── Full IOC Table ── */}
+        {/* Full IOC Table */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="mt-12"
         >
-          <h2 className="text-xl font-bold mb-6">Full IOC Summary</h2>
+          <h2 className="text-2xl font-bold mb-6">Full IOC Summary</h2>
           <div className="bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden">
-            <table className="w-full text-sm">
+            <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-800 text-left">
                   <th className="px-5 py-3 text-xs text-slate-500 uppercase tracking-wider">Type</th>
@@ -659,8 +634,8 @@ export default function LetsDefendPhishingPage() {
                   { type: 'Lure Text', value: 'I am not a robot - reCAPTCHA Verification ID: 3824' },
                 ].map((row) => (
                   <tr key={row.type} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="px-5 py-3 text-slate-400 whitespace-nowrap">{row.type}</td>
-                    <td className="px-5 py-3 font-mono text-red-400 text-xs break-all">{row.value}</td>
+                    <td className="px-5 py-3 text-base text-slate-400 whitespace-nowrap">{row.type}</td>
+                    <td className="px-5 py-3 font-mono text-sm text-red-400 break-all">{row.value}</td>
                   </tr>
                 ))}
               </tbody>
@@ -668,106 +643,106 @@ export default function LetsDefendPhishingPage() {
           </div>
         </motion.div>
 
-        {/* ── Key Takeaways ── */}
+        {/* Key Takeaways */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="mt-12 mb-16"
+          className="mt-12"
         >
-          <h2 className="text-xl font-bold mb-6">Key Takeaways</h2>
+          <h2 className="text-2xl font-bold mb-6">Key Takeaways</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[
               {
                 title: 'LOLBin abuse bypasses AV',
-                body: 'mshta.exe is a legitimate signed Microsoft binary. It won\'t trigger AV because it\'s supposed to exist. Behavioral detection — not signatures — is what catches this pattern.',
+                body: 'mshta.exe is a legitimate signed Microsoft binary. It will not trigger AV because it is supposed to exist. Behavioral detection is what catches this pattern, not signatures.',
               },
               {
                 title: 'ClickFix puts the user in the kill chain',
-                body: 'No file hits disk from the email. The malicious execution happens when the user pastes a clipboard-injected command. Attachment scanning is irrelevant.',
+                body: 'No file hits disk from the email. The malicious execution happens when the user pastes a clipboard-injected command into PowerShell. Attachment scanning is completely irrelevant.',
               },
               {
-                title: 'Obfuscation doesn\'t need to be complex',
-                body: 'Inserting ]]] into mshta.exe and stripping it with -replace at runtime is trivially simple, yet it breaks most static YARA signatures looking for the literal string.',
+                title: 'Obfuscation does not need to be complex',
+                body: 'Inserting ]]] into mshta.exe and stripping it with -replace at runtime is trivially simple, but it breaks most static YARA signatures looking for the literal string.',
               },
               {
                 title: 'Infostealers require session invalidation',
-                body: 'Lumma steals session cookies, not just passwords. A password reset alone is insufficient — all active sessions must be separately invalidated after compromise.',
+                body: 'Lumma steals session cookies, not just passwords. A password reset by itself is not enough. every active session needs to be invalidated separately after a compromise like this.',
               },
               {
-                title: 'Dwell time matters even on phishing',
-                body: 'The email arrived at 09:44 AM; execution happened at 23:26. Nearly 14 hours of dwell time. Users don\'t always act immediately — investigate the full day\'s timeline.',
+                title: 'Timing in network logs tells the story',
+                body: 'The Yandex connection appeared 55 seconds after mshta.exe fired. That gap lines up with Lumma completing a credential sweep before pushing data out to a secondary endpoint.',
               },
               {
-                title: 'Signature updates don\'t stop LOLBins',
-                body: 'Defender updated definitions 37 seconds before mshta.exe fired. The payload still executed. LOLBin abuse specifically targets the gap between known-bad signatures and behavioral controls.',
+                title: 'Fresh AV signatures did not help',
+                body: 'Defender updated its definitions 37 seconds before mshta.exe ran. The payload still executed. LOLBin abuse targets the gap between signature-based controls and behavioral detection.',
               },
             ].map((t) => (
               <div key={t.title} className="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
-                <h3 className="font-semibold text-cyan-400 mb-2">{t.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{t.body}</p>
+                <h3 className="text-base font-semibold text-cyan-400 mb-2">{t.title}</h3>
+                <p className="text-base text-slate-400 leading-relaxed">{t.body}</p>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* ── Tier 2 Handoff Brief ── */}
+        {/* Tier 2 Handoff Brief */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           className="mt-12 mb-16"
         >
           <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-xl font-bold">Tier 2 Handoff Brief</h2>
+            <h2 className="text-2xl font-bold">Tier 2 Handoff Brief</h2>
             <span className="px-2 py-0.5 bg-orange-500/20 border border-orange-500/40 rounded text-xs text-orange-400 font-medium">
               For IR Team
             </span>
           </div>
-          <p className="text-slate-500 text-sm mb-6">
-            Written summary of everything Tier 1 established — what IR inherits, what still needs answering, and where to focus.
+          <p className="text-base text-slate-500 mb-6">
+            A summary of everything Tier 1 established. what IR inherits, what still needs answering, and where to focus first.
           </p>
 
           <div className="bg-slate-900/60 border border-slate-700 rounded-xl divide-y divide-slate-800">
 
-            {/* What we know */}
+            {/* What Tier 1 Confirmed */}
             <div className="p-6">
-              <h3 className="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-200 mb-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />
                 What Tier 1 Confirmed
               </h3>
-              <div className="space-y-3 text-sm text-slate-400 leading-relaxed">
+              <div className="space-y-3 text-base text-slate-400 leading-relaxed">
                 <p>
-                  Dylan received a phishing email from <span className="text-red-400 font-mono">update@windows-update.site</span> (SMTP: <span className="text-red-400 font-mono">132.232.40.201</span>) at <strong className="text-slate-300">09:44 AM</strong> impersonating a Microsoft Windows 11 upgrade prompt. The email was allowed into the inbox. The sender IP is indexed in LetsDefend Threat Intel as a known <strong className="text-slate-300">Lumma Stealer C2</strong>.
+                  Dylan received a phishing email from <span className="text-red-400 font-mono">update@windows-update.site</span> (SMTP: <span className="text-red-400 font-mono">132.232.40.201</span>) at <strong className="text-slate-300">09:44 AM</strong> impersonating a Microsoft Windows 11 upgrade prompt. The email landed in the inbox unblocked. The sender IP is confirmed in LetsDefend Threat Intel as a known <strong className="text-slate-300">Lumma Stealer C2</strong>.
                 </p>
                 <p>
-                  At <strong className="text-slate-300">23:26 PM — approximately 14 hours later</strong> — Dylan visited the redirected phishing site and was socially engineered via a fake reCAPTCHA prompt (ClickFix technique) into manually pasting and executing a clipboard-injected PowerShell command. The command was obfuscated using string fragmentation (<span className="font-mono text-purple-400">ms]]]ht]]]a]]]</span> → <span className="font-mono text-purple-400">mshta.exe</span> via <span className="font-mono text-purple-400">-replace</span>) to evade static AV signatures, and ran with <span className="font-mono text-purple-400">-WindowStyle Hidden</span> so no terminal was visible to the user.
+                  Later that evening Dylan visited the redirected phishing site and was socially engineered via a fake reCAPTCHA prompt into manually pasting and running a clipboard-injected PowerShell command. The command was obfuscated using string fragmentation (<span className="font-mono text-purple-400">ms]]]ht]]]a]]]</span> reconstructed to <span className="font-mono text-purple-400">mshta.exe</span> via <span className="font-mono text-purple-400">-replace</span>) to evade static AV, and ran with <span className="font-mono text-purple-400">-WindowStyle Hidden</span> so no terminal was visible to the user.
                 </p>
                 <p>
-                  <span className="font-mono text-red-400">mshta.exe</span> (PID 7284) was confirmed spawned from <span className="font-mono text-slate-300">powershell.exe</span> and fetched the payload from <span className="font-mono text-red-400">https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4</span>. The <span className="font-mono">.mp4</span> extension is a content filter bypass — VirusTotal confirms the file as <strong className="text-slate-300">22/58 malicious</strong>, threat label <span className="font-mono text-orange-400">trojan.sagent/emmenhtal</span>, with Ikarus explicitly naming <strong className="text-slate-300">Trojan.PowerShell.LummaStealer</strong>. The rule name also indicates <strong className="text-slate-300">DLL Side-Loading</strong> as the next-stage persistence mechanism — this was not verified at Tier 1 and is the primary IR task.
+                  <span className="font-mono text-red-400">mshta.exe</span> (PID 7284) was confirmed spawned from <span className="font-mono text-slate-300">powershell.exe</span> and fetched the payload from <span className="font-mono text-red-400 break-all">https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4</span>. The .mp4 extension is a content filter bypass. VirusTotal confirms the file as <strong className="text-slate-300">22/58 malicious</strong>, threat label <span className="font-mono text-orange-400">trojan.sagent/emmenhtal</span>, with Ikarus explicitly naming <strong className="text-slate-300">Trojan.PowerShell.LummaStealer</strong>. The rule name also flags <strong className="text-slate-300">DLL Side-Loading</strong> as the next-stage persistence mechanism. this was not verified at Tier 1 and should be the first IR focus.
                 </p>
                 <p>
-                  Network logs show an outbound connection to <span className="font-mono text-red-400">132.232.40.201</span> at 23:26:08 (12 seconds pre-execution), payload delivery via Cloudflare-fronted <span className="font-mono text-red-400">172.67.139.19</span> at 23:26:20, and a connection to <span className="font-mono text-yellow-400">77.88.21.119</span> (Yandex infrastructure) at 23:27:15 — approximately 55 seconds post-execution. This timing is consistent with Lumma completing a credential harvest cycle and exfiltrating to a secondary C2. <strong className="text-slate-300">Data exfiltration should be assumed until disproven.</strong>
+                  Network logs show an outbound connection to <span className="font-mono text-red-400">132.232.40.201</span> at 23:26:08 (12 seconds before execution), payload delivery via Cloudflare-fronted <span className="font-mono text-red-400">172.67.139.19</span> at 23:26:20, and a connection to <span className="font-mono text-yellow-400">77.88.21.119</span> (Yandex) at 23:27:15. roughly 55 seconds after execution. That timing lines up with Lumma completing a credential harvest cycle before exfiltrating. <strong className="text-slate-300">Treat data exfiltration as confirmed until proven otherwise.</strong>
                 </p>
                 <p>
-                  The host (<span className="font-mono text-slate-300">Dylan / 172.16.17.216</span>) has been <strong className="text-slate-300">contained</strong>. The phishing email has been quarantined and both the sender IP and C2 domain have been blocked at the gateway.
+                  The host (<span className="font-mono text-slate-300">Dylan / 172.16.17.216</span>) has been <strong className="text-slate-300">contained</strong>. The phishing email has been quarantined and both the sender IP and C2 domain are blocked at the gateway.
                 </p>
               </div>
             </div>
 
-            {/* Open questions */}
+            {/* Open Questions */}
             <div className="p-6">
-              <h3 className="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-200 mb-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
                 Open Questions for IR
               </h3>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <ul className="space-y-2 text-base text-slate-400">
                 {[
-                  'What did mshta.exe drop? — Check %APPDATA%, %TEMP%, %LOCALAPPDATA% for executables or DLLs written around 23:26:20',
-                  'Was DLL Side-Loading executed? — Per the rule name, look for a legitimate signed binary loading an unsigned DLL from a non-standard path',
-                  'What did the Yandex IP (77.88.21.119) receive? — Determine data volume transferred; if significant, assume credential exfiltration is complete',
-                  'Which browser credentials are at risk? — Lumma targets Chrome, Edge, Firefox saved passwords and cookies; assume all browser-stored credentials on this machine are compromised',
-                  'Were any other hosts in contact with overcoatpassably.shop or 132.232.40.201? — Check DNS/proxy logs org-wide for lateral phishing exposure',
-                  'Did the user interact with any corporate SSO or VPN sessions post-infection? — Session cookies stolen by Lumma could provide direct access without credentials',
-                  'Was the command executed once or twice? — Terminal history shows two identical obfuscated entries; confirm whether two separate mshta.exe processes fired',
+                  'What did mshta.exe drop? Check %APPDATA%, %TEMP%, and %LOCALAPPDATA% for executables or DLLs written around 23:26:20',
+                  'Was DLL Side-Loading executed? Per the rule name, look for a signed binary loading an unsigned DLL from a non-standard path',
+                  'What did the Yandex IP (77.88.21.119) receive? Determine data volume transferred. if it is significant, credential exfiltration should be treated as complete',
+                  'Which browser credentials are at risk? Lumma targets Chrome, Edge, and Firefox saved passwords and session cookies. assume everything stored in the browser on this machine is compromised',
+                  'Were any other hosts in contact with overcoatpassably.shop or 132.232.40.201? Check DNS and proxy logs across the org for broader campaign exposure',
+                  'Did Dylan interact with any corporate SSO or VPN sessions after the infection? Session cookies stolen by Lumma remain valid after a password reset',
+                  'Was the payload executed once or twice? Terminal history shows two identical obfuscated entries. confirm whether two separate mshta.exe processes fired',
                 ].map((q, i) => (
                   <li key={i} className="flex gap-2">
                     <span className="text-yellow-500 flex-shrink-0 font-bold">{i + 1}.</span>
@@ -777,20 +752,20 @@ export default function LetsDefendPhishingPage() {
               </ul>
             </div>
 
-            {/* Immediate IR priorities */}
+            {/* Immediate IR Priorities */}
             <div className="p-6">
-              <h3 className="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
+              <h3 className="text-base font-semibold text-slate-200 mb-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-cyan-400 inline-block" />
                 Immediate IR Priorities
               </h3>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <ul className="space-y-2 text-base text-slate-400">
                 {[
-                  'Full memory acquisition of Dylan\'s endpoint before it is reimaged — Lumma may still be resident in memory',
-                  'Invalidate ALL of Dylan\'s active sessions across every platform — not just password reset; Lumma steals session tokens which remain valid after password changes',
-                  'Pull full process tree for PID 7284 (mshta.exe) — every child process, every file write, every network connection it made',
-                  'Search DNS/proxy logs for overcoatpassably.shop and 132.232.40.201 across all endpoints — determine if this is an isolated incident or broader campaign',
-                  'Notify Dylan\'s manager and IT — user education on ClickFix technique; this will be used again',
-                  'Check for persistence mechanisms: scheduled tasks, registry Run keys, service installations created around 23:26–23:28',
+                  'Full memory acquisition of the endpoint before reimaging. Lumma may still be resident',
+                  'Invalidate all of Dylan\'s active sessions across every platform, not just a password reset. Session tokens remain valid after credential changes.',
+                  'Pull the full process tree for PID 7284 (mshta.exe). every child process, file write, and network connection it made',
+                  'Search DNS and proxy logs for overcoatpassably.shop and 132.232.40.201 across all endpoints to determine if this is isolated or part of a broader campaign',
+                  'Brief Dylan\'s manager and flag the user for ClickFix awareness training. this technique is being used actively and will come up again',
+                  'Check for persistence: scheduled tasks, registry Run keys, and any services installed between 23:26 and 23:28',
                 ].map((p, i) => (
                   <li key={i} className="flex gap-2">
                     <span className="text-cyan-500 flex-shrink-0">›</span>
@@ -802,8 +777,8 @@ export default function LetsDefendPhishingPage() {
 
             {/* Context note */}
             <div className="p-6 bg-slate-800/30">
-              <p className="text-xs text-slate-500 leading-relaxed">
-                <strong className="text-slate-400">Note on the 14-hour dwell time:</strong> The email arrived at 09:44 AM and execution occurred at 23:26 PM. This gap suggests Dylan may have seen the email during the day, dismissed it, and returned to it later — or opened it on a different device first. The post-incident login on Mar 14 at 12:05 PM confirms the user continued normal activity after execution. Interview the user to establish a timeline of their actions between 09:44 AM and 23:26 PM and whether they noticed anything unusual.
+              <p className="text-sm text-slate-500 leading-relaxed">
+                <strong className="text-slate-400">Note on execution timing:</strong> The phishing email arrived at 09:44 AM and execution occurred at 23:26 PM the same day. This gap suggests Dylan may have seen the email earlier and returned to it later in the evening. The post-incident login on Mar 14 at 12:05 PM confirms the user remained active after the infection. Interview the user to establish what they did between receiving the email and running the command, and whether anything looked or felt unusual afterward.
               </p>
             </div>
 
