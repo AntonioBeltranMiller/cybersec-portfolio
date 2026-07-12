@@ -63,7 +63,7 @@ export default function Home() {
     {
       id: 'letsdefend-phishing',
       title: 'SOC Alert: Lumma Stealer via ClickFix Phishing',
-      description: 'Full Tier 1 investigation of a critical phishing alert — from email triage through ClickFix execution, LOLBin abuse, payload analysis, and host containment. One of many simulated SOC tickets documented to showcase analyst methodology.',
+      description: 'This walkthrough details the Tier 1 incident response lifecycle for a critical phishing alert. It documents analyst methodology across email triage, ClickFix social engineering, Living off the Land Binary (LOLBin) abuse, payload analysis, and host containment.',
       impact: 'Confirmed True Positive • Full Kill Chain Traced • Host Contained • Tier 2 Brief Produced',
       tags: ['Phishing Analysis', 'EDR', 'DFIR', 'Lumma Stealer', 'ClickFix', 'LOLBin', 'MITRE ATT&CK', 'LetsDefend'],
       icon: <FileSearch className="w-6 h-6" />,
