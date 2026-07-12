@@ -7,7 +7,7 @@ import ExperienceTimeline from '@/components/Timeline'
 import MetricsBar from '@/components/MetricsBar'
 import CertificationsShowcase from '@/components/CertificationsShowcase'
 import { motion } from 'framer-motion'
-import { Shield, Terminal, Search, AlertCircle, Activity } from 'lucide-react'
+import { Shield, Terminal, Search, AlertCircle, Activity, FileSearch } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Home() {
@@ -59,6 +59,27 @@ export default function Home() {
         '/images/projects/npm-supply-chain-timeline.png',
       ],
       demoLink: '/projects/vulnerability-research',
+    },
+    {
+      id: 'letsdefend-phishing',
+      title: 'SOC Alert: Lumma Stealer via ClickFix Phishing',
+      description: 'Full Tier 1 investigation of a critical phishing alert — from email triage through ClickFix execution, LOLBin abuse, payload analysis, and host containment. One of many simulated SOC tickets documented to showcase analyst methodology.',
+      impact: 'Confirmed True Positive • Full Kill Chain Traced • Host Contained • Tier 2 Brief Produced',
+      tags: ['Phishing Analysis', 'EDR', 'DFIR', 'Lumma Stealer', 'ClickFix', 'LOLBin', 'MITRE ATT&CK', 'LetsDefend'],
+      icon: <FileSearch className="w-6 h-6" />,
+      featured: true,
+      images: [
+        '/images/projects/Takeownership.png',
+        '/images/projects/ThePhishingEmail.png',
+        '/images/projects/ThreatIntelShowsLumma.png',
+        '/images/projects/affectedEndpoint.png',
+        '/images/projects/ConfirmedPayloadExecution.png',
+        '/images/projects/mshta_Process_Fire.png',
+        '/images/projects/VIrustotalHashLookup.png',
+        '/images/projects/NetworkTrafficEvidence.png',
+        '/images/projects/HostContained.png',
+      ],
+      demoLink: '/projects/letsdefend-phishing',
     },
     {
       id: 'blind-xss-server',
