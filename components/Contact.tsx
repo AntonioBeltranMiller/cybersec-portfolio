@@ -14,8 +14,8 @@ export default function Contact() {
           viewport={{ once: true }}
           className="panel rounded-2xl p-8 md:p-12 text-center"
         >
-          <p className="font-mono text-sm text-amber-400">06 / contact</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-100">Let&apos;s talk</h2>
+          <p className="text-xs font-mono uppercase tracking-[0.2em] text-amber-400/90">Contact</p>
+          <h2 className="mt-3 text-3xl font-bold text-slate-100">Let&apos;s talk</h2>
           <p className="mt-3 text-slate-400 max-w-xl mx-auto">
             I&apos;m looking for a SOC Analyst or detection role and I&apos;m prepared for rotating shifts. Happy to walk
             through any of these projects live, including what I&apos;d do differently.

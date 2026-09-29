@@ -122,20 +122,40 @@ export default function ProjectView({ project }: { project: Project }) {
 
         {/* Evidence */}
         {evidence.length > 0 && (
-          <section className="mt-10">
+          <section className="mt-12">
             <h2 className="text-xl font-semibold text-slate-100">Evidence</h2>
-            <p className="mt-2 text-sm text-slate-500">Every figure on this page maps to one of these. Click to enlarge.</p>
-            <div className="mt-5 grid sm:grid-cols-2 gap-4">
+            <p className="mt-2 text-sm text-slate-400">
+              Every figure on this page maps to one of these. Click any screenshot to view it full size.
+            </p>
+            <div className="mt-6 space-y-8">
               {evidence.map((e, i) => (
-                <button key={e.src} onClick={() => setIndex(i)} className="group text-left">
-                  <div className="relative aspect-video rounded-lg overflow-hidden border border-slate-800 bg-slate-900">
-                    <Image src={e.src} alt={e.label} fill className="object-cover object-top" sizes="(max-width:640px) 100vw, 50vw" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                      <ZoomIn className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <figure key={e.src}>
+                  <button
+                    onClick={() => setIndex(i)}
+                    className="group relative block w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"
+                    aria-label={`Enlarge: ${e.label}`}
+                  >
+                    <div className="relative w-full aspect-[16/9]">
+                      <Image
+                        src={e.src}
+                        alt={e.label}
+                        fill
+                        className="object-contain p-2"
+                        sizes="(max-width:768px) 100vw, 768px"
+                      />
                     </div>
-                  </div>
-                  <p className="mt-2 text-xs text-slate-400 leading-snug">{e.label}</p>
-                </button>
+                    <span className="absolute top-3 left-3 text-[11px] font-mono px-2 py-0.5 rounded bg-slate-900/80 backdrop-blur border border-slate-700 text-slate-300">
+                      Fig {i + 1}
+                    </span>
+                    <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-slate-900/80 backdrop-blur border border-slate-700 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn className="w-3.5 h-3.5" /> Enlarge
+                    </span>
+                  </button>
+                  <figcaption className="mt-2.5 text-sm text-slate-400">
+                    <span className="text-slate-500 font-mono text-xs mr-2">Fig {i + 1}</span>
+                    {e.label}
+                  </figcaption>
+                </figure>
               ))}
             </div>
           </section>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Calendar, Clock, ArrowUpRight } from 'lucide-react'
 import { writeups } from '@/lib/content'
+import Kicker from './Kicker'
 
 export default function Writeups() {
   return (
@@ -11,8 +12,8 @@ export default function Writeups() {
       <div className="container mx-auto max-w-5xl">
         <header className="mb-12 flex items-end justify-between gap-4 flex-wrap">
           <div>
-            <p className="font-mono text-sm text-amber-400">05 / write-ups</p>
-            <h2 className="mt-2 text-3xl font-bold text-slate-100">Investigation write-ups</h2>
+            <Kicker>Write-ups</Kicker>
+            <h2 className="mt-4 text-3xl font-bold text-slate-100">Investigation write-ups</h2>
             <p className="mt-3 text-slate-400 max-w-2xl">
               Short reports on real honeypot events and an incident response case, written the way I would hand them to another analyst.
             </p>

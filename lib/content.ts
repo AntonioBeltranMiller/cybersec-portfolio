@@ -39,6 +39,8 @@ export type Project = {
   highlight?: string
   // approximate reading time for the case study
   readTime?: string
+  // preview screenshot shown on the project card
+  cover?: string
   // one-line honest summary for the card
   card: string
   // what shows on the card as the headline result
@@ -66,6 +68,7 @@ export const projects: Project[] = [
     timeline: 'October 2025 – December 2025',
     featured: true,
     spotlight: true,
+    cover: '/images/projects/soc-n8n-workflow.png',
     highlight:
       'The rules only got useful after several tuning passes drove the false positives down. That loop, not the first rule, was the real work.',
     readTime: '4 min read',
@@ -112,6 +115,7 @@ export const projects: Project[] = [
     timeline: 'August 2025 – present',
     featured: true,
     spotlight: true,
+    cover: '/images/projects/tpot-dashboard.png',
     highlight:
       '424k attacks, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
     readTime: '4 min read',
@@ -153,6 +157,7 @@ export const projects: Project[] = [
     kind: 'LetsDefend training · SOC338',
     timeline: 'Training scenario',
     featured: true,
+    cover: '/images/projects/ThePhishingEmail.png',
     card:
       'A simulated phishing alert I triaged end to end on LetsDefend — email through ClickFix lure, mshta LOLBin abuse, payload confirmation, containment, and a tier-2 handoff brief.',
     result: 'Confirmed true positive · full kill chain traced · host contained · tier-2 brief written',
@@ -190,6 +195,7 @@ export const projects: Project[] = [
     timeline: 'August 2024',
     featured: true,
     readTime: '3 min read',
+    cover: '/images/projects/npm-supply-chain-exploitation.png',
     highlight:
       'Severity is an argument you make with a working chain, not a label you attach to a setting.',
     card:
@@ -224,6 +230,7 @@ export const projects: Project[] = [
     kind: 'Personal tool · bug bounty tooling',
     timeline: '2024 – present',
     readTime: '2 min read',
+    cover: '/images/projects/blind-xss-capture.png',
     highlight:
       'I only ever point it at targets I am authorized to test. Self-hosting was about controlling where the callback data goes.',
     card:

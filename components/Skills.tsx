@@ -2,14 +2,15 @@
 
 import { motion } from 'framer-motion'
 import { skills } from '@/lib/content'
+import Kicker from './Kicker'
 
 export default function Skills() {
   return (
     <section id="skills" className="py-20 px-4 scroll-mt-16">
       <div className="container mx-auto max-w-5xl">
         <header className="mb-12">
-          <p className="font-mono text-sm text-amber-400">02 / skills</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-100">Tools I actually use</h2>
+          <Kicker>Toolkit</Kicker>
+          <h2 className="mt-4 text-3xl font-bold text-slate-100">Tools I actually use</h2>
           <p className="mt-3 text-slate-400 max-w-2xl">
             Grouped by what I reach for, not rated on a scale. Most of these show up in the projects above.
           </p>

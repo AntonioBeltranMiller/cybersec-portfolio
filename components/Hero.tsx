@@ -13,10 +13,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-2 text-sm text-slate-400 mb-6 font-mono">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+          <span className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/50 px-3 py-1 text-xs font-mono uppercase tracking-wider text-slate-300 mb-6">
             Open to SOC Analyst &amp; detection roles
-          </div>
+          </span>
 
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-slate-100">
             {profile.name}

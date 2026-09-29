@@ -4,14 +4,15 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { CheckCircle2, Clock, ExternalLink } from 'lucide-react'
 import { certifications } from '@/lib/content'
+import Kicker from './Kicker'
 
 export default function Certs() {
   return (
     <section id="certifications" className="py-20 px-4 scroll-mt-16">
       <div className="container mx-auto max-w-5xl">
         <header className="mb-12">
-          <p className="font-mono text-sm text-amber-400">03 / certifications</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-100">Certifications</h2>
+          <Kicker>Credentials</Kicker>
+          <h2 className="mt-4 text-3xl font-bold text-slate-100">Certifications</h2>
           <p className="mt-3 text-slate-400 max-w-2xl">
             Verifiable where a badge exists. In-progress items are marked as such — nothing aspirational is dressed up as earned.
           </p>

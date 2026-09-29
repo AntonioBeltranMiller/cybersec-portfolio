@@ -3,14 +3,15 @@
 import { motion } from 'framer-motion'
 import { GraduationCap } from 'lucide-react'
 import { experience, education } from '@/lib/content'
+import Kicker from './Kicker'
 
 export default function Experience() {
   return (
     <section id="experience" className="py-20 px-4 scroll-mt-16">
       <div className="container mx-auto max-w-5xl">
         <header className="mb-12">
-          <p className="font-mono text-sm text-amber-400">04 / experience</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-100">Experience &amp; education</h2>
+          <Kicker>Background</Kicker>
+          <h2 className="mt-4 text-3xl font-bold text-slate-100">Experience &amp; education</h2>
           <p className="mt-3 text-slate-400 max-w-2xl">
             I am early in my security career and would rather say so plainly. My IT foundation is the ALM Freight
             role; the delivery jobs are how I have paid the bills while studying.
