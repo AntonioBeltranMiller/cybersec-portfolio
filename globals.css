@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --bg: #0a0f1a;
+    --panel: #0f1626;
+    --border: #1e293b;
+    --accent: #f0a94e;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-inter);
+    background-color: var(--bg);
+    color: #e2e8f0;
+  }
+
+  ::selection {
+    background: rgba(240, 169, 78, 0.28);
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* subtle blueprint grid, low contrast, static */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .panel {
+    background-color: rgba(15, 22, 38, 0.7);
+    border: 1px solid var(--border);
+  }
+
+  .accent-text {
+    color: var(--accent);
+  }
+}
+
+/* thin, quiet scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0f1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* prose-ish defaults for case studies */
+pre {
+  background: #0b1220;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+:not(pre) > code {
+  background: rgba(30, 41, 59, 0.6);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.3rem;
+  color: var(--accent);
+  font-size: 0.85em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
