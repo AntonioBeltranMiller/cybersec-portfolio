@@ -15,7 +15,7 @@ export const profile = {
   resume: '/resume.pdf',
   // First person, plain. Mirrors the cover-letter voice.
   tagline:
-    'Security+ certified, moving into a SOC role. I build detection and automation in my home lab, run honeypots for real-world threat data, and do bug bounty work to understand how intrusions are actually built.',
+    'Security+ certified professional transitioning into a SOC role. I build detections and automation in my home lab, deploy honeypots to capture real-world threat telemetry, and conduct bug bounty research to analyze practical intrusion techniques.',
   summary: [
     'I spent about two and a half years as the only IT person for a 200-person logistics company, so I know what a normal Windows and Active Directory environment looks like and how to keep people working while something is broken.',
     'Since then I have been building toward security operations on purpose: a Splunk, n8n, and GPT-4 alert-triage pipeline in my lab, distributed T-Pot honeypots for live attack data, and responsible bug bounty disclosure. I would rather show a smaller number I can defend than a big one I cannot.',
