@@ -17,7 +17,7 @@ export default function BlogPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-slate-100">Investigation write-ups</h1>
           <p className="mt-3 text-slate-400 max-w-2xl">
             Real events from my honeypots and an incident-response case, written the way I would document them for
-            another analyst — findings, evidence, and what I would do next.
+            another analyst: findings, evidence, and what I would do next.
           </p>
         </motion.header>
 

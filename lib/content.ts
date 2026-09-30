@@ -77,19 +77,19 @@ export const projects: Project[] = [
     result: 'Cut my own triage time from 45 to 8 minutes across 10 self-run attacks',
     tags: ['Splunk', 'n8n', 'GPT-4 API', 'Sysmon', 'MITRE ATT&CK', 'VirusTotal', 'AbuseIPDB'],
     credit:
-      'The lab skeleton — Splunk, a Windows 10 VM, n8n, and the alert-to-Slack path — follows MyDFIR’s SOC Automation 2.0 walkthrough. The parts below are what I added and had to make work myself.',
+      'The lab skeleton (Splunk, a Windows 10 VM, n8n, and the alert-to-Slack path) follows MyDFIR’s SOC Automation 2.0 walkthrough. The parts below are what I added and had to make work myself.',
     application:
-      'In a real SOC the value here is not the AI — it is the discipline the AI forces. The rules only became useful after several tuning passes drove the false positives down, and that same tuning loop is what fights alert fatigue on a live queue. I would treat automated enrichment as a way to give a tier-1 analyst a faster starting point, never as an automated action, because lab AI will confidently state things the telemetry does not support. The pipeline ends at a Slack message for a human on purpose.',
+      'In a real SOC the value here is not the AI. It is the discipline the AI forces. The rules only became useful after several tuning passes drove the false positives down, and that same tuning loop is what fights alert fatigue on a live queue. I would treat automated enrichment as a way to give a tier-1 analyst a faster starting point, never as an automated action, because lab AI will confidently state things the telemetry does not support. The pipeline ends at a Slack message for a human on purpose.',
     why:
       'I wanted to understand alert triage from the inside: not just read a SIEM alert, but see the whole path from a raw endpoint event to an analyst-ready summary in Slack, and feel where the time actually goes. Building it end to end was the only way to learn which parts of triage are mechanical enough to automate and which still need a person.',
     built: [
       'Deployed Sysmon (SwiftOnSecurity config) on a Windows 10 VM forwarding to Splunk via the Universal Forwarder, so the lab had realistic endpoint telemetry rather than just Windows Security logs.',
       'Wrote 10 Splunk detection rules in SPL and mapped each to MITRE ATT&CK: credential dumping (T1003.001), process injection (T1055), PowerShell abuse (T1059.001), brute-force success (T1110), registry persistence (T1547.001), service install (T1543.003), and more.',
       'Built an n8n workflow that catches each Splunk alert on a webhook, sends it to GPT-4 with a fixed tier-1 analyst prompt, and enriches indicators through the AbuseIPDB and VirusTotal APIs before posting a formatted summary to Slack.',
-      'Validated the rules the honest way — by running the attacks myself from Kali with Metasploit, Meterpreter, and Hydra against the Windows VM, then confirming each rule fired on the telemetry it was meant to catch.',
+      'Validated the rules the honest way, by running the attacks myself from Kali with Metasploit, Meterpreter, and Hydra against the Windows VM, then confirming each rule fired on the telemetry it was meant to catch.',
     ],
     learned: [
-      'My first pass of rules was noisy. Getting the false-positive rate down took several iterations of tightening the SPL, and that tuning loop turned out to be most of the real work — not the initial rule.',
+      'My first pass of rules was noisy. Getting the false-positive rate down took several iterations of tightening the SPL, and that tuning loop turned out to be most of the real work, not the initial rule.',
       'GPT-4 is genuinely useful for the mechanical part of triage (summarizing an alert, pulling reputation, suggesting next steps), but it will confidently narrate things the data does not support. I would not put lab AI output in front of a customer without a human check, which is why the pipeline ends at a Slack message for an analyst, not an automated action.',
       'The 45-to-8-minute figure is my own timing on my own self-run attacks in this lab. It is a measure of how much of my manual triage the pipeline removed, not a production MTTD.',
     ],
@@ -120,7 +120,7 @@ export const projects: Project[] = [
       '424k attacks, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
     readTime: '4 min read',
     card:
-      'Distributed T-Pot honeypots on a public VPS. Most of it is automated scanning noise — the useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
+      'Distributed T-Pot honeypots on a public VPS. Most of it is automated scanning noise. The useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
     result: '424k+ attacks logged; wrote Suricata rules and reported malicious IPs to AbuseIPDB',
     tags: ['T-Pot', 'Suricata', 'Elasticsearch / Kibana', 'Cowrie', 'Dionaea', 'Threat Intel'],
     credit:
@@ -131,7 +131,7 @@ export const projects: Project[] = [
       'Deployed T-Pot with multiple honeypot sensors (Cowrie, Dionaea, Sentrypeer, Honeytrap, Ciscoasa and others) on a public VPS and left it exposed to collect live traffic.',
       'Used the Kibana dashboards to break attacks down by sensor, source ASN, country, and credentials, and to confirm the two CVE-exploitation signatures Suricata flagged (CVE-2019-12263 and CVE-2020-11900).',
       'Wrote Suricata rules from the recurring patterns worth alerting on, and reported high-confidence malicious source IPs to AbuseIPDB with the supporting evidence.',
-      'Turned three of the more interesting single events into short write-ups — a VoIP toll-fraud campaign, a commercial scanner (ONYPHE), and non-standard-port TLS recon — to practice explaining a finding the way a report would.',
+      'Turned three of the more interesting single events into short write-ups: a VoIP toll-fraud campaign, a commercial scanner (ONYPHE), and non-standard-port TLS recon. Each was practice at explaining a finding the way a report would.',
     ],
     learned: [
       'The volume is almost all commodity scanning: the credential word clouds are exactly what you would expect (root, admin, 123456, empty). The signal is not the count, it is the handful of sources and behaviors that stand out from it.',
@@ -145,7 +145,7 @@ export const projects: Project[] = [
       { label: 'CVE signatures seen', value: 'CVE-2019-12263, -2020-11900', note: '9 and 6 hits' },
     ],
     evidence: [
-      { label: 'T-Pot attack overview — 424k across sensors', src: '/images/projects/tpot-dashboard.png' },
+      { label: 'T-Pot attack overview: 424k across sensors', src: '/images/projects/tpot-dashboard.png' },
       { label: 'Attacker ASNs, top source IPs, and Suricata CVE hits', src: '/images/projects/tpot-attacks.png' },
       { label: 'Live attack map and source distribution', src: '/images/projects/tpot-analysis.png' },
       { label: 'Source-IP reputation, OS, and country breakdown', src: '/images/projects/tpot-attack-overview.png' },
@@ -159,19 +159,19 @@ export const projects: Project[] = [
     featured: true,
     cover: '/images/projects/ThePhishingEmail.png',
     card:
-      'A simulated phishing alert I triaged end to end on LetsDefend — email through ClickFix lure, mshta LOLBin abuse, payload confirmation, containment, and a tier-2 handoff brief.',
+      'A simulated phishing alert I triaged end to end on LetsDefend: email through the ClickFix lure, mshta LOLBin abuse, payload confirmation, containment, and a tier-2 handoff brief.',
     result: 'Confirmed true positive · full kill chain traced · host contained · tier-2 brief written',
     tags: ['Phishing', 'DFIR', 'Lumma Stealer', 'ClickFix', 'LOLBin', 'MITRE ATT&CK'],
     why:
-      'This is a training environment, so the stakes were not real — I use it to practice tier-1 methodology and, just as importantly, to practice writing an investigation so another analyst could pick it up without asking me a single question. I picked this scenario because it covers the whole chain across email, endpoint, process, and network evidence.',
+      'This is a training environment, so the stakes were not real. I use it to practice tier-1 methodology and, just as importantly, to practice writing an investigation so another analyst could pick it up without asking me a single question. I picked this scenario because it covers the whole chain across email, endpoint, process, and network evidence.',
     built: [
       'Worked the alert as tier 1: claimed the ticket, reviewed the impersonation email, and confirmed the sender IP as known Lumma C2 in threat intel.',
       'Traced the ClickFix social-engineering lure to the obfuscated PowerShell the user was tricked into pasting, then followed it to mshta.exe (a signed Microsoft LOLBin) fetching a payload disguised as a .mp4.',
-      'Confirmed the payload malicious on VirusTotal (22/58, Ikarus naming Trojan.PowerShell.LummaStealer), walked the outbound connections, isolated the host, and flagged sessions for invalidation — not just a password reset, since Lumma steals cookies.',
+      'Confirmed the payload malicious on VirusTotal (22/58, Ikarus naming Trojan.PowerShell.LummaStealer), walked the outbound connections, isolated the host, and flagged sessions for invalidation, not just a password reset, since Lumma steals cookies.',
       'Wrote a tier-2 handoff brief: what was confirmed, the open questions for IR, and the immediate priorities.',
     ],
     learned: [
-      'ClickFix puts the user inside the kill chain — nothing malicious hits disk from the email itself, so attachment scanning is irrelevant and behavioral detection is what catches it.',
+      'ClickFix puts the user inside the kill chain. Nothing malicious hits disk from the email itself, so attachment scanning is irrelevant and behavioral detection is what catches it.',
       'LOLBin abuse works precisely because mshta.exe is supposed to exist. Defender updated signatures 37 seconds before it ran and the payload still executed.',
       'Infostealer incidents need session invalidation, not just a credential reset, because the stolen cookies stay valid afterward.',
     ],
@@ -203,9 +203,9 @@ export const projects: Project[] = [
     result: 'Escalated P4 → P2 on Bugcrowd; the repo enforced HTTPS after disclosure',
     tags: ['Supply chain', 'MITM', 'mitmproxy', 'Responsible disclosure', 'Bugcrowd'],
     why:
-      'Bug bounty work taught me to build the full attack chain before arguing severity. An insecure registry line looks like a low-severity misconfiguration until you actually show what it lets an attacker do — so I built the chain rather than just reporting the setting.',
+      'Bug bounty work taught me to build the full attack chain before arguing severity. An insecure registry line looks like a low-severity misconfiguration until you actually show what it lets an attacker do, so I built the chain rather than just reporting the setting.',
     built: [
-      'Found an .npmrc in a public repository configured with registry=http://registry.npmjs.org/ — unencrypted transport for package installs.',
+      'Found an .npmrc in a public repository configured with registry=http://registry.npmjs.org/, which is unencrypted transport for package installs.',
       'Stood up a mitmproxy man-in-the-middle proof of concept that intercepts the HTTP npm traffic and substitutes a package carrying a post-install script.',
       'Demonstrated arbitrary code execution on install from that position, which is what turns "uses HTTP" into a real supply-chain risk to a developer machine or CI runner.',
       'Reported it through Bugcrowd and made the severity case from the demonstrated RCE impact; it was raised from P4-Low to P2, and the repo moved to HTTPS after disclosure.',
@@ -234,7 +234,7 @@ export const projects: Project[] = [
     highlight:
       'I only ever point it at targets I am authorized to test. Self-hosting was about controlling where the callback data goes.',
     card:
-      'A self-hosted blind-XSS callback server I built to use in my own authorized bug bounty testing — one script deploys an SSL dashboard that logs payload fire-backs.',
+      'A self-hosted blind-XSS callback server I built to use in my own authorized bug bounty testing. One script deploys an SSL dashboard that logs payload fire-backs.',
     result: 'Personal tool I built and use; tested against a CTF lab target',
     tags: ['Node.js', 'Express', 'SQLite', 'Bash', 'Let’s Encrypt'],
     github: 'https://github.com/CyberShellCode/blind-xss-server',
@@ -242,7 +242,7 @@ export const projects: Project[] = [
       'I wanted my own blind-XSS callback infrastructure for authorized bug bounty work rather than relying on a shared hosted one, and building it was a good way to learn how these tools actually capture and attribute a fire-back.',
     built: [
       'A single setup script that stands up an Express server behind Nginx with a Let’s Encrypt certificate and a small SQLite store, kept running with PM2.',
-      'A dashboard that shows captures — source IP, origin, user agent, cookies, referer, and a page screenshot — plus a payload generator and multi-channel (Slack / Discord / email) notifications.',
+      'A dashboard that shows captures (source IP, origin, user agent, cookies, referer, and a page screenshot), plus a payload generator and multi-channel (Slack / Discord / email) notifications.',
     ],
     learned: [
       'I have tested it against a CTF lab target to confirm the capture path works end to end; the dashboard in the screenshot shows those lab captures, not production findings.',
@@ -363,7 +363,7 @@ export const experience: Job[] = [
     bullets: [
       'Only IT resource for a 200-person, two-site logistics operation with no dedicated IT department.',
       'Managed the endpoint fleet across Windows 10 workstations and 42 Android devices via 42Gears MDM, with manual patch management across the full fleet.',
-      'Administered Active Directory — user provisioning, account management, and group policy — and onboarded new employees from a standardized least-privilege Windows image.',
+      'Administered Active Directory (user provisioning, account management, and group policy), and onboarded new employees from a standardized least-privilege Windows image.',
       'Primary technical contact for 200+ drivers, resolving delivery-software and device failures in real time.',
     ],
   },

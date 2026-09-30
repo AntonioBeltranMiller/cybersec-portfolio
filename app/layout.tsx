@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://antoniobeltranmiller.com'),
   title: 'Antonio Beltran-Miller | SOC Analyst',
   description:
-    'Security+ certified, transitioning into a SOC role. Home-lab detection engineering, T-Pot honeypot threat intelligence, and responsible bug bounty research — every claim backed by evidence.',
+    'Security+ certified, transitioning into a SOC role. Home-lab detection engineering, T-Pot honeypot threat intelligence, and responsible bug bounty research, with every claim backed by evidence.',
   keywords:
     'SOC analyst, detection engineering, Splunk, threat intelligence, honeypot, incident response, MITRE ATT&CK, bug bounty, Ann Arbor',
   authors: [{ name: 'Antonio Beltran-Miller' }],

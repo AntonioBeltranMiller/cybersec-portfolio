@@ -14,7 +14,7 @@ export default function Certs() {
           <Kicker>Credentials</Kicker>
           <h2 className="mt-4 text-3xl font-bold text-slate-100">Certifications</h2>
           <p className="mt-3 text-slate-400 max-w-2xl">
-            Verifiable where a badge exists. In-progress items are marked as such — nothing aspirational is dressed up as earned.
+            Verifiable where a badge exists. In-progress items are marked as such, so nothing aspirational is dressed up as earned.
           </p>
         </header>
 

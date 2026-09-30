@@ -1,7 +1,7 @@
 'use client'
 
 // Quiet, static backdrop: a faint blueprint grid with two low-opacity
-// gradient washes. No animation loops, no matrix rain — it should recede.
+// gradient washes. No animation loops, no matrix rain; it should recede.
 export default function Background() {
   return (
     <div aria-hidden className="fixed inset-0 -z-10 bg-grid pointer-events-none">

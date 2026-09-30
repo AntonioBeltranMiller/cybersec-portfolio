@@ -1,4 +1,4 @@
-// A small, designed section label — an accent rule plus uppercase text.
+// A small, designed section label: an accent rule plus uppercase text.
 // Replaces the "01 / projects" numbered eyebrow that reads as a template.
 export default function Kicker({ children }: { children: React.ReactNode }) {
   return (

@@ -6,7 +6,7 @@
 // template the other projects use. This case study is a 10-step interactive
 // investigation walkthrough, and a custom step-through UI (one kill-chain stage
 // at a time, with per-step IOCs and MITRE mapping) tells that story better than a
-// flat evidence grid. Content — numbers, verdicts, IOCs — is kept consistent with
+// flat evidence grid. Content (numbers, verdicts, IOCs) is kept consistent with
 // the résumé and the rest of the site. See app/projects/[slug]/page.tsx for the
 // matching note on why it is excluded from the dynamic route.
 //
