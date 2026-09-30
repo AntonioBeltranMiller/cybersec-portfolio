@@ -148,12 +148,12 @@ export default function ProjectView({ project }: { project: Project }) {
           </section>
         )}
 
-        {/* Evidence */}
+        {/* Screenshots */}
         {evidence.length > 0 && (
           <section className="mt-12">
-            <h2 className="text-xl font-semibold text-slate-100">Evidence</h2>
+            <h2 className="text-xl font-semibold text-slate-100">Screenshots</h2>
             <p className="mt-2 text-sm text-slate-400">
-              Every figure on this page maps to one of these. Click any screenshot to view it full size.
+              A walk through the build in screenshots. Click any to view it full size.
             </p>
             <div className="mt-6 space-y-8">
               {evidence.map((e, i) => (
