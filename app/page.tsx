@@ -1,4 +1,5 @@
 import Hero from '@/components/Hero'
+import Competencies from '@/components/Competencies'
 import Projects from '@/components/Projects'
 import Skills from '@/components/Skills'
 import Certs from '@/components/Certs'
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Competencies />
       <Projects />
       <Writeups />
       <Skills />

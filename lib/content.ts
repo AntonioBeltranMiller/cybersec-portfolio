@@ -56,6 +56,10 @@ export type Project = {
   credit?: string
   // optional: one short paragraph connecting the lab to production SOC reality
   application?: string
+  // optional: a real rule/query shown as code on the project page
+  codeSample?: { label: string; code: string }
+  // optional: MITRE ATT&CK technique chips
+  attack?: string[]
   github?: string
   gallery?: Evidence[]
 }
@@ -99,6 +103,21 @@ export const projects: Project[] = [
       { label: 'Attacks self-run', value: '10', note: 'Metasploit / Meterpreter / Hydra' },
       { label: 'VMs orchestrated', value: '4', note: 'Win10, Splunk, n8n, Kali' },
     ],
+    attack: [
+      'T1003.001 · LSASS credential dumping',
+      'T1055 · Process injection',
+      'T1059.001 · PowerShell',
+      'T1110 · Brute force',
+      'T1547.001 · Registry Run-key persistence',
+      'T1543.003 · Service installation',
+    ],
+    codeSample: {
+      label: 'One of the ten rules: registry Run-key persistence via Sysmon (EventCode 13, T1547.001)',
+      code: `index=dfir-project source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=13
+(TargetObject="*\\\\CurrentVersion\\\\Run*" OR TargetObject="*\\\\CurrentVersion\\\\RunOnce*"
+ OR TargetObject="*\\\\Winlogon\\\\*" OR TargetObject="*\\\\userinit*")
+| table _time, Computer, Image, TargetObject, Details, EventType`,
+    },
     evidence: [
       { label: 'n8n workflow: webhook → GPT-4 → AbuseIPDB / VirusTotal → Slack', src: '/images/projects/soc-n8n-workflow.png' },
       { label: 'The 10 detection rules in Splunk', src: '/images/projects/soc-splunk-alerts.png' },
@@ -209,6 +228,7 @@ export const projects: Project[] = [
       'Stood up a mitmproxy man-in-the-middle proof of concept that intercepts the HTTP npm traffic and substitutes a package carrying a post-install script.',
       'Demonstrated arbitrary code execution on install from that position, which is what turns "uses HTTP" into a real supply-chain risk to a developer machine or CI runner.',
       'Reported it through Bugcrowd and made the severity case from the demonstrated RCE impact; it was raised from P4-Low to P2, and the repo moved to HTTPS after disclosure.',
+      'Backed the argument with a CVSS 3.1 score of 8.9 (High) using the vector AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:H, so the reviewer had a defensible number, not just a narrative.',
     ],
     learned: [
       'Severity is an argument you make with a working chain, not a label you attach to a setting. The escalation happened because the PoC made the impact concrete.',
@@ -217,7 +237,7 @@ export const projects: Project[] = [
     metrics: [
       { label: 'Initial triage', value: 'P4-Low' },
       { label: 'Escalated to', value: 'P2' },
-      { label: 'Impact shown', value: 'RCE via MITM' },
+      { label: 'CVSS 3.1', value: '8.9', note: 'High · AV:N/AC:H/S:C' },
       { label: 'Outcome', value: 'HTTPS enforced' },
     ],
     evidence: [
@@ -557,5 +577,42 @@ export const writeups: Writeup[] = [
     ],
     reflection:
       'I cannot stop someone from fingerprinting a public box, but this changed how I think about the honeypot’s own exposure. If I were running it to fool a specific adversary rather than just collect noise, I would care a lot more about what the management ports and the TLS certificate give away.',
+  },
+]
+
+export type Competency = {
+  icon: 'triage' | 'detection' | 'vuln' | 'ir'
+  area: string
+  proof: string
+  href: string
+}
+
+// Maps directly to the four role types this work supports, each with proof
+// linked to the project that backs it. This is the first thing a hiring
+// manager should see: "here is what I can do in your domain."
+export const competencies: Competency[] = [
+  {
+    icon: 'triage',
+    area: 'Alert triage & SOC operations',
+    proof: 'Worked a full phishing alert end to end (SOC338) and built a Splunk-to-Slack triage pipeline with AI-assisted enrichment.',
+    href: '/projects/letsdefend-phishing',
+  },
+  {
+    icon: 'detection',
+    area: 'Detection engineering',
+    proof: 'Wrote 10 Splunk rules mapped to MITRE ATT&CK plus Suricata signatures, and validated each by running the attack myself.',
+    href: '/projects/soc-automation',
+  },
+  {
+    icon: 'vuln',
+    area: 'Vulnerability research',
+    proof: 'Escalated an npm supply-chain RCE from P4 to P2 (CVSS 8.9) and pulled CVE-exploitation detections from live honeypots.',
+    href: '/projects/npm-supply-chain',
+  },
+  {
+    icon: 'ir',
+    area: 'Incident response',
+    proof: 'Contained an active WordPress compromise, removed the persistence, and restored operations in about 2.5 hours.',
+    href: '/blog/incident-response',
   },
 ]

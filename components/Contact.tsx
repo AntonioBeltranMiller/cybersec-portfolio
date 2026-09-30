@@ -20,6 +20,9 @@ export default function Contact() {
             I&apos;m looking for a SOC Analyst or detection role and I&apos;m prepared for rotating shifts. Happy to walk
             through any of these projects live, including what I&apos;d do differently.
           </p>
+          <p className="mt-3 text-sm text-slate-500 max-w-xl mx-auto">
+            Based in Ann Arbor, MI. Open to onsite in the Detroit metro, hybrid, or remote, and ready for rotating and off-hours SOC coverage.
+          </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
               href={`mailto:${profile.email}`}

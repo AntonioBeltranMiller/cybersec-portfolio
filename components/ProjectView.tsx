@@ -110,6 +110,34 @@ export default function ProjectView({ project }: { project: Project }) {
           </ul>
         </section>
 
+        {/* MITRE ATT&CK coverage */}
+        {project.attack && project.attack.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-slate-100">MITRE ATT&amp;CK coverage</h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {project.attack.map((t) => (
+                <span
+                  key={t}
+                  className="text-xs font-mono px-2.5 py-1 rounded-md bg-slate-800/60 border border-slate-700 text-slate-300"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Sample detection rule */}
+        {project.codeSample && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-slate-100">Sample detection rule</h2>
+            <p className="mt-2 text-sm text-slate-400">{project.codeSample.label}</p>
+            <pre className="mt-4 overflow-x-auto rounded-xl border border-slate-800 bg-[#0b1220] p-4 text-[13px] leading-relaxed">
+              <code className="text-slate-200 !bg-transparent !p-0">{project.codeSample.code}</code>
+            </pre>
+          </section>
+        )}
+
         {/* Application to production */}
         {project.application && (
           <section className="mt-10">
