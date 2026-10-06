@@ -275,7 +275,7 @@ const steps: Step[] = [
     title: 'Alert Closed as True Positive',
     icon: <CheckCircle className="w-5 h-5" />,
     summary:
-      'Alert closed as True Positive. This is one of many simulated SOC tickets completed on LetsDefend to document analyst methodology and build a portfolio of realistic investigation walkthroughs.',
+      'Alert closed as True Positive. I worked this as an unguided LetsDefend challenge (SOC338), triaging it cold the way a live Tier 1 alert would arrive, then documented the full methodology.',
     image: '/images/projects/HostContained.png',
     imageAlt: 'LetsDefend alert closed as True Positive with host contained',
     details: [
@@ -283,7 +283,7 @@ const steps: Step[] = [
       'Severity: Critical. infostealer with credential exfiltration capability reached the inbox and the user executed the payload',
       'Escalation: Tier 2 / Incident Response',
       'Closing note: full attack chain documented from phishing email through ClickFix lure, mshta.exe execution, C2 contact, and suspected exfiltration',
-      'Completed as part of the LetsDefend SOC Analyst learning path to practice realistic Tier 1 triage methodology',
+      'Worked as an unguided LetsDefend challenge (SOC338), triaged cold with no walkthrough, to practice realistic Tier 1 methodology',
     ],
     verdict: 'confirmed',
   },
@@ -407,7 +407,7 @@ export default function LetsDefendPhishingPage() {
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <span className="text-xs text-slate-500 bg-slate-800 px-3 py-1 rounded-full">
-            LetsDefend · SOC Analyst Lab
+            LetsDefend · Unguided SOC Challenge
           </span>
         </div>
       </div>
@@ -428,7 +428,7 @@ export default function LetsDefendPhishingPage() {
               True Positive
             </span>
             <span className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs text-slate-400">
-              Alert #316 · Mar 13, 2025
+              Alert #316 · Completed Aug 2026
             </span>
           </div>
 
@@ -438,10 +438,10 @@ export default function LetsDefendPhishingPage() {
           </h1>
 
           <p className="text-base text-slate-400 max-w-3xl leading-relaxed">
-            This is one of many simulated SOC tickets completed on LetsDefend to document my analyst methodology
-            and build a portfolio of realistic investigation walkthroughs. This particular alert was selected because
-            it covers the full attack chain. from a socially engineered phishing email through to confirmed
-            infostealer execution and C2 contact. across email, endpoint, process, and network evidence.
+            This is an unguided LetsDefend challenge (SOC338) that I worked end to end the way a live Tier 1 queue
+            would hand it over, with no walkthrough, then documented. I picked this one because it covers the full
+            attack chain, from a socially engineered phishing email through to confirmed infostealer execution and
+            C2 contact, across email, endpoint, process, and network evidence.
           </p>
 
           {/* Quick stats */}

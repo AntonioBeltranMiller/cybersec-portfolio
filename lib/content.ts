@@ -87,8 +87,8 @@ export const projects: Project[] = [
     why:
       'I wanted to understand alert triage from the inside: not just read a SIEM alert, but see the whole path from a raw endpoint event to an analyst-ready summary in Slack, and feel where the time actually goes. Building it end to end was the only way to learn which parts of triage are mechanical enough to automate and which still need a person.',
     built: [
-      'Stood up the stack across five VMs: a Windows 10 endpoint with Sysmon (SwiftOnSecurity config) forwarding to Splunk over the Universal Forwarder, plus dedicated servers for Splunk, n8n, a DFIR IRIS case-management instance, and a Kali attack box.',
-      'Wrote the detection logic in Splunk SPL and mapped it to MITRE ATT&CK. The SSH brute-force rule is the one I tuned hardest: my first version fired on a single failed sign-in, so I reworked it to require repeated failures from the same source inside a short time window before it triggers.',
+      'Stood up the stack across five VMs and chose Sysmon with the SwiftOnSecurity config on the Windows 10 endpoint on purpose: default Windows logging misses what detection needs, so Sysmon gives me full process creation with command lines and hashes, registry writes, and network connections. The Universal Forwarder ships that to Splunk, and the other VMs run Splunk, n8n, a DFIR IRIS case-management instance, and a Kali attack box.',
+      'Wrote the detection logic in Splunk SPL and mapped each rule to MITRE ATT&CK by the behavior it catches, not just a label. The SSH brute-force rule is the one I tuned hardest: a single failed sign-in is meaningless, so I aggregate failures by source over a time window and only alert past a threshold. Others key off specific telemetry, like registry Run-key persistence firing on Sysmon EventCode 13 writes to the autostart paths.',
       'Built the n8n workflow that catches each Splunk alert on a webhook and hands it to an LLM (GPT-4.1 mini via the OpenAI API) running a tier-1 analyst prompt that summarizes the alert, enriches the indicators, assesses severity against MITRE ATT&CK, and recommends next actions, then posts a clean writeup to Slack.',
       'Wired the AI to real tools rather than just text: it calls AbuseIPDB and VirusTotal itself, and a confirmed alert opens a DFIR IRIS ticket instead of only pinging a channel. The VirusTotal results are genuinely mine, since the file hashes come from my own Sysmon telemetry for the Meterpreter and Atomic Red Team payloads I detonated. The source IPs from my Kali box are private, so AbuseIPDB has nothing on them; I demonstrated that enrichment path with a known-bad public IP instead.',
       'Connected the AI to an MCP server so it can query Splunk directly in natural language instead of only reacting to a forwarded alert. I can ask what happened on a host or in a time window and it builds and runs the SPL itself, then summarizes what it found and what to do next.',
@@ -134,7 +134,7 @@ export const projects: Project[] = [
     slug: 'honeypot',
     title: 'T-Pot Honeypot Threat Intelligence',
     kind: 'Home lab · threat intel',
-    timeline: 'August 2025 – present',
+    timeline: 'August to October 2025',
     featured: true,
     spotlight: true,
     cover: '/images/projects/tpot-dashboard.png',
@@ -158,10 +158,10 @@ export const projects: Project[] = [
     learned: [
       'The volume is almost all commodity scanning: the credential word clouds are exactly what you would expect (root, admin, 123456, empty). The signal is not the count, it is the handful of sources and behaviors that stand out from it.',
       'The two CVE hits are a good reminder of long-tail risk. CVE-2019-12263 (URGENT/11, a VxWorks TCP stack flaw) and CVE-2020-11900 (a Treck TCP/IP stack flaw from the Ripple20 set) are both years old and still being sprayed at anything that answers.',
-      'Everything on this page maps to a number I can pull up live in the dashboard. If a figure is not in a screenshot, I left it off.',
+      'Every number on this page maps to the dashboard from while the sensors were running. If a figure is not in a screenshot, I left it off.',
     ],
     metrics: [
-      { label: 'Attacks logged', value: '424k+', note: 'across all sensors' },
+      { label: 'Attacks logged', value: '424k+', note: 'all sensors, about two months' },
       { label: 'Top sensor', value: 'Sentrypeer 204k', note: 'then Honeytrap / Ciscoasa 69k' },
       { label: 'Top source ASN', value: 'OVH 111,855', note: 'velia.net 67,027 next' },
       { label: 'CVE signatures seen', value: 'CVE-2019-12263, -2020-11900', note: '9 and 6 hits' },
@@ -176,8 +176,8 @@ export const projects: Project[] = [
   {
     slug: 'letsdefend-phishing',
     title: 'SOC Alert: Lumma Stealer via ClickFix',
-    kind: 'LetsDefend training · SOC338',
-    timeline: 'Training scenario',
+    kind: 'LetsDefend Challenge · unguided · SOC338',
+    timeline: 'August 2026',
     featured: true,
     cover: '/images/projects/ThePhishingEmail.png',
     card:
