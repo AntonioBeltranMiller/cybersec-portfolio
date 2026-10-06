@@ -77,21 +77,21 @@ export const projects: Project[] = [
       'My first SSH brute-force rule fired on a single failed login, which is useless. Tuning it to need repeated failures from one source inside a short window, so it catches a real attack without screaming at every mistyped password, was the actual detection work.',
     readTime: '4 min read',
     card:
-      'An AI-assisted detection and triage pipeline I built across four VMs. Splunk ingests the endpoint telemetry, n8n hands each alert to an LLM acting as a tier-1 analyst, and an MCP server lets that AI query Splunk directly to investigate on its own.',
+      'An AI-assisted detection and triage pipeline running across five VMs. I built it from MyDFIR’s SOC Automation 2.0 and extended it: Splunk ingests endpoint telemetry, n8n hands each alert to an LLM acting as a tier-1 analyst, and an MCP server lets that AI query Splunk directly to investigate.',
     result: 'Cut my own triage time from 45 to 8 minutes across 10 self-run attacks',
     tags: ['Splunk', 'n8n', 'LLM (GPT-4.1 mini)', 'MCP server', 'DFIR IRIS', 'Sysmon', 'MITRE ATT&CK', 'VirusTotal', 'AbuseIPDB', 'Slack'],
     credit:
-      'This follows MyDFIR’s SOC Automation 2.0 build (Splunk, a Windows 10 VM, n8n, and the alert-to-Slack path) including its advanced sections for VirusTotal enrichment, DFIR IRIS ticketing, and the MCP server that lets the AI query the SIEM. I built the full stack end to end; the detection tuning and how I reason about it are my own.',
+      'I built this by following MyDFIR’s SOC Automation 2.0, including its advanced sections for VirusTotal enrichment, DFIR IRIS ticketing, and the MCP server that lets the AI query the SIEM. The extensions are mine: I attacked the Windows host from Kali, wrote additional detection rules from what I saw, and tuned the SSH brute-force rule down from firing on a single failed login.',
     application:
-      'In a real SOC the value here is not the AI, it is the discipline around it. An alert is only useful once its false positives are tuned down, which is exactly the SSH brute-force lesson, and that same loop is what fights alert fatigue on a live queue. The MCP server is the part I find most interesting: it lets the AI ask the SIEM its own questions instead of only reacting to an alert it was handed, which is closer to how an analyst actually investigates. I keep the AI as an assistant to a human and never an automated action, because it will state things the telemetry does not support. And because this feeds data to a hosted model, it stays a lab; in production I would run a local LLM.',
+      'In a real SOC the value here is not the AI, it is the discipline around it. An alert is only useful once its false positives are tuned down, which is the SSH brute-force lesson, and that same loop fights alert fatigue on a live queue. The risk I think hardest about is the one the AI introduces: it reads attacker-influenced log data, so prompt injection is a real concern, and anything that lets a model reach the SIEM should stay read-only, able to investigate but never change data. I keep a human in the loop for the same reason, because the model will state things the telemetry does not support. Running against a hosted model also keeps this lab-only on privacy grounds; a production version would use a local LLM.',
     why:
       'I wanted to understand alert triage from the inside: not just read a SIEM alert, but see the whole path from a raw endpoint event to an analyst-ready summary in Slack, and feel where the time actually goes. Building it end to end was the only way to learn which parts of triage are mechanical enough to automate and which still need a person.',
     built: [
-      'Stood up the whole on-prem stack myself across four VMs: a Windows 10 endpoint with Sysmon (SwiftOnSecurity config) forwarding to Splunk over the Universal Forwarder, plus dedicated Ubuntu servers for Splunk, n8n, and a DFIR IRIS case-management instance.',
+      'Stood up the stack across five VMs: a Windows 10 endpoint with Sysmon (SwiftOnSecurity config) forwarding to Splunk over the Universal Forwarder, plus dedicated servers for Splunk, n8n, a DFIR IRIS case-management instance, and a Kali attack box.',
       'Wrote the detection logic in Splunk SPL and mapped it to MITRE ATT&CK. The SSH brute-force rule is the one I tuned hardest: my first version fired on a single failed sign-in, so I reworked it to require repeated failures from the same source inside a short time window before it triggers.',
-      'Built the n8n workflow that catches each Splunk alert on a webhook and hands it to an LLM (GPT-4.1 mini via the OpenAI API) running a tier-1 analyst prompt: summarize the alert, enrich the indicators, assess severity against MITRE ATT&CK, and recommend next actions, then post a clean writeup to Slack.',
-      'Gave the AI real tools rather than just text. It calls AbuseIPDB and VirusTotal itself to score a source IP or file hash, and a confirmed alert opens a ticket in DFIR IRIS instead of only pinging a channel.',
-      'Connected the AI to an MCP server so it can query Splunk directly in plain language. I can ask what happened in a given window and it runs the searches itself, corrects the time format, and surfaces activity like failed logons and Atomic Red Team PowerShell execution, then returns findings and recommended actions.',
+      'Built the n8n workflow that catches each Splunk alert on a webhook and hands it to an LLM (GPT-4.1 mini via the OpenAI API) running a tier-1 analyst prompt that summarizes the alert, enriches the indicators, assesses severity against MITRE ATT&CK, and recommends next actions, then posts a clean writeup to Slack.',
+      'Wired the AI to real tools rather than just text: it calls AbuseIPDB and VirusTotal itself, and a confirmed alert opens a DFIR IRIS ticket instead of only pinging a channel. The VirusTotal results are genuinely mine, since the file hashes come from my own Sysmon telemetry for the Meterpreter and Atomic Red Team payloads I detonated. The source IPs from my Kali box are private, so AbuseIPDB has nothing on them; I demonstrated that enrichment path with a known-bad public IP instead.',
+      'Connected the AI to an MCP server so it can query Splunk directly in natural language instead of only reacting to a forwarded alert. I can ask what happened on a host or in a time window and it builds and runs the SPL itself, then summarizes what it found and what to do next.',
       'Validated detections by generating the activity myself from Kali, using Hydra for brute force plus Metasploit, Meterpreter, and Atomic Red Team for the endpoint rules, then confirming each one fired on the telemetry it was meant to catch.',
     ],
     learned: [
@@ -104,7 +104,7 @@ export const projects: Project[] = [
       { label: 'Detection rules', value: '10', note: 'each mapped to MITRE ATT&CK' },
       { label: 'My triage time', value: '45 → 8 min', note: 'self-run attacks, lab' },
       { label: 'Attacks self-run', value: '10', note: 'Metasploit / Meterpreter / Hydra' },
-      { label: 'VMs orchestrated', value: '4', note: 'Win10, Splunk, n8n, Kali' },
+      { label: 'VMs orchestrated', value: '5', note: 'Win10, Splunk, n8n, Kali, DFIR IRIS' },
     ],
     attack: [
       'T1003.001 · LSASS credential dumping',
@@ -122,10 +122,10 @@ export const projects: Project[] = [
 | table _time, Computer, Image, TargetObject, Details, EventType`,
     },
     evidence: [
-      { label: 'n8n workflow: webhook → GPT-4 → AbuseIPDB / VirusTotal → Slack', src: '/images/projects/soc-n8n-workflow.png' },
+      { label: 'n8n workflow: webhook → LLM → AbuseIPDB / VirusTotal → Slack', src: '/images/projects/soc-n8n-workflow.png' },
       { label: 'The 10 detection rules in Splunk', src: '/images/projects/soc-splunk-alerts.png' },
       { label: 'The tier-1 analyst prompt driving the model', src: '/images/projects/soc-ai-prompt.png' },
-      { label: 'Enriched brute-force alert delivered to Slack', src: '/images/projects/soc-slack-alert.png' },
+      { label: 'Enriched alert in Slack (enrichment validated with a substituted known-bad public IP)', src: '/images/projects/soc-slack-alert.png' },
       { label: 'Registry-persistence detection (Sysmon EventCode 13)', src: '/images/projects/soc-splunk-registry.png' },
       { label: 'Meterpreter alert summarized to Slack', src: '/images/projects/soc-slack-meterpreter.png' },
     ],
