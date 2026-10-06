@@ -74,28 +74,31 @@ export const projects: Project[] = [
     spotlight: true,
     cover: '/images/projects/soc-n8n-workflow.png',
     highlight:
-      'The rules only got useful after several tuning passes drove the false positives down. That loop, not the first rule, was the real work.',
+      'My first SSH brute-force rule fired on a single failed login, which is useless. Tuning it to need repeated failures from one source inside a short window, so it catches a real attack without screaming at every mistyped password, was the actual detection work.',
     readTime: '4 min read',
     card:
-      'A Splunk → n8n → GPT-4 → Slack triage pipeline I built in a four-VM lab, with ten detection rules I validated by running the attacks myself.',
+      'An AI-assisted detection and triage pipeline I built across four VMs. Splunk ingests the endpoint telemetry, n8n hands each alert to an LLM acting as a tier-1 analyst, and an MCP server lets that AI query Splunk directly to investigate on its own.',
     result: 'Cut my own triage time from 45 to 8 minutes across 10 self-run attacks',
-    tags: ['Splunk', 'n8n', 'GPT-4 API', 'Sysmon', 'MITRE ATT&CK', 'VirusTotal', 'AbuseIPDB'],
+    tags: ['Splunk', 'n8n', 'LLM (GPT-4.1 mini)', 'MCP server', 'DFIR IRIS', 'Sysmon', 'MITRE ATT&CK', 'VirusTotal', 'AbuseIPDB', 'Slack'],
     credit:
-      'The lab skeleton (Splunk, a Windows 10 VM, n8n, and the alert-to-Slack path) follows MyDFIR’s SOC Automation 2.0 walkthrough. The parts below are what I added and had to make work myself.',
+      'This follows MyDFIR’s SOC Automation 2.0 build (Splunk, a Windows 10 VM, n8n, and the alert-to-Slack path) including its advanced sections for VirusTotal enrichment, DFIR IRIS ticketing, and the MCP server that lets the AI query the SIEM. I built the full stack end to end; the detection tuning and how I reason about it are my own.',
     application:
-      'In a real SOC the value here is not the AI. It is the discipline the AI forces. The rules only became useful after several tuning passes drove the false positives down, and that same tuning loop is what fights alert fatigue on a live queue. I would treat automated enrichment as a way to give a tier-1 analyst a faster starting point, never as an automated action, because lab AI will confidently state things the telemetry does not support. The pipeline ends at a Slack message for a human on purpose.',
+      'In a real SOC the value here is not the AI, it is the discipline around it. An alert is only useful once its false positives are tuned down, which is exactly the SSH brute-force lesson, and that same loop is what fights alert fatigue on a live queue. The MCP server is the part I find most interesting: it lets the AI ask the SIEM its own questions instead of only reacting to an alert it was handed, which is closer to how an analyst actually investigates. I keep the AI as an assistant to a human and never an automated action, because it will state things the telemetry does not support. And because this feeds data to a hosted model, it stays a lab; in production I would run a local LLM.',
     why:
       'I wanted to understand alert triage from the inside: not just read a SIEM alert, but see the whole path from a raw endpoint event to an analyst-ready summary in Slack, and feel where the time actually goes. Building it end to end was the only way to learn which parts of triage are mechanical enough to automate and which still need a person.',
     built: [
-      'Deployed Sysmon (SwiftOnSecurity config) on a Windows 10 VM forwarding to Splunk via the Universal Forwarder, so the lab had realistic endpoint telemetry rather than just Windows Security logs.',
-      'Wrote 10 Splunk detection rules in SPL and mapped each to MITRE ATT&CK: credential dumping (T1003.001), process injection (T1055), PowerShell abuse (T1059.001), brute-force success (T1110), registry persistence (T1547.001), service install (T1543.003), and more.',
-      'Built an n8n workflow that catches each Splunk alert on a webhook, sends it to GPT-4 with a fixed tier-1 analyst prompt, and enriches indicators through the AbuseIPDB and VirusTotal APIs before posting a formatted summary to Slack.',
-      'Validated the rules the honest way, by running the attacks myself from Kali with Metasploit, Meterpreter, and Hydra against the Windows VM, then confirming each rule fired on the telemetry it was meant to catch.',
+      'Stood up the whole on-prem stack myself across four VMs: a Windows 10 endpoint with Sysmon (SwiftOnSecurity config) forwarding to Splunk over the Universal Forwarder, plus dedicated Ubuntu servers for Splunk, n8n, and a DFIR IRIS case-management instance.',
+      'Wrote the detection logic in Splunk SPL and mapped it to MITRE ATT&CK. The SSH brute-force rule is the one I tuned hardest: my first version fired on a single failed sign-in, so I reworked it to require repeated failures from the same source inside a short time window before it triggers.',
+      'Built the n8n workflow that catches each Splunk alert on a webhook and hands it to an LLM (GPT-4.1 mini via the OpenAI API) running a tier-1 analyst prompt: summarize the alert, enrich the indicators, assess severity against MITRE ATT&CK, and recommend next actions, then post a clean writeup to Slack.',
+      'Gave the AI real tools rather than just text. It calls AbuseIPDB and VirusTotal itself to score a source IP or file hash, and a confirmed alert opens a ticket in DFIR IRIS instead of only pinging a channel.',
+      'Connected the AI to an MCP server so it can query Splunk directly in plain language. I can ask what happened in a given window and it runs the searches itself, corrects the time format, and surfaces activity like failed logons and Atomic Red Team PowerShell execution, then returns findings and recommended actions.',
+      'Validated detections by generating the activity myself from Kali, using Hydra for brute force plus Metasploit, Meterpreter, and Atomic Red Team for the endpoint rules, then confirming each one fired on the telemetry it was meant to catch.',
     ],
     learned: [
-      'My first pass of rules was noisy. Getting the false-positive rate down took several iterations of tightening the SPL, and that tuning loop turned out to be most of the real work, not the initial rule.',
-      'GPT-4 is genuinely useful for the mechanical part of triage (summarizing an alert, pulling reputation, suggesting next steps), but it will confidently narrate things the data does not support. I would not put lab AI output in front of a customer without a human check, which is why the pipeline ends at a Slack message for an analyst, not an automated action.',
-      'The 45-to-8-minute figure is my own timing on my own self-run attacks in this lab. It is a measure of how much of my manual triage the pipeline removed, not a production MTTD.',
+      'The SSH brute-force rule taught me the most. Firing on one failed login is noise, so the real work was finding the threshold and time window that catch an actual brute force while leaving normal mistyped logins alone.',
+      'Wiring the AI to an MCP server changed what it could do. Instead of only summarizing an alert it was handed, it can go ask Splunk its own questions, which is much closer to real investigation than canned enrichment.',
+      'The AI is genuinely useful for the mechanical parts of triage, but it will confidently narrate things the data does not support, so a human stays in the loop and the pipeline ends at a person, not an automated action. Feeding alerts to a hosted model is also a privacy risk, which is why this stays a lab and a production version would use a local LLM.',
+      'The 45-to-8-minute figure is my own timing on my own self-run attacks in this lab. It measures how much of my manual triage the pipeline removed, not a production MTTD.',
     ],
     metrics: [
       { label: 'Detection rules', value: '10', note: 'each mapped to MITRE ATT&CK' },
