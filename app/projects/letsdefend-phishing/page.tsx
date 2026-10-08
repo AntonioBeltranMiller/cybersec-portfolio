@@ -152,7 +152,8 @@ const steps: Step[] = [
     ],
     mitre: [
       'T1566.002 - Spearphishing Link',
-      'T1204.002 - User Execution: Malicious File',
+      'T1204.004 - User Execution: Malicious Copy and Paste',
+      'T1059.001 - Command and Scripting Interpreter: PowerShell',
       'T1027 - Obfuscated Files or Information',
       'T1218.005 - Signed Binary Proxy Execution: Mshta',
     ],
@@ -186,7 +187,7 @@ const steps: Step[] = [
     mitre: [
       'T1218.005 - Signed Binary Proxy Execution: Mshta',
       'T1105 - Ingress Tool Transfer',
-      'T1574.002 - DLL Side-Loading (next stage)',
+      'T1574.002 - DLL Side-Loading (suspected, next stage)',
     ],
     verdict: 'malicious',
   },
@@ -223,7 +224,7 @@ const steps: Step[] = [
     title: 'Outbound C2 Connections Identified',
     icon: <Network className="w-5 h-5" />,
     summary:
-      'Network logs showed 8 outbound connections during the execution window. The original phishing IP reached back to the machine before mshta.exe even fired. A Yandex-hosted IP appeared about 55 seconds after execution, which lines up with Lumma finishing a credential harvest and pushing data out.',
+      'Network logs showed 8 outbound connections during the execution window. The original phishing IP reached back to the machine before mshta.exe even fired. A Yandex-hosted IP appeared about 55 seconds after execution, which would be consistent with Lumma finishing a credential harvest and pushing data out, though the logs do not confirm data actually left the host.',
     image: '/images/projects/NetworkTrafficEvidence.png',
     imageAlt: 'LetsDefend network action log showing outbound connections during Lumma execution',
     details: [
@@ -244,8 +245,8 @@ const steps: Step[] = [
       { label: 'Suspected Exfil IP', value: '77.88.21.119 (Yandex)' },
     ],
     mitre: [
-      'T1041 - Exfiltration Over C2 Channel',
-      'T1555.003 - Credentials from Web Browsers',
+      'T1041 - Exfiltration Over C2 Channel (suspected)',
+      'T1555.003 - Credentials from Web Browsers (suspected)',
     ],
     verdict: 'malicious',
   },
@@ -289,15 +290,16 @@ const steps: Step[] = [
   },
 ]
 
-const allMitre = [
+const allMitre: { id: string; name: string; tactic: string; suspected?: boolean }[] = [
   { id: 'T1566.002', name: 'Spearphishing Link', tactic: 'Initial Access' },
-  { id: 'T1204.002', name: 'User Execution: Malicious File', tactic: 'Execution' },
+  { id: 'T1204.004', name: 'User Execution: Malicious Copy and Paste', tactic: 'Execution' },
+  { id: 'T1059.001', name: 'Command and Scripting Interpreter: PowerShell', tactic: 'Execution' },
   { id: 'T1027', name: 'Obfuscated Files or Information', tactic: 'Defense Evasion' },
   { id: 'T1218.005', name: 'Signed Binary Proxy Execution: Mshta', tactic: 'Defense Evasion' },
   { id: 'T1105', name: 'Ingress Tool Transfer', tactic: 'Command & Control' },
-  { id: 'T1574.002', name: 'DLL Side-Loading', tactic: 'Defense Evasion' },
-  { id: 'T1555.003', name: 'Credentials from Web Browsers', tactic: 'Credential Access' },
-  { id: 'T1041', name: 'Exfiltration Over C2 Channel', tactic: 'Exfiltration' },
+  { id: 'T1574.002', name: 'DLL Side-Loading', tactic: 'Defense Evasion', suspected: true },
+  { id: 'T1555.003', name: 'Credentials from Web Browsers', tactic: 'Credential Access', suspected: true },
+  { id: 'T1041', name: 'Exfiltration Over C2 Channel', tactic: 'Exfiltration', suspected: true },
 ]
 
 const tacticColors: Record<string, string> = {
@@ -611,7 +613,14 @@ export default function LetsDefendPhishingPage() {
                 key={t.id}
                 className={`p-4 rounded-lg border ${tacticColors[t.tactic] ?? 'border-slate-700 text-slate-400 bg-slate-800/30'}`}
               >
-                <div className="text-xs opacity-70 mb-1">{t.tactic}</div>
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span className="text-xs opacity-70">{t.tactic}</span>
+                  {t.suspected && (
+                    <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded border border-current opacity-70">
+                      Suspected
+                    </span>
+                  )}
+                </div>
                 <div className="font-mono text-sm font-bold mb-1">{t.id}</div>
                 <div className="text-base font-medium">{t.name}</div>
               </div>
@@ -684,8 +693,8 @@ export default function LetsDefendPhishingPage() {
                 body: 'Lumma steals session cookies, not just passwords. A password reset by itself is not enough. every active session needs to be invalidated separately after a compromise like this.',
               },
               {
-                title: 'Timing in network logs tells the story',
-                body: 'The Yandex connection appeared 55 seconds after mshta.exe fired. That gap lines up with Lumma completing a credential sweep before pushing data out to a secondary endpoint.',
+                title: 'Timing in network logs is a lead, not a verdict',
+                body: 'The Yandex connection appeared 55 seconds after mshta.exe fired. That gap is consistent with a credential sweep and an outbound push, but timing alone does not prove data left the host, so exfiltration stays a suspected finding for IR to confirm.',
               },
               {
                 title: 'Fresh AV signatures did not help',
@@ -735,7 +744,7 @@ export default function LetsDefendPhishingPage() {
                   <span className="font-mono text-red-400">mshta.exe</span> (PID 7284) was confirmed spawned from <span className="font-mono text-slate-300">powershell.exe</span> and fetched the payload from <span className="font-mono text-red-400 break-all">https://overcoatpassably.shop/Z8UZbPyVpGfdRS/maloy.mp4</span>. The .mp4 extension is a content filter bypass. VirusTotal confirms the file as <strong className="text-slate-300">22/58 malicious</strong>, threat label <span className="font-mono text-orange-400">trojan.sagent/emmenhtal</span>, with Ikarus explicitly naming <strong className="text-slate-300">Trojan.PowerShell.LummaStealer</strong>. The rule name also flags <strong className="text-slate-300">DLL Side-Loading</strong> as the next-stage persistence mechanism. this was not verified at Tier 1 and should be the first IR focus.
                 </p>
                 <p>
-                  Network logs show an outbound connection to <span className="font-mono text-red-400">132.232.40.201</span> at 23:26:08 (12 seconds before execution), payload delivery via Cloudflare-fronted <span className="font-mono text-red-400">172.67.139.19</span> at 23:26:20, and a connection to <span className="font-mono text-yellow-400">77.88.21.119</span> (Yandex) at 23:27:15. roughly 55 seconds after execution. That timing lines up with Lumma completing a credential harvest cycle before exfiltrating. <strong className="text-slate-300">Treat data exfiltration as confirmed until proven otherwise.</strong>
+                  Network logs show an outbound connection to <span className="font-mono text-red-400">132.232.40.201</span> at 23:26:08 (12 seconds before execution), payload delivery via Cloudflare-fronted <span className="font-mono text-red-400">172.67.139.19</span> at 23:26:20, and a connection to <span className="font-mono text-yellow-400">77.88.21.119</span> (Yandex) at 23:27:15. roughly 55 seconds after execution. That timing is consistent with Lumma completing a credential harvest cycle before exfiltrating, but the 55-second gap on its own does not prove data left the host. <strong className="text-slate-300">Treat exfiltration as a suspected finding for IR to confirm, not an established one.</strong>
                 </p>
                 <p>
                   The host (<span className="font-mono text-slate-300">Dylan / 172.16.17.216</span>) has been <strong className="text-slate-300">contained</strong>. The phishing email has been quarantined and both the sender IP and C2 domain are blocked at the gateway.

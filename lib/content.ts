@@ -18,7 +18,7 @@ export const profile = {
     'Security+ certified professional transitioning into a SOC role. I build detections and automation in my home lab, deploy honeypots to capture real-world threat telemetry, and conduct bug bounty research to analyze practical intrusion techniques.',
   summary: [
     'I spent about two and a half years as the only IT person for a 200-person logistics company, so I know what a normal Windows and Active Directory environment looks like and how to keep people working while something is broken.',
-    'Since then I have been building toward security operations on purpose: a Splunk, n8n, and GPT-4 alert-triage pipeline in my lab, distributed T-Pot honeypots for live attack data, and responsible bug bounty disclosure. I would rather show a smaller number I can defend than a big one I cannot.',
+    'Since then I have been building toward security operations on purpose: a Splunk, n8n, and GPT-4.1 mini alert-triage pipeline in my lab, a single-host T-Pot honeypot for live attack data, and responsible bug bounty disclosure. I would rather show a smaller number I can defend than a big one I cannot.',
   ],
 }
 
@@ -139,20 +139,20 @@ export const projects: Project[] = [
     spotlight: true,
     cover: '/images/projects/tpot-dashboard.png',
     highlight:
-      '424k attacks, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
+      '424k log events, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
     readTime: '4 min read',
     card:
-      'Distributed T-Pot honeypots on a public VPS. Most of it is automated scanning noise. The useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
-    result: '424k+ attacks logged; wrote Suricata rules and reported malicious IPs to AbuseIPDB',
+      'A single-host T-Pot deployment (Standard edition) on a public VPS, exposed to collect live attack traffic. Most of it is automated scanning noise; the useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
+    result: '424k+ events logged; triaged Suricata exploit-attempt signatures and reported malicious IPs to AbuseIPDB',
     tags: ['T-Pot', 'Suricata', 'Elasticsearch / Kibana', 'Cowrie', 'Dionaea', 'Threat Intel'],
     credit:
       'The T-Pot deployment follows the standard honeypot setup (spin up a VPS, run the T-Pot installer, open it to the internet). The analysis and reporting is my own.',
     why:
       'Reading about attacker behavior is not the same as watching it hit something you own. I put honeypots on the public internet to get real, unsolicited traffic and practice the boring but important part of threat intel: separating background scanning from anything worth a second look, and then doing something with it.',
     built: [
-      'Deployed T-Pot with multiple honeypot sensors (Cowrie, Dionaea, Sentrypeer, Honeytrap, Ciscoasa and others) on a public VPS and left it exposed to collect live traffic.',
-      'Used the Kibana dashboards to break attacks down by sensor, source ASN, country, and credentials, and to confirm the two CVE-exploitation signatures Suricata flagged (CVE-2019-12263 and CVE-2020-11900).',
-      'Wrote Suricata rules from the recurring patterns worth alerting on, and reported high-confidence malicious source IPs to AbuseIPDB with the supporting evidence.',
+      'Deployed the Standard edition of T-Pot on a single public VPS and left it exposed to collect live traffic. It runs T-Pot’s standard sensor set as Docker containers, including Cowrie, Dionaea, SentryPeer, Honeytrap, and Ciscoasa, each bound to the services attackers actually probe.',
+      'Used the Kibana dashboards to break the traffic down by sensor, source ASN, country, and credentials, and to confirm the two exploit-attempt signatures Suricata flagged (CVE-2019-12263 and CVE-2020-11900).',
+      'Triaged the Suricata signatures that fired against the sensors (T-Pot ships the Emerging Threats ruleset), separated the high-confidence exploit attempts from the background noise, and reported malicious source IPs to AbuseIPDB with the supporting evidence.',
       'Turned three of the more interesting single events into short write-ups: a VoIP toll-fraud campaign, a commercial scanner (ONYPHE), and non-standard-port TLS recon. Each was practice at explaining a finding the way a report would.',
     ],
     learned: [
@@ -161,13 +161,13 @@ export const projects: Project[] = [
       'Every number on this page maps to the dashboard from while the sensors were running. If a figure is not in a screenshot, I left it off.',
     ],
     metrics: [
-      { label: 'Attacks logged', value: '424k+', note: 'all sensors, about two months' },
-      { label: 'Top sensor', value: 'Sentrypeer 204k', note: 'then Honeytrap / Ciscoasa 69k' },
+      { label: 'Events logged', value: '424k+', note: 'all sensors · Kibana event count' },
+      { label: 'Top sensor', value: 'SentryPeer 204k', note: '≈48% of all events' },
       { label: 'Top source ASN', value: 'OVH 111,855', note: 'velia.net 67,027 next' },
-      { label: 'CVE signatures seen', value: 'CVE-2019-12263, -2020-11900', note: '9 and 6 hits' },
+      { label: 'Exploit-attempt sigs', value: 'CVE-2019-12263, -2020-11900', note: '9 and 6 hits' },
     ],
     evidence: [
-      { label: 'T-Pot attack overview: 424k across sensors', src: '/images/projects/tpot-dashboard.png' },
+      { label: 'T-Pot overview: 424k events across sensors', src: '/images/projects/tpot-dashboard.png' },
       { label: 'Attacker ASNs, top source IPs, and Suricata CVE hits', src: '/images/projects/tpot-attacks.png' },
       { label: 'Live attack map and source distribution', src: '/images/projects/tpot-analysis.png' },
       { label: 'Source-IP reputation, OS, and country breakdown', src: '/images/projects/tpot-attack-overview.png' },
@@ -231,7 +231,7 @@ export const projects: Project[] = [
       'Stood up a mitmproxy man-in-the-middle proof of concept that intercepts the HTTP npm traffic and substitutes a package carrying a post-install script.',
       'Demonstrated arbitrary code execution on install from that position, which is what turns "uses HTTP" into a real supply-chain risk to a developer machine or CI runner.',
       'Reported it through Bugcrowd and made the severity case from the demonstrated RCE impact; it was raised from P4-Low to P2, and the repo moved to HTTPS after disclosure.',
-      'Backed the argument with a CVSS 3.1 score of 8.9 (High) using the vector AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:H, so the reviewer had a defensible number, not just a narrative.',
+      'Backed the severity argument with my own CVSS 3.1 score of 8.3 (High), vector AV:N/AC:H/PR:N/UI:R/S:C/C:H/I:H/A:H. The contestable call is the scope change (S:C); without it the vector scores 7.5, and I was ready to defend why poisoning the install chain crosses a trust boundary. P2 was Bugcrowd’s triage rating; the CVSS was my own argument for it.',
     ],
     learned: [
       'Severity is an argument you make with a working chain, not a label you attach to a setting. The escalation happened because the PoC made the impact concrete.',
@@ -240,7 +240,7 @@ export const projects: Project[] = [
     metrics: [
       { label: 'Initial triage', value: 'P4-Low' },
       { label: 'Escalated to', value: 'P2' },
-      { label: 'CVSS 3.1', value: '8.9', note: 'High · AV:N/AC:H/S:C' },
+      { label: 'CVSS 3.1', value: '8.3', note: 'High · self-scored, S:C' },
       { label: 'Outcome', value: 'HTTPS enforced' },
     ],
     evidence: [
@@ -429,7 +429,7 @@ export const skills: { group: string; items: string[] }[] = [
   },
   {
     group: 'Automation & tooling',
-    items: ['Python', 'Bash', 'PowerShell', 'n8n', 'GPT-4 API', 'VirusTotal / AbuseIPDB', 'Metasploit', 'Burp Suite', 'mitmproxy'],
+    items: ['Python', 'Bash', 'PowerShell', 'n8n', 'OpenAI API (GPT-4.1 mini)', 'VirusTotal / AbuseIPDB', 'Metasploit', 'Burp Suite', 'mitmproxy'],
   },
 ]
 
@@ -554,32 +554,33 @@ export const writeups: Writeup[] = [
   },
   {
     slug: 'tls-recon',
-    title: 'Someone Fingerprinting My Honeypot',
+    title: 'A TLS Handshake on My Honeypot’s Management Port',
     excerpt:
-      'Suricata flagged a full TLS handshake against 64297/TCP. That port is specific to T-Pot’s own dashboard, so this was not a generic scan. It was something checking whether the box is a honeypot.',
+      'Suricata flagged a full TLS handshake against 64297/TCP, the port T-Pot’s own dashboard runs on. A wide-range scan would reach it too, but a completed handshake against the management port specifically was worth a closer look.',
     date: '2025-09-20',
     readTime: '3 min read',
     category: 'Threat Intelligence',
     kind: 'observation',
     related: HONEYPOT_REF,
     summary:
-      'Suricata flagged a full TLS handshake against port 64297 on one of my honeypots. That port stood out right away, because 64297 is the port T-Pot’s own web dashboard listens on. This was not a generic scan; it was something checking whether the box is a honeypot.',
+      'Suricata flagged a full TLS handshake against port 64297 on one of my honeypots. That port stood out, because 64297 is where T-Pot’s own web dashboard listens. A full-range port scan would hit it too, so this is not proof of targeted activity, but a completed TLS handshake against the management port specifically, rather than a bare SYN from a sweep, was enough to make me look closer.',
     sections: [
       {
         heading: 'What I saw',
         items: [
           'A complete TLS handshake, not just a SYN, to 64297/TCP from a host on M247 (AS9009), a provider often used for VPNs and scanning.',
+          'The handshake completed, which means the T-Pot management UI was reachable from the internet on this lab box. I had not restricted the high management ports (above 64000) to an allowlist, which T-Pot’s own guidance recommends.',
           'No follow-on exploitation. Just the handshake and whatever the certificate revealed.',
         ],
       },
       {
         heading: 'Why it caught my eye',
         body:
-          '64297 is not a service a normal target would be running; it is specific to T-Pot. Probing it looks like honeypot fingerprinting: confirming what the box is before deciding whether it is worth any real effort. The certificate a honeypot presents can give it away, which is a good reminder that deception infrastructure has its own fingerprint to manage.',
+          '64297 is not a service a normal target would be running; it is specific to T-Pot. A completed handshake there is at least consistent with honeypot fingerprinting, confirming what the box is before deciding whether it is worth any real effort, though I cannot rule out a plain full-range scanner that happened to catalog the port. Either way it is a good reminder that deception infrastructure has its own fingerprint to manage, and that the management interface should not have been answering the open internet in the first place.',
       },
     ],
     reflection:
-      'I cannot stop someone from fingerprinting a public box, but this changed how I think about the honeypot’s own exposure. If I were running it to fool a specific adversary rather than just collect noise, I would care a lot more about what the management ports and the TLS certificate give away.',
+      'The concrete fix is the boring one: restrict T-Pot’s management ports (above 64000) to a trusted-IP allowlist or a VPN, so the dashboard is not answering arbitrary hosts at all. This changed how I think about the honeypot’s own exposure. If I were running it to fool a specific adversary rather than just collect noise, I would care a lot more about what the management ports and the TLS certificate give away.',
   },
 ]
 
@@ -603,13 +604,13 @@ export const competencies: Competency[] = [
   {
     icon: 'detection',
     area: 'Detection engineering',
-    proof: 'Wrote 10 Splunk rules mapped to MITRE ATT&CK plus Suricata signatures, and validated each by running the attack myself.',
+    proof: 'Wrote 10 Splunk detection rules mapped to MITRE ATT&CK and validated each by running the attack myself, plus triaged Suricata exploit-attempt signatures on live honeypot traffic.',
     href: '/projects/soc-automation',
   },
   {
     icon: 'vuln',
     area: 'Vulnerability research',
-    proof: 'Escalated an npm supply-chain RCE from P4 to P2 (CVSS 8.9) and pulled CVE-exploitation detections from live honeypots.',
+    proof: 'Escalated an npm supply-chain RCE from P4 to P2 (self-scored CVSS 8.3) and triaged exploit-attempt signatures on live honeypots.',
     href: '/projects/npm-supply-chain',
   },
   {
