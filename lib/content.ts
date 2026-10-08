@@ -69,7 +69,7 @@ export const projects: Project[] = [
     slug: 'soc-automation',
     title: 'AI-Assisted SOC Automation Lab',
     kind: 'Home lab · detection + automation',
-    timeline: 'October 2025 – December 2025',
+    timeline: 'October to December 2025',
     featured: true,
     spotlight: true,
     cover: '/images/projects/soc-n8n-workflow.png',
@@ -87,7 +87,7 @@ export const projects: Project[] = [
     why:
       'I wanted to understand alert triage from the inside: not just read a SIEM alert, but see the whole path from a raw endpoint event to an analyst-ready summary in Slack, and feel where the time actually goes. Building it end to end was the only way to learn which parts of triage are mechanical enough to automate and which still need a person.',
     built: [
-      'Stood up the stack across five VMs and chose Sysmon with the SwiftOnSecurity config on the Windows 10 endpoint on purpose: default Windows logging misses what detection needs, so Sysmon gives me full process creation with command lines and hashes, registry writes, and network connections. The Universal Forwarder ships that to Splunk, and the other VMs run Splunk, n8n, a DFIR IRIS case-management instance, and a Kali attack box.',
+      'Stood up the stack across five VMs and chose Sysmon with the SwiftOnSecurity config on the Windows 10 endpoint on purpose: default Windows logging misses what detection needs, so Sysmon gives me full process creation with command lines and hashes, registry writes, and network connections. The Universal Forwarder ships that to a Splunk SIEM server, and the remaining VMs run n8n, a DFIR IRIS case-management instance, and a Kali attack box.',
       'Wrote the detection logic in Splunk SPL and mapped each rule to MITRE ATT&CK by the behavior it catches, not just a label. The SSH brute-force rule is the one I tuned hardest: a single failed sign-in is meaningless, so I aggregate failures by source over a time window and only alert past a threshold. Others key off specific telemetry, like registry Run-key persistence firing on Sysmon EventCode 13 writes to the autostart paths.',
       'Built the n8n workflow that catches each Splunk alert on a webhook and hands it to an LLM (GPT-4.1 mini via the OpenAI API) running a tier-1 analyst prompt that summarizes the alert, enriches the indicators, assesses severity against MITRE ATT&CK, and recommends next actions, then posts a clean writeup to Slack.',
       'Wired the AI to real tools rather than just text: it calls AbuseIPDB and VirusTotal itself, and a confirmed alert opens a DFIR IRIS ticket instead of only pinging a channel. The VirusTotal results are genuinely mine, since the file hashes come from my own Sysmon telemetry for the Meterpreter and Atomic Red Team payloads I detonated. The source IPs from my Kali box are private, so AbuseIPDB has nothing on them; I demonstrated that enrichment path with a known-bad public IP instead.',
@@ -251,7 +251,7 @@ export const projects: Project[] = [
     slug: 'blind-xss-server',
     title: 'Blind XSS Capture Tool',
     kind: 'Personal tool · bug bounty tooling',
-    timeline: '2024 – present',
+    timeline: '2024 to present',
     readTime: '2 min read',
     cover: '/images/projects/blind-xss-capture.png',
     highlight:
@@ -382,7 +382,7 @@ export const experience: Job[] = [
   {
     role: 'Dispatcher (sole IT resource)',
     org: 'ALM Freight',
-    period: 'Sep 2021 – May 2024',
+    period: 'Sep 2021 to May 2024',
     bullets: [
       'Only IT resource for a 200-person, two-site logistics operation with no dedicated IT department.',
       'Managed the endpoint fleet across Windows 10 workstations and 42 Android devices via 42Gears MDM, with manual patch management across the full fleet.',
@@ -393,18 +393,18 @@ export const experience: Job[] = [
   {
     role: 'Delivery Associate',
     org: 'MMML (Amazon DSP)',
-    period: 'Sep 2025 – present',
+    period: 'Sep 2025 to present',
     current: true,
   },
   {
     role: 'Delivery Associate',
     org: 'DBE Logistics (Amazon DSP)',
-    period: 'May 2024 – Aug 2025',
+    period: 'May 2024 to Aug 2025',
   },
   {
     role: 'Assembly Technician',
     org: 'Contour Windows',
-    period: 'Aug 2019 – Aug 2021',
+    period: 'Aug 2019 to Aug 2021',
   },
 ]
 
