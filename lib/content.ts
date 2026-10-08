@@ -110,6 +110,7 @@ export const projects: Project[] = [
       'T1003.001 · LSASS credential dumping',
       'T1055 · Process injection',
       'T1059.001 · PowerShell',
+      'T1078 · Valid accounts (successful brute force)',
       'T1110 · Brute force',
       'T1547.001 · Registry Run-key persistence',
       'T1543.003 · Service installation',
@@ -142,15 +143,15 @@ export const projects: Project[] = [
       '424k log events, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
     readTime: '4 min read',
     card:
-      'A single-host T-Pot deployment (Standard edition) on a public VPS, exposed to collect live attack traffic. Most of it is automated scanning noise; the useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
+      'A single-host T-Pot deployment on a public DigitalOcean VPS, exposed to collect live attack traffic. Most of it is automated scanning noise; the useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
     result: '424k+ events logged; triaged Suricata exploit-attempt signatures and reported malicious IPs to AbuseIPDB',
     tags: ['T-Pot', 'Suricata', 'Elasticsearch / Kibana', 'Cowrie', 'Dionaea', 'Threat Intel'],
     credit:
-      'The T-Pot deployment follows the standard honeypot setup (spin up a VPS, run the T-Pot installer, open it to the internet). The analysis and reporting is my own.',
+      'The T-Pot deployment follows the standard honeypot setup (spin up a VPS, run the T-Pot installer, open it to the internet). I left T-Pot’s defaults in place: Blackhole mode off, which is why commodity scanners like ONYPHE still show up in the data, and community submission to Sicherheitstacho at the installer default. The analysis and reporting is my own.',
     why:
       'Reading about attacker behavior is not the same as watching it hit something you own. I put honeypots on the public internet to get real, unsolicited traffic and practice the boring but important part of threat intel: separating background scanning from anything worth a second look, and then doing something with it.',
     built: [
-      'Deployed the Standard edition of T-Pot on a single public VPS and left it exposed to collect live traffic. It runs T-Pot’s standard sensor set as Docker containers, including Cowrie, Dionaea, SentryPeer, Honeytrap, and Ciscoasa, each bound to the services attackers actually probe.',
+      'Deployed T-Pot CE (the Hive install type, run standalone on one host) on a DigitalOcean droplet: Ubuntu 24.04, 8 GB RAM and 4 vCPUs, about $48 a month. I left it exposed to the internet to collect live traffic. T-Pot runs each honeypot as a Docker container behind a single public IP; the sensors that drew the most traffic were SentryPeer, Honeytrap, Ciscoasa, Cowrie, and Dionaea.',
       'Used the Kibana dashboards to break the traffic down by sensor, source ASN, country, and credentials, and to confirm the two exploit-attempt signatures Suricata flagged (CVE-2019-12263 and CVE-2020-11900).',
       'Triaged the Suricata signatures that fired against the sensors (T-Pot ships the Emerging Threats ruleset), separated the high-confidence exploit attempts from the background noise, and reported malicious source IPs to AbuseIPDB with the supporting evidence.',
       'Turned three of the more interesting single events into short write-ups: a VoIP toll-fraud campaign, a commercial scanner (ONYPHE), and non-standard-port TLS recon. Each was practice at explaining a finding the way a report would.',
