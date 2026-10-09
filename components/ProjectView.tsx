@@ -99,7 +99,7 @@ export default function ProjectView({ project }: { project: Project }) {
 
         {/* Built */}
         <section className="mt-10">
-          <h2 className="text-xl font-semibold text-slate-100">What I built</h2>
+          <h2 className="text-xl font-semibold text-slate-100">{project.builtHeading ?? 'What I built'}</h2>
           <ul className="mt-4 space-y-3">
             {project.built.map((b, i) => (
               <li key={i} className="flex gap-3 text-slate-300 leading-relaxed">

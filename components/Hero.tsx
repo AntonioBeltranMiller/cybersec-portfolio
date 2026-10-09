@@ -1,12 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, MapPin, ArrowRight } from 'lucide-react'
-import { profile } from '@/lib/content'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Github, Linkedin, Mail, MapPin, ArrowRight, CalendarClock, ArrowUpRight } from 'lucide-react'
+import { profile, projects } from '@/lib/content'
+
+// The three cases a SOC manager should be able to click before scrolling:
+// the alert triage first, then the lab work behind it.
+const proof = projects.filter((p) => !p.hideFromHome && p.short && p.cover).slice(0, 3)
 
 export default function Hero() {
   return (
-    <section className="relative pt-36 pb-20 px-4">
+    <section className="relative pt-32 pb-16 px-4">
       <div className="container mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -29,6 +35,11 @@ export default function Hero() {
             {profile.tagline}
           </p>
 
+          <p className="mt-4 inline-flex items-start gap-2 text-sm text-emerald-300/90">
+            <CalendarClock className="w-4 h-4 mt-0.5 shrink-0" />
+            <span>{profile.availability}</span>
+          </p>
+
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
               href="#projects"
@@ -44,7 +55,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-5 text-slate-400 text-sm">
+          <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-slate-400 text-sm">
             <span className="inline-flex items-center gap-1.5">
               <MapPin className="w-4 h-4" /> {profile.location}
             </span>
@@ -60,11 +71,46 @@ export default function Hero() {
           </div>
         </motion.div>
 
+        {/* Proof row: real work, clickable, above the fold on desktop */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="mt-12"
+        >
+          <p className="text-xs font-mono uppercase tracking-wider text-slate-500 mb-3">Start here</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {proof.map((p) => (
+              <Link
+                key={p.slug}
+                href={`/projects/${p.slug}`}
+                className="group flex sm:flex-col items-center sm:items-stretch gap-3 sm:gap-0 overflow-hidden rounded-lg border border-slate-800 bg-slate-900/40 hover:border-amber-500/40 transition-colors"
+              >
+                <div className="relative w-28 sm:w-full shrink-0 aspect-[16/10] bg-slate-950 overflow-hidden">
+                  <Image
+                    src={p.cover as string}
+                    alt=""
+                    fill
+                    className="object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity"
+                    sizes="(max-width:640px) 112px, 280px"
+                  />
+                </div>
+                <div className="flex items-start justify-between gap-2 py-2 pr-3 sm:px-3 sm:py-2.5">
+                  <span className="text-sm font-medium text-slate-200 group-hover:text-amber-200 leading-snug">
+                    {p.short}
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-amber-400 shrink-0 mt-0.5" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="mt-16 space-y-4 border-l-2 border-slate-800 pl-5"
+          className="mt-10 space-y-4 border-l-2 border-slate-800 pl-5"
         >
           {profile.summary.map((p, i) => (
             <p key={i} className="text-slate-400 leading-relaxed max-w-2xl">

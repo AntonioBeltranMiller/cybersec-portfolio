@@ -93,3 +93,12 @@ pre {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Printing or saving the page as PDF: sections that were never scrolled into view
+   would otherwise print blank, because their fade-in animation never ran. */
+@media print {
+  [style*="opacity"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

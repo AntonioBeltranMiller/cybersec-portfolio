@@ -8,24 +8,26 @@ import { projects } from '@/lib/content'
 import Kicker from './Kicker'
 
 export default function Projects() {
-  const spotlight = projects.filter((p) => p.spotlight)
-  const rest = projects.filter((p) => !p.spotlight)
+  const spotlight = projects.filter((p) => p.spotlight && !p.hideFromHome)
+  const rest = projects.filter((p) => !p.spotlight && !p.hideFromHome)
+  // still live pages, but secondary to a SOC application, so listed as links only
+  const other = projects.filter((p) => p.hideFromHome)
 
   return (
     <section id="projects" className="py-24 px-4 scroll-mt-16">
       <div className="container mx-auto max-w-5xl">
         <header className="mb-14 max-w-2xl">
-          <Kicker>Projects &amp; research</Kicker>
+          <Kicker>Cases &amp; projects</Kicker>
           <h2 className="mt-4 text-3xl md:text-4xl font-bold tracking-tight text-slate-100">
-            Things I built, and what they taught me
+            Alert triage first, then the lab work behind it
           </h2>
           <p className="mt-4 text-slate-400 leading-relaxed">
-            Home-lab detection work and bug bounty research. Each write-up is honest about what I built, what I
-            based it on, and what the screenshots actually show.
+            A full alert investigation, the detection lab where I write and tune rules, and the honeypot where I study
+            live attack traffic. Each one says what I built, what it was based on, and what the evidence shows.
           </p>
         </header>
 
-        {/* Spotlight: the two strongest, elevated, with a wide preview */}
+        {/* Spotlight: the alert investigation and the detection lab */}
         <div className="grid lg:grid-cols-2 gap-6">
           {spotlight.map((p, i) => (
             <motion.div
@@ -87,7 +89,7 @@ export default function Projects() {
         </div>
 
         {/* The rest, with a compact preview */}
-        <div className="mt-6 grid md:grid-cols-3 gap-6">
+        <div className={`mt-6 grid gap-6 ${rest.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {rest.map((p, i) => (
             <motion.div
               key={p.slug}
@@ -124,6 +126,20 @@ export default function Projects() {
             </motion.div>
           ))}
         </div>
+
+        {other.length > 0 && (
+          <p className="mt-8 text-sm text-slate-500">
+            Other research:{' '}
+            {other.map((p, i) => (
+              <span key={p.slug}>
+                {i > 0 && ' · '}
+                <Link href={`/projects/${p.slug}`} className="text-slate-300 hover:text-amber-400 underline-offset-4 hover:underline transition-colors">
+                  {p.title}
+                </Link>
+              </span>
+            ))}
+          </p>
+        )}
       </div>
     </section>
   )

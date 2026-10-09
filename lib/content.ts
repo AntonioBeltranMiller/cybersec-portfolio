@@ -5,8 +5,8 @@
 
 export const profile = {
   name: 'Antonio Beltran-Miller',
-  // Titles kept aligned with the résumé summary: analyst-in-training, not roles held.
-  roles: ['SOC Analyst', 'Detection & Automation', 'Bug Bounty Researcher'],
+  // Titles kept aligned with the résumé summary: the role being pursued, not a role held.
+  roles: ['Tier 1 SOC Analyst candidate', 'Alert triage & detection'],
   location: 'Ann Arbor, Michigan',
   email: 'AntonioBeltranMiller@gmail.com',
   site: 'antoniobeltranmiller.com',
@@ -15,10 +15,11 @@ export const profile = {
   resume: '/resume.pdf',
   // First person, plain. Mirrors the cover-letter voice.
   tagline:
-    'Security+ certified professional transitioning into a SOC role. I build detections and automation in my home lab, deploy honeypots to capture real-world threat telemetry, and conduct bug bounty research to analyze practical intrusion techniques.',
+    'Security+ certified and moving into a Tier 1 SOC role. I work alerts end to end on LetsDefend, write and tune Splunk detections in a five-VM home lab, and ran a T-Pot honeypot to study live attack traffic.',
+  // Shift and location fit, shown near the top because it is one of the first things a SOC manager screens for.
+  availability: 'Available for rotating and off-hours shifts · Onsite in the Detroit metro, hybrid, or remote',
   summary: [
     'I spent about two and a half years as the only IT person for a 200-person logistics company, so I know what a normal Windows and Active Directory environment looks like and how to keep people working while something is broken.',
-    'Since then I have been building toward security operations on purpose: a Splunk, n8n, and GPT-4.1 mini alert-triage pipeline in my lab, a single-host T-Pot honeypot for live attack data, and responsible bug bounty disclosure. I would rather show a smaller number I can defend than a big one I cannot.',
   ],
 }
 
@@ -39,6 +40,12 @@ export type Project = {
   highlight?: string
   // approximate reading time for the case study
   readTime?: string
+  // optional override for the "What I built" heading (e.g. a deployment rather than a build)
+  builtHeading?: string
+  // short label used in the hero proof row
+  short?: string
+  // kept as a live page but listed under "Other research" instead of on the homepage grid
+  hideFromHome?: boolean
   // preview screenshot shown on the project card
   cover?: string
   // one-line honest summary for the card
@@ -66,6 +73,48 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: 'letsdefend-phishing',
+    title: 'SOC Alert: Lumma Stealer via ClickFix',
+    kind: 'LetsDefend Challenge · unguided · SOC338',
+    timeline: 'August 2026',
+    featured: true,
+    spotlight: true,
+    readTime: '6 min read',
+    short: 'Lumma Stealer alert, triaged end to end',
+    highlight:
+      'Containing the host was not the end of it. Lumma steals session cookies, so the handoff asks for every session to be invalidated, not just a password reset.',
+    cover: '/images/projects/ThePhishingEmail.png',
+    card:
+      'A simulated phishing alert I triaged end to end on LetsDefend: email through the ClickFix lure, mshta LOLBin abuse, payload confirmation, containment, and a tier-2 handoff brief.',
+    result: 'Confirmed true positive · full kill chain traced · host contained · tier-2 brief written',
+    tags: ['Phishing', 'DFIR', 'Lumma Stealer', 'ClickFix', 'LOLBin', 'MITRE ATT&CK'],
+    why:
+      'This is a training environment, so the stakes were not real. I use it to practice tier-1 methodology and, just as importantly, to practice writing an investigation so another analyst could pick it up without asking me a single question. I picked this scenario because it covers the whole chain across email, endpoint, process, and network evidence.',
+    built: [
+      'Worked the alert as tier 1: claimed the ticket, reviewed the impersonation email, and confirmed the sender IP as known Lumma C2 in threat intel.',
+      'Traced the ClickFix social-engineering lure to the obfuscated PowerShell the user was tricked into pasting, then followed it to mshta.exe (a signed Microsoft LOLBin) fetching a payload disguised as a .mp4.',
+      'Confirmed the payload malicious on VirusTotal (22/58, Ikarus naming Trojan.PowerShell.LummaStealer), walked the outbound connections, isolated the host, and flagged sessions for invalidation, not just a password reset, since Lumma steals cookies.',
+      'Wrote a tier-2 handoff brief: what was confirmed, the open questions for IR, and the immediate priorities.',
+    ],
+    learned: [
+      'ClickFix puts the user inside the kill chain. Nothing malicious hits disk from the email itself, so attachment scanning is irrelevant and behavioral detection is what catches it.',
+      'LOLBin abuse works precisely because mshta.exe is supposed to exist. Defender updated signatures 37 seconds before it ran and the payload still executed.',
+      'Infostealer incidents need session invalidation, not just a credential reset, because the stolen cookies stay valid afterward.',
+    ],
+    metrics: [
+      { label: 'Alert', value: 'SOC338', note: 'Lumma Stealer, Critical' },
+      { label: 'Verdict', value: 'True Positive' },
+      { label: 'VirusTotal', value: '22 / 58' },
+      { label: 'LOLBin', value: 'mshta.exe', note: 'T1218.005' },
+    ],
+    evidence: [
+      { label: 'The impersonation email', src: '/images/projects/ThePhishingEmail.png' },
+      { label: 'Sender IP confirmed as Lumma C2 in threat intel', src: '/images/projects/ThreatIntelShowsLumma.png' },
+      { label: 'ClickFix command in terminal history', src: '/images/projects/ConfirmedPayloadExecution.png' },
+      { label: 'Payload confirmed malicious on VirusTotal', src: '/images/projects/VIrustotalHashLookup.png' },
+    ],
+  },
+  {
     slug: 'soc-automation',
     title: 'AI-Assisted SOC Automation Lab',
     kind: 'Home lab · detection + automation',
@@ -76,6 +125,7 @@ export const projects: Project[] = [
     highlight:
       'My first SSH brute-force rule fired on a single failed login, which is useless. Tuning it to need repeated failures from one source inside a short window, so it catches a real attack without screaming at every mistyped password, was the actual detection work.',
     readTime: '4 min read',
+    short: 'Splunk detections + AI triage lab',
     card:
       'An AI-assisted detection and triage pipeline running across five VMs. I built it from MyDFIR’s SOC Automation 2.0 and extended it: Splunk ingests endpoint telemetry, n8n hands each alert to an LLM acting as a tier-1 analyst, and an MCP server lets that AI query Splunk directly to investigate.',
     result: 'Cut my own triage time from 45 to 8 minutes across 10 self-run attacks',
@@ -137,11 +187,12 @@ export const projects: Project[] = [
     kind: 'Home lab · threat intel',
     timeline: 'August to October 2025',
     featured: true,
-    spotlight: true,
     cover: '/images/projects/tpot-dashboard.png',
     highlight:
       '424k log events, and almost all of it is noise. The skill is finding the handful of sources worth a second look, and doing something with them.',
     readTime: '4 min read',
+    short: 'T-Pot honeypot threat intel',
+    builtHeading: 'What I deployed and added',
     card:
       'A single-host T-Pot deployment on a public DigitalOcean VPS, exposed to collect live attack traffic. Most of it is automated scanning noise; the useful work was finding the few patterns worth alerting on and reporting the infrastructure behind them.',
     result: '424k+ events logged; triaged Suricata exploit-attempt signatures and reported malicious IPs to AbuseIPDB',
@@ -172,43 +223,6 @@ export const projects: Project[] = [
       { label: 'Attacker ASNs, top source IPs, and Suricata CVE hits', src: '/images/projects/tpot-attacks.png' },
       { label: 'Live attack map and source distribution', src: '/images/projects/tpot-analysis.png' },
       { label: 'Source-IP reputation, OS, and country breakdown', src: '/images/projects/tpot-attack-overview.png' },
-    ],
-  },
-  {
-    slug: 'letsdefend-phishing',
-    title: 'SOC Alert: Lumma Stealer via ClickFix',
-    kind: 'LetsDefend Challenge · unguided · SOC338',
-    timeline: 'August 2026',
-    featured: true,
-    cover: '/images/projects/ThePhishingEmail.png',
-    card:
-      'A simulated phishing alert I triaged end to end on LetsDefend: email through the ClickFix lure, mshta LOLBin abuse, payload confirmation, containment, and a tier-2 handoff brief.',
-    result: 'Confirmed true positive · full kill chain traced · host contained · tier-2 brief written',
-    tags: ['Phishing', 'DFIR', 'Lumma Stealer', 'ClickFix', 'LOLBin', 'MITRE ATT&CK'],
-    why:
-      'This is a training environment, so the stakes were not real. I use it to practice tier-1 methodology and, just as importantly, to practice writing an investigation so another analyst could pick it up without asking me a single question. I picked this scenario because it covers the whole chain across email, endpoint, process, and network evidence.',
-    built: [
-      'Worked the alert as tier 1: claimed the ticket, reviewed the impersonation email, and confirmed the sender IP as known Lumma C2 in threat intel.',
-      'Traced the ClickFix social-engineering lure to the obfuscated PowerShell the user was tricked into pasting, then followed it to mshta.exe (a signed Microsoft LOLBin) fetching a payload disguised as a .mp4.',
-      'Confirmed the payload malicious on VirusTotal (22/58, Ikarus naming Trojan.PowerShell.LummaStealer), walked the outbound connections, isolated the host, and flagged sessions for invalidation, not just a password reset, since Lumma steals cookies.',
-      'Wrote a tier-2 handoff brief: what was confirmed, the open questions for IR, and the immediate priorities.',
-    ],
-    learned: [
-      'ClickFix puts the user inside the kill chain. Nothing malicious hits disk from the email itself, so attachment scanning is irrelevant and behavioral detection is what catches it.',
-      'LOLBin abuse works precisely because mshta.exe is supposed to exist. Defender updated signatures 37 seconds before it ran and the payload still executed.',
-      'Infostealer incidents need session invalidation, not just a credential reset, because the stolen cookies stay valid afterward.',
-    ],
-    metrics: [
-      { label: 'Alert', value: 'SOC338', note: 'Lumma Stealer, Critical' },
-      { label: 'Verdict', value: 'True Positive' },
-      { label: 'VirusTotal', value: '22 / 58' },
-      { label: 'LOLBin', value: 'mshta.exe', note: 'T1218.005' },
-    ],
-    evidence: [
-      { label: 'The impersonation email', src: '/images/projects/ThePhishingEmail.png' },
-      { label: 'Sender IP confirmed as Lumma C2 in threat intel', src: '/images/projects/ThreatIntelShowsLumma.png' },
-      { label: 'ClickFix command in terminal history', src: '/images/projects/ConfirmedPayloadExecution.png' },
-      { label: 'Payload confirmed malicious on VirusTotal', src: '/images/projects/VIrustotalHashLookup.png' },
     ],
   },
   {
@@ -254,6 +268,7 @@ export const projects: Project[] = [
     kind: 'Personal tool · bug bounty tooling',
     timeline: '2024 to present',
     readTime: '2 min read',
+    hideFromHome: true,
     cover: '/images/projects/blind-xss-capture.png',
     highlight:
       'I only ever point it at targets I am authorized to test. Self-hosting was about controlling where the callback data goes.',
@@ -290,7 +305,10 @@ export type Cert = {
   issuer: string
   date: string
   status: 'completed' | 'in-progress'
-  image: string
+  // optional: a cert with no official badge image shows a neutral icon instead of borrowing another cert's logo
+  image?: string
+  // core certs get a full card; the rest are listed in one "also completed" line
+  core?: boolean
   verify?: string
   // shown in place of a verify link when no public badge exists (e.g. completion certs)
   note?: string
@@ -304,6 +322,7 @@ export const certifications: Cert[] = [
     date: 'October 2025',
     status: 'completed',
     image: '/images/certifications/comptia-security-plus.png',
+    core: true,
     verify: 'https://www.credly.com/badges/8771ef3b-bbff-4188-b2d2-c9069c939ca4/public_url',
     skills: ['Threat detection & response', 'Risk & vulnerability management', 'Network security', 'Cryptography & PKI'],
   },
@@ -312,7 +331,7 @@ export const certifications: Cert[] = [
     issuer: 'CompTIA',
     date: 'In progress · expected October 2026',
     status: 'in-progress',
-    image: '/images/certifications/comptia-security-plus.png',
+    core: true,
     skills: ['Behavioral analytics', 'Threat hunting', 'Incident response', 'Vulnerability management'],
   },
   {
@@ -321,6 +340,7 @@ export const certifications: Cert[] = [
     date: 'February 2025',
     status: 'completed',
     image: '/images/certifications/letsdefend-soc-analyst.png',
+    core: true,
     verify: 'https://app.letsdefend.io/certificate/show/3b48fd23-0ea8-4c67-aebd-e6cb407a54f1',
     skills: ['SIEM analysis', 'Alert triage', 'Malware analysis', 'Incident response'],
   },
@@ -330,6 +350,7 @@ export const certifications: Cert[] = [
     date: 'November 2024',
     status: 'completed',
     image: '/images/certifications/google-cybersecurity-certificate.png',
+    core: true,
     verify: 'https://coursera.org/share/871974ea6e95d65bae175850e5a6e37d',
     skills: ['Python automation', 'Linux & SQL', 'SIEM tools', 'NIST frameworks'],
   },
@@ -415,22 +436,55 @@ export const education = {
   detail: 'Online · expected 2027',
 }
 
-export const skills: { group: string; items: string[] }[] = [
+// Each skill links to where it is shown on the site. Skills with nothing on the site
+// to back them (Sentinel, threat hunting, Diamond Model, Burp Suite, Suricata rule
+// writing until the custom rules are published) were removed rather than claimed.
+export type Skill = { name: string; href?: string }
+
+export const skills: { group: string; items: Skill[] }[] = [
   {
     group: 'SIEM & detection',
-    items: ['Splunk (SPL, dashboards, alerts)', 'Suricata rule writing', 'Sysmon', 'Wireshark', 'Microsoft Sentinel (familiarity)'],
+    items: [
+      { name: 'Splunk (SPL, alerts, tuning)', href: '/projects/soc-automation' },
+      { name: 'Sysmon', href: '/projects/soc-automation' },
+      { name: 'Suricata alert triage', href: '/projects/honeypot' },
+      { name: 'Elasticsearch / Kibana', href: '/projects/honeypot' },
+      { name: 'Wireshark', href: '/#certifications' },
+    ],
   },
   {
     group: 'Security operations',
-    items: ['Alert triage', 'Incident response (NIST 800-61)', 'Threat hunting', 'IOC analysis', 'MITRE ATT&CK', 'Diamond Model'],
+    items: [
+      { name: 'Alert triage', href: '/projects/letsdefend-phishing' },
+      { name: 'Phishing analysis', href: '/projects/letsdefend-phishing' },
+      { name: 'IOC analysis', href: '/projects/letsdefend-phishing' },
+      { name: 'MITRE ATT&CK mapping', href: '/projects/soc-automation' },
+      { name: 'Incident response (NIST 800-61)', href: '/blog/incident-response' },
+      { name: 'Escalation write-ups', href: '/projects/letsdefend-phishing' },
+    ],
   },
   {
     group: 'Systems & cloud',
-    items: ['Windows', 'Active Directory', 'Linux', 'TCP/IP', 'AWS fundamentals (CloudWatch, GuardDuty, IAM, VPC)'],
+    items: [
+      { name: 'Windows', href: '/#experience' },
+      { name: 'Active Directory', href: '/#experience' },
+      { name: 'Linux (Ubuntu)', href: '/projects/soc-automation' },
+      { name: 'TCP/IP', href: '/projects/honeypot' },
+      { name: 'AWS fundamentals (CloudWatch, GuardDuty, IAM, VPC)', href: '/#certifications' },
+    ],
   },
   {
     group: 'Automation & tooling',
-    items: ['Python', 'Bash', 'PowerShell', 'n8n', 'OpenAI API (GPT-4.1 mini)', 'VirusTotal / AbuseIPDB', 'Metasploit', 'Burp Suite', 'mitmproxy'],
+    items: [
+      { name: 'n8n', href: '/projects/soc-automation' },
+      { name: 'OpenAI API (GPT-4.1 mini) + MCP', href: '/projects/soc-automation' },
+      { name: 'VirusTotal / AbuseIPDB', href: '/projects/soc-automation' },
+      { name: 'PowerShell', href: '/projects/letsdefend-phishing' },
+      { name: 'Bash', href: '/projects/blind-xss-server' },
+      { name: 'Python', href: '/#certifications' },
+      { name: 'Metasploit / Atomic Red Team', href: '/projects/soc-automation' },
+      { name: 'mitmproxy', href: '/projects/npm-supply-chain' },
+    ],
   },
 ]
 

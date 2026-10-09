@@ -13,8 +13,8 @@ export default function Experience() {
           <Kicker>Background</Kicker>
           <h2 className="mt-4 text-3xl font-bold text-slate-100">Experience &amp; education</h2>
           <p className="mt-3 text-slate-400 max-w-2xl">
-            I am early in my security career and would rather say so plainly. My IT foundation is the ALM Freight
-            role; the delivery jobs are how I have paid the bills while studying.
+            My IT foundation is two and a half years as the sole IT resource at ALM Freight. Since 2024 I have worked
+            delivery full time while building the lab work above and studying for CySA+.
           </p>
         </header>
 
