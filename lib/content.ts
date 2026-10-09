@@ -488,6 +488,8 @@ export const skills: { group: string; items: Skill[] }[] = [
   },
 ]
 
+export type Disposition = 'Resolved' | 'Malicious' | 'Benign' | 'Inconclusive'
+
 export type Writeup = {
   slug: string
   title: string
@@ -497,145 +499,213 @@ export type Writeup = {
   category: string
   // 'incident' gets a little more structure; 'observation' stays light
   kind: 'incident' | 'observation'
+  // the analyst's call, shown as a badge on every card and at the top of the post
+  disposition: Disposition
+  // the at-a-glance triage summary a reviewer reads before the narrative
+  ticket: { label: string; value: string }[]
   // links a honeypot write-up back to the project it came from
   related?: { slug: string; title: string }
   summary: string
   sections: Section[]
+  // shown in a "Lessons learned" box at the end
   reflection?: string
   featured?: boolean
 }
 
 const HONEYPOT_REF = { slug: 'honeypot', title: 'T-Pot Honeypot Threat Intelligence' }
 
+// Ordered to show the range of calls a Tier 1 analyst makes:
+// a resolved incident, a malicious source, a benign one, and an inconclusive one.
 export const writeups: Writeup[] = [
   {
     slug: 'incident-response',
     title: 'WordPress Compromise: Containment and Recovery',
     excerpt:
-      'A site owner said the site was "acting up." It was an active compromise. Tracing it to a vulnerable plugin, pulling out the persistence, and getting them back on a clean build in about 2.5 hours.',
+      'A site owner reported the site was "acting up." It was an active compromise through a vulnerable file-manager component. Contained, persistence removed, and back on a clean build in about 2.5 hours.',
     date: '2024-12-15',
-    readTime: '4 min read',
+    readTime: '2 min read',
     category: 'Incident Response',
     kind: 'incident',
+    disposition: 'Resolved',
     featured: true,
+    ticket: [
+      { label: 'Disposition', value: 'True positive, resolved' },
+      { label: 'Reported by', value: 'Site owner ("the site is acting up")' },
+      { label: 'Entry point', value: 'elFinder file manager in a plugin, CVE-2021-32682' },
+      { label: 'Persistence', value: 'Webshells, 3 hidden admin accounts, .htaccess rules' },
+      { label: 'Time to recovery', value: 'About 2.5 hours' },
+      { label: 'Data exposure', value: 'No PII exposed' },
+    ],
     summary:
-      'A site owner came to me with what sounded like a normal problem: the site was acting up. It turned out to be an active compromise. I traced the entry point, pulled out the persistence, patched the hole, and had them back on a clean build in about two and a half hours. No PII was exposed.',
+      'A site owner told me their WordPress site was "acting up." It was an active compromise. I traced the entry point to a vulnerable file-manager component, removed three separate persistence mechanisms, and had the site back on a clean, patched build in about two and a half hours.',
     sections: [
       {
-        heading: 'What I found',
+        heading: 'Detection and analysis',
         items: [
-          'Entry point: a known-vulnerable plugin, CVE-2021-32682.',
-          'Webshell backdoors dropped into theme files, three hidden admin accounts, and modified .htaccess rules holding the persistence in place.',
-          'The compromise sat at the web-application layer with signs of attempted lateral movement. I found no evidence that personal data was accessed or taken.',
+          'Traced the entry point to CVE-2021-32682, a remote code execution flaw in the elFinder file manager that a plugin on the site bundled.',
+          'Found three persistence mechanisms: webshells dropped into theme files, three hidden administrator accounts, and modified .htaccess rules.',
+          'Scoped the impact to the web application. I found no evidence that personal data was accessed or taken.',
         ],
       },
       {
-        heading: 'How I handled it',
+        heading: 'Containment',
         items: [
-          'Contained first: blocked admin access, disabled the unauthorized accounts, and captured the malicious files before deleting anything.',
-          'Removed the persistence: cleaned the webshells, reverted the .htaccess changes, and patched the plugin.',
-          'Recovered: restored from a clean pre-compromise backup, reset every credential, and added basic monitoring and file-integrity checking so a repeat would get noticed.',
+          'Blocked admin access and disabled the unauthorized accounts.',
+          'Captured copies of the malicious files before deleting anything, so the evidence survived the cleanup.',
         ],
       },
       {
-        heading: 'Why it mattered',
+        heading: 'Eradication and recovery',
+        items: [
+          'Removed the webshells and reverted the .htaccess changes.',
+          'Restored from a clean pre-compromise backup, patched the vulnerable plugin, and reset every credential.',
+          'Added basic monitoring and file-integrity checking so a repeat would be noticed.',
+        ],
+      },
+      {
+        heading: 'Impact',
         body:
-          'Left alone, those backdoors could have kept the attacker in the site for months and disrupted the owner’s operations. The real exposure here was availability and trust, not a data-breach headline.',
+          'Left in place, the backdoors would have given the attacker ongoing access to the site: enough to disrupt the owner’s operations for months and put the site’s users at risk.',
       },
     ],
     reflection:
-      'The lesson I keep from this one is to treat "the site is acting weird" as a possible incident until proven otherwise. The whole thing hinged on an unpatched plugin, which is the least glamorous and most common way these compromises start.',
+      'Treat "the site is acting weird" as a possible incident until proven otherwise. The whole compromise hinged on one unpatched component, the least glamorous and most common way in, which is why patching and file-integrity checks were part of the recovery and not an afterthought.',
   },
   {
     slug: 'voip-toll-fraud',
     title: 'A VoIP Toll-Fraud Probe on My Honeypot',
     excerpt:
-      'Sentrypeer and Suricata caught a burst of SIP INVITEs from a rented VPS, dialing sequential premium-rate numbers behind a spoofed Cisco vendor string. A probe looking for a PBX to run up a bill on.',
+      'A rented VPS sent SIP INVITEs to sequential premium-rate numbers behind a Cisco User-Agent. Toll-fraud reconnaissance: marked malicious and reported to AbuseIPDB.',
     date: '2025-09-22',
-    readTime: '3 min read',
+    readTime: '2 min read',
     category: 'VoIP Security',
     kind: 'observation',
+    disposition: 'Malicious',
     related: HONEYPOT_REF,
+    ticket: [
+      { label: 'Disposition', value: 'Malicious: toll-fraud reconnaissance' },
+      { label: 'Detected by', value: 'SentryPeer sensor and Suricata' },
+      { label: 'Source', value: '208.109.190.200 (GoDaddy VPS, AS398101)' },
+      { label: 'Target', value: 'UDP/5060 (SIP)' },
+      { label: 'Action taken', value: 'Source IP reported to AbuseIPDB' },
+    ],
     summary:
-      'While my honeypots were running, the Sentrypeer sensor and Suricata picked up a burst of SIP traffic that clearly was not someone dialing a wrong number. It was a toll-fraud probe looking for a phone system it could use to place expensive international calls on someone else’s bill.',
+      'My honeypot’s SentryPeer sensor and Suricata picked up a burst of SIP INVITE requests from one rented VPS, each trying to place a call to a premium-rate international number. This is toll-fraud reconnaissance: hunting for a phone system that will place expensive calls billed to its owner.',
     sections: [
       {
-        heading: 'What I saw',
+        heading: 'Evidence',
         items: [
-          'Source 208.109.190.200, a GoDaddy VPS (AS398101). Rented infrastructure, not the attacker’s own machine.',
-          'SIP INVITE floods over UDP/5060, with the source port rotating (50352, 52392, 56775) to keep the flow alive.',
-          'A spoofed User-Agent of "Cisco-SIPGateway" to look like legitimate telecom equipment.',
-          'Target numbers that stepped through sequential international ranges on high-tariff premium prefixes.',
-          'Full SDP negotiation, so it was trying to actually establish calls, not just scan.',
+          'SIP INVITE requests over UDP/5060 from 208.109.190.200, arriving from rotating source ports (50352, 52392, 56775), consistent with a scripted dialer opening a new session per attempt.',
+          'A User-Agent of "Cisco-SIPGateway." A GoDaddy VPS is not a Cisco gateway, so the string is there to make the traffic look like carrier equipment.',
+          'Destination numbers stepping through sequential international ranges on premium-rate prefixes.',
+          'Full SDP negotiation in the requests, meaning it was trying to complete real calls, not just map the service.',
         ],
       },
       {
-        heading: 'Why it matters',
+        heading: 'Assessment',
         body:
-          'Toll fraud bills the victim, not the attacker. A misconfigured PBX that accepts these calls can run up a large charge before anyone notices, and carriers often hold the account holder responsible. The legitimate-looking vendor string and the rented VPS are both there to slip past naive IP or fingerprint filters.',
+          'Toll fraud bills the victim, not the attacker. A misconfigured PBX that accepts these calls can run up a large charge before anyone notices, and the carrier usually holds the account owner responsible. Disposable rented infrastructure and a legitimate-looking vendor string cost the attacker nothing and get past simple IP blocklists and fingerprint filters.',
+      },
+      {
+        heading: 'What I would alert on',
+        items: [
+          'One source sending INVITEs to many different destination numbers in a short window.',
+          'Call attempts to premium-rate and high-cost international prefixes.',
+          'A User-Agent claiming carrier hardware from hosting-provider address space.',
+        ],
+      },
+      {
+        heading: 'Recommendations',
+        body:
+          'Keep SIP off the open internet, require authentication on every trunk and extension, and cap outbound calls by destination and concurrency so a compromised PBX cannot run up a bill overnight.',
       },
     ],
-    reflection:
-      'If this were a phone system I owned, the fixes are boring and effective: keep SIP off the open internet, require authentication, and cap outbound calls by destination and concurrency so a compromise cannot run up a bill overnight. I reported the source IP to AbuseIPDB.',
   },
   {
     slug: 'onyphe-scanner',
     title: 'A Commercial Scanner Cataloging My Services',
     excerpt:
-      'One event in my logs was not an attack at all: a clean handshake, a banner grab, and an immediate reset from a commercial scanner. Worth writing up precisely because it looks boring.',
+      'A clean handshake, a banner grab, and an immediate reset from ONYPHE, a commercial internet scanner. Closed as benign without a report, and still worth understanding.',
     date: '2025-09-24',
-    readTime: '3 min read',
+    readTime: '2 min read',
     category: 'Threat Intelligence',
     kind: 'observation',
+    disposition: 'Benign',
     related: HONEYPOT_REF,
+    ticket: [
+      { label: 'Disposition', value: 'Benign: legitimate commercial scanner' },
+      { label: 'Source', value: '91.231.89.129 (ONYPHE, AS213412)' },
+      { label: 'Target', value: '9770/TCP' },
+      { label: 'Action taken', value: 'Closed as informational; not reported' },
+    ],
     summary:
-      'One event in my honeypot logs was not an attack at all: a commercial scanner cataloging my services. It is worth writing up precisely because it looks boring and is easy to wave off.',
+      'Not every hit on a honeypot is an attack. This one was a commercial scanner recording what my box exposes. I closed it as benign, and wrote it up because deciding what not to escalate is as much a part of triage as catching what to escalate.',
     sections: [
       {
-        heading: 'What I saw',
+        heading: 'Evidence',
         items: [
-          'A single clean TCP handshake to 9770/TCP, a banner grab, then an immediate RST. The whole thing was over in about 98 milliseconds.',
-          'Source 91.231.89.129, which belongs to ONYPHE (AS213412), a company that scans the internet and sells access to what it finds.',
+          'One TCP handshake to 9770/TCP, a banner grab, then an immediate RST, about 98 milliseconds from start to finish.',
+          'The source, 91.231.89.129, belongs to ONYPHE (AS213412), a company that scans the internet and sells searchable access to what it finds.',
+          'It showed up at all because T-Pot’s Blackhole mode, which null-routes known mass scanners like this one, was left off.',
         ],
       },
       {
-        heading: 'Why I did not just ignore it',
+        heading: 'Why benign is not the same as nothing',
         body:
-          'This is not malicious, but it is not nothing either. ONYPHE’s job is to record what my box exposes and put it in a searchable database, and that database can be bought by anyone, including people looking for targets. So a "harmless" scan is really the first step of someone else’s reconnaissance, done for them and sold on.',
+          'The scan does no harm, and reporting a legitimate research scanner to an abuse database would be a false report. But ONYPHE’s product is a searchable record of what my box exposes, available to anyone who pays, including people looking for targets. The scan is the first step of someone else’s reconnaissance, done for them in advance.',
+      },
+      {
+        heading: 'What I would alert on',
+        body:
+          'Not the scan itself. In a SOC I would tag known research scanners so they drop out of the triage queue, and alert on a pairing instead: a service gets catalogued, then sees targeted traffic in the following days.',
       },
     ],
-    reflection:
-      'The honest answer is there is not much to do about a legitimate scanner except know it happened. What I took from it is to correlate: if a specific service gets catalogued and then sees targeted traffic a few days later, that pairing is worth an alert. On its own, one banner grab is just noise to file.',
   },
   {
     slug: 'tls-recon',
     title: 'A TLS Handshake on My Honeypot’s Management Port',
     excerpt:
-      'Suricata flagged a full TLS handshake against 64297/TCP, the port T-Pot’s own dashboard runs on. A wide-range scan would reach it too, but a completed handshake against the management port specifically was worth a closer look.',
+      'Suricata flagged a completed TLS handshake against 64297/TCP, T-Pot’s own dashboard port. Inconclusive on intent, and a clear finding about my own configuration.',
     date: '2025-09-20',
-    readTime: '3 min read',
+    readTime: '2 min read',
     category: 'Threat Intelligence',
     kind: 'observation',
+    disposition: 'Inconclusive',
     related: HONEYPOT_REF,
+    ticket: [
+      { label: 'Disposition', value: 'Inconclusive: possible honeypot fingerprinting' },
+      { label: 'Detected by', value: 'Suricata' },
+      { label: 'Source', value: 'Host on M247 (AS9009)' },
+      { label: 'Target', value: '64297/TCP (T-Pot web dashboard)' },
+      { label: 'Finding', value: 'Management port reachable from the internet' },
+    ],
     summary:
-      'Suricata flagged a full TLS handshake against port 64297 on one of my honeypots. That port stood out, because 64297 is where T-Pot’s own web dashboard listens. A full-range port scan would hit it too, so this is not proof of targeted activity, but a completed TLS handshake against the management port specifically, rather than a bare SYN from a sweep, was enough to make me look closer.',
+      'Suricata flagged a completed TLS handshake against port 64297 on my honeypot, the port where T-Pot’s own web dashboard listens. I could not establish intent, so I marked it inconclusive. The firmer finding was about my own setup: the dashboard should not have been reachable from the internet.',
     sections: [
       {
-        heading: 'What I saw',
+        heading: 'Evidence',
         items: [
-          'A complete TLS handshake, not just a SYN, to 64297/TCP from a host on M247 (AS9009), a provider often used for VPNs and scanning.',
-          'The handshake completed, which means the T-Pot management UI was reachable from the internet on this lab box. I had not restricted the high management ports (above 64000) to an allowlist, which T-Pot’s own guidance recommends.',
-          'No follow-on exploitation. Just the handshake and whatever the certificate revealed.',
+          'A complete TLS handshake, not just a SYN, to 64297/TCP from a host on M247 (AS9009), a provider widely used for VPNs and scanning.',
+          'No exploitation attempt followed. The exchange ended after the handshake and certificate.',
+          'Because the handshake completed, the dashboard was answering the open internet. I had not restricted T-Pot’s management ports (above 64000) to an allowlist, which T-Pot’s own documentation recommends.',
         ],
       },
       {
-        heading: 'Why it caught my eye',
+        heading: 'Assessment',
         body:
-          '64297 is not a service a normal target would be running; it is specific to T-Pot. A completed handshake there is at least consistent with honeypot fingerprinting, confirming what the box is before deciding whether it is worth any real effort, though I cannot rule out a plain full-range scanner that happened to catalog the port. Either way it is a good reminder that deception infrastructure has its own fingerprint to manage, and that the management interface should not have been answering the open internet in the first place.',
+          '64297 is specific to T-Pot, so a completed handshake there is consistent with honeypot fingerprinting: confirming what a box is before deciding whether it is worth real effort. A full-range port sweep would also reach 64297, though, so the port alone does not prove intent.',
+      },
+      {
+        heading: 'What would settle it',
+        body:
+          'Whether the same source touched other ports in the same window. A broad sweep points to a generic scanner; a lone hit on 64297 points to fingerprinting.',
+      },
+      {
+        heading: 'Recommendations',
+        body:
+          'Restrict the management ports to a trusted-IP allowlist or a VPN so the dashboard does not answer arbitrary hosts, and review what its default TLS certificate reveals about the box.',
       },
     ],
-    reflection:
-      'The concrete fix is the boring one: restrict T-Pot’s management ports (above 64000) to a trusted-IP allowlist or a VPN, so the dashboard is not answering arbitrary hosts at all. This changed how I think about the honeypot’s own exposure. If I were running it to fool a specific adversary rather than just collect noise, I would care a lot more about what the management ports and the TLS certificate give away.',
   },
 ]
 

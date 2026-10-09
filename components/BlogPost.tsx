@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Calendar, Clock, AlertTriangle, Eye, ArrowUpRight } from 'lucide-react'
 import type { Writeup } from '@/lib/content'
+import DispositionBadge from './DispositionBadge'
 
 export default function BlogPost({ post }: { post: Writeup }) {
   const isIncident = post.kind === 'incident'
@@ -55,6 +56,22 @@ export default function BlogPost({ post }: { post: Writeup }) {
 
         <p className="mt-6 text-lg text-slate-300 leading-relaxed">{post.summary}</p>
 
+        {/* Triage summary: what a reviewer needs before reading the narrative */}
+        <section className="mt-8 rounded-xl border border-slate-700/70 bg-slate-900/60 overflow-hidden" aria-label="Triage summary">
+          <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-slate-800">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-slate-400">Triage summary</h2>
+            <DispositionBadge value={post.disposition} />
+          </div>
+          <dl className="divide-y divide-slate-800/70">
+            {post.ticket.map((t) => (
+              <div key={t.label} className="grid grid-cols-[8.5rem_1fr] gap-3 px-5 py-2.5 text-sm">
+                <dt className="text-slate-500">{t.label}</dt>
+                <dd className="text-slate-200 break-words">{t.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
         <div className="mt-10 space-y-9">
           {post.sections.map((s) => (
             <section key={s.heading}>
@@ -76,7 +93,7 @@ export default function BlogPost({ post }: { post: Writeup }) {
 
         {post.reflection && (
           <section className="mt-10 rounded-xl border border-slate-700/70 bg-slate-800/30 p-5">
-            <h2 className="text-sm font-mono text-amber-300">What I&apos;d do differently</h2>
+            <h2 className="text-sm font-mono text-amber-300">Lessons learned</h2>
             <p className="mt-3 text-slate-300 leading-relaxed">{post.reflection}</p>
           </section>
         )}

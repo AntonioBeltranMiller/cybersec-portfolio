@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Calendar, Clock, ArrowUpRight } from 'lucide-react'
 import { writeups } from '@/lib/content'
+import DispositionBadge from '@/components/DispositionBadge'
 
 export default function BlogPage() {
   return (
@@ -16,8 +17,8 @@ export default function BlogPage() {
         <motion.header initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mt-8 mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-100">Investigation write-ups</h1>
           <p className="mt-3 text-slate-400 max-w-2xl">
-            Real events from my honeypots and an incident-response case, written the way I would document them for
-            another analyst: findings, evidence, and what I would do next.
+            Real events from my honeypot and an incident response case, documented the way I would hand them to another
+            analyst: a verdict up front, then the evidence, the assessment, and what to do next.
           </p>
         </motion.header>
 
@@ -32,9 +33,10 @@ export default function BlogPage() {
               <Link href={`/blog/${post.slug}`} className="group block panel rounded-xl p-6 hover:border-amber-600/50 transition-colors">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <span className="text-xs px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-600/30 text-amber-300">
-                      {post.category}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <DispositionBadge value={post.disposition} />
+                      <span className="text-xs text-slate-500">{post.category}</span>
+                    </div>
                     <h2 className="mt-3 text-xl font-semibold text-slate-100 group-hover:text-amber-300 transition-colors">
                       {post.title}
                     </h2>
