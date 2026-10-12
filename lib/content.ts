@@ -415,8 +415,7 @@ export const experience: Job[] = [
   {
     role: 'Delivery Associate',
     org: 'MMML (Amazon DSP)',
-    period: 'Sep 2025 to present',
-    current: true,
+    period: 'Sep 2025 to Oct 2026',
   },
   {
     role: 'Delivery Associate',
