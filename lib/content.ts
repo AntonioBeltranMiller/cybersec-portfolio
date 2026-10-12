@@ -407,7 +407,7 @@ export const experience: Job[] = [
     period: 'Sep 2021 to May 2024',
     bullets: [
       'Only IT resource for a 200-person, two-site logistics operation with no dedicated IT department.',
-      'Managed the endpoint fleet across Windows 11 workstations and 42 Android devices via 42Gears MDM, with manual patch management across the full fleet.',
+      'Managed 42 Android devices through 42Gears SureMDM and kept the Windows 11 workstations patched.',
       'Administered Active Directory (user provisioning, account management, and group policy), and onboarded new employees from a standardized least-privilege Windows image.',
       'Primary technical contact for 200+ drivers, resolving delivery-software and device failures in real time.',
     ],
