@@ -329,7 +329,7 @@ export const certifications: Cert[] = [
   {
     name: 'CompTIA CySA+',
     issuer: 'CompTIA',
-    date: 'In progress · expected October 2026',
+    date: 'In progress · expected November 2026',
     status: 'in-progress',
     core: true,
     skills: ['Behavioral analytics', 'Threat hunting', 'Incident response', 'Vulnerability management'],
