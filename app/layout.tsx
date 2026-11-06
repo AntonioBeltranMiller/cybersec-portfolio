@@ -11,14 +11,14 @@ const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' }
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://antoniobeltranmiller.com'),
-  title: 'Antonio Beltran-Miller | Tier 1 SOC Analyst Candidate',
+  title: 'Antonio Beltran-Miller | Security Analyst, Detection & Response',
   description:
-    'Security+ certified Tier 1 SOC analyst candidate in Ann Arbor, MI. A full phishing alert investigation, ten Splunk detections mapped to MITRE ATT&CK, and live honeypot threat intelligence.',
+    'Security+ certified security analyst in Ann Arbor, MI, focused on detection and response. A full phishing alert investigation, ten Splunk detections mapped to MITRE ATT&CK, and live honeypot threat intelligence.',
   keywords:
-    'SOC analyst, Tier 1 SOC, alert triage, Splunk, detection engineering, MITRE ATT&CK, phishing analysis, honeypot, incident response, Ann Arbor, Detroit',
+    'SOC analyst, security analyst, alert triage, Splunk, detection engineering, MITRE ATT&CK, phishing analysis, honeypot, incident response, Ann Arbor, Detroit',
   authors: [{ name: 'Antonio Beltran-Miller' }],
   openGraph: {
-    title: 'Antonio Beltran-Miller | Tier 1 SOC Analyst Candidate',
+    title: 'Antonio Beltran-Miller | Security Analyst, Detection & Response',
     description:
       'Alert triage, Splunk detections mapped to MITRE ATT&CK, and live honeypot threat intelligence.',
     type: 'website',

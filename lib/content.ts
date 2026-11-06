@@ -6,7 +6,7 @@
 export const profile = {
   name: 'Antonio Beltran-Miller',
   // Titles kept aligned with the résumé summary: the role being pursued, not a role held.
-  roles: ['Tier 1 SOC Analyst candidate', 'Alert triage & detection'],
+  roles: ['Security Analyst', 'Detection & response'],
   location: 'Ann Arbor, Michigan',
   email: 'AntonioBeltranMiller@gmail.com',
   site: 'antoniobeltranmiller.com',
@@ -15,7 +15,7 @@ export const profile = {
   resume: '/resume.pdf',
   // First person, plain. Mirrors the cover-letter voice.
   tagline:
-    'Security+ certified and moving into a Tier 1 SOC role. I work alerts end to end on LetsDefend, write and tune Splunk detections in a five-VM home lab, and ran a T-Pot honeypot to study live attack traffic.',
+    'Security+ certified analyst focused on detection and response. I work alerts end to end, write and tune detections mapped to MITRE ATT&CK in a five-VM home lab, and ran a T-Pot honeypot to study live attack traffic.',
   // Shift and location fit, shown near the top because it is one of the first things a SOC manager screens for.
   availability: 'Available for rotating and off-hours shifts · Onsite in the Detroit metro, hybrid, or remote',
   summary: [
@@ -329,7 +329,7 @@ export const certifications: Cert[] = [
   {
     name: 'CompTIA CySA+',
     issuer: 'CompTIA',
-    date: 'In progress · expected October 2026',
+    date: 'In progress · expected November 2026',
     status: 'in-progress',
     core: true,
     skills: ['Behavioral analytics', 'Threat hunting', 'Incident response', 'Vulnerability management'],
