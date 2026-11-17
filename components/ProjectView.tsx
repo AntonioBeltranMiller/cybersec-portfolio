@@ -12,14 +12,21 @@ export default function ProjectView({ project }: { project: Project }) {
   const [index, setIndex] = useState<number | null>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
   const evidence = project.evidence
+  const steps = project.walkthrough
+  // when a project ships a walkthrough, the lightbox is driven by the per-step
+  // screenshots; otherwise it falls back to the evidence gallery
+  const lightboxImages =
+    steps && steps.length
+      ? steps.filter((s) => s.src).map((s) => ({ src: s.src as string, label: s.caption ?? s.heading }))
+      : evidence
   const related = writeups.filter((w) => w.related?.slug === project.slug)
   // next project in the list, wrapping around, for continuous browsing
   const order = projects.findIndex((p) => p.slug === project.slug)
   const nextProject = order >= 0 ? projects[(order + 1) % projects.length] : null
 
   const close = useCallback(() => setIndex(null), [])
-  const prev = useCallback(() => setIndex((i) => (i === null ? i : (i - 1 + evidence.length) % evidence.length)), [evidence.length])
-  const next = useCallback(() => setIndex((i) => (i === null ? i : (i + 1) % evidence.length)), [evidence.length])
+  const prev = useCallback(() => setIndex((i) => (i === null ? i : (i - 1 + lightboxImages.length) % lightboxImages.length)), [lightboxImages.length])
+  const next = useCallback(() => setIndex((i) => (i === null ? i : (i + 1) % lightboxImages.length)), [lightboxImages.length])
 
   // Keyboard support for the lightbox: Escape closes, arrows navigate.
   useEffect(() => {
@@ -97,18 +104,83 @@ export default function ProjectView({ project }: { project: Project }) {
           <p className="mt-3 text-slate-300 leading-relaxed">{project.why}</p>
         </section>
 
-        {/* Built */}
-        <section className="mt-10">
-          <h2 className="text-xl font-semibold text-slate-100">{project.builtHeading ?? 'What I built'}</h2>
-          <ul className="mt-4 space-y-3">
-            {project.built.map((b, i) => (
-              <li key={i} className="flex gap-3 text-slate-300 leading-relaxed">
-                <CheckCircle2 className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
+        {/* Built (shown only when there is no step-by-step walkthrough) */}
+        {!steps && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold text-slate-100">{project.builtHeading ?? 'What I built'}</h2>
+            <ul className="mt-4 space-y-3">
+              {project.built.map((b, i) => (
+                <li key={i} className="flex gap-3 text-slate-300 leading-relaxed">
+                  <CheckCircle2 className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Walkthrough: narrative steps with a screenshot and takeaway each */}
+        {steps && steps.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold text-slate-100">Walkthrough</h2>
+            <p className="mt-2 text-sm text-slate-400">Attack to detection to response, one step at a time. Click any screenshot to view it full size.</p>
+            <ol className="mt-8 relative ml-3 border-l border-slate-800 space-y-14">
+              {steps.map((s, i) => {
+                const imgIdx = s.src ? lightboxImages.findIndex((im) => im.src === s.src) : -1
+                return (
+                  <li key={i} className="relative pl-7">
+                    <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-amber-500" />
+                    <div className="flex items-center gap-2.5">
+                      <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-amber-500/10 border border-amber-700/40 text-amber-300">{s.phase}</span>
+                      <span className="font-mono text-[11px] text-slate-500">Step {i + 1} / {steps.length}</span>
+                    </div>
+                    <h3 className="mt-3 text-lg font-semibold text-slate-100">{s.heading}</h3>
+                    <p className="mt-2 text-slate-300 leading-relaxed">{s.body}</p>
+                    {s.code && (
+                      <pre className="mt-4 overflow-x-auto rounded-xl border border-slate-800 bg-[#0b1220] p-4 text-[13px] leading-relaxed">
+                        <code className="text-slate-200 !bg-transparent !p-0">{s.code}</code>
+                      </pre>
+                    )}
+                    {s.src && (
+                      <figure className="mt-4">
+                        <button
+                          onClick={() => imgIdx >= 0 && setIndex(imgIdx)}
+                          className="group relative block w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950"
+                          aria-label={`Enlarge: ${s.caption ?? s.heading}`}
+                        >
+                          <div className="relative w-full aspect-[16/9]">
+                            <Image
+                              src={s.src}
+                              alt={s.caption ?? s.heading}
+                              fill
+                              className="object-contain p-2"
+                              sizes="(max-width:768px) 100vw, 768px"
+                            />
+                          </div>
+                          <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-slate-900/80 backdrop-blur border border-slate-700 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ZoomIn className="w-3.5 h-3.5" /> Enlarge
+                          </span>
+                        </button>
+                        {s.caption && (
+                          <figcaption className="mt-2.5 text-sm text-slate-400">
+                            <span className="text-slate-500 font-mono text-xs mr-2">Fig {i + 1}</span>
+                            {s.caption}
+                          </figcaption>
+                        )}
+                      </figure>
+                    )}
+                    {s.takeaway && (
+                      <div className="mt-4 rounded-lg border border-amber-800/40 bg-amber-950/10 px-4 py-3">
+                        <span className="font-mono text-[11px] uppercase tracking-wide text-amber-300/80">What this shows</span>
+                        <p className="mt-1 text-sm text-slate-300 leading-relaxed">{s.takeaway}</p>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
+          </section>
+        )}
 
         {/* MITRE ATT&CK coverage */}
         {project.attack && project.attack.length > 0 && (
@@ -148,8 +220,8 @@ export default function ProjectView({ project }: { project: Project }) {
           </section>
         )}
 
-        {/* Screenshots */}
-        {evidence.length > 0 && (
+        {/* Screenshots gallery (only when there is no walkthrough carrying them inline) */}
+        {!steps && evidence.length > 0 && (
           <section className="mt-12">
             <h2 className="text-xl font-semibold text-slate-100">Screenshots</h2>
             <p className="mt-2 text-sm text-slate-400">
@@ -251,7 +323,7 @@ export default function ProjectView({ project }: { project: Project }) {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={evidence[index].label}
+            aria-label={lightboxImages[index].label}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -261,7 +333,7 @@ export default function ProjectView({ project }: { project: Project }) {
             <button ref={closeRef} onClick={close} className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 hover:bg-slate-700" aria-label="Close (Esc)">
               <X className="w-5 h-5" />
             </button>
-            {evidence.length > 1 && (
+            {lightboxImages.length > 1 && (
               <>
                 <button
                   onClick={(e) => { e.stopPropagation(); prev() }}
@@ -281,11 +353,11 @@ export default function ProjectView({ project }: { project: Project }) {
             )}
             <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
               <div className="relative w-full" style={{ height: '80vh' }}>
-                <Image src={evidence[index].src} alt={evidence[index].label} fill className="object-contain" sizes="100vw" />
+                <Image src={lightboxImages[index].src} alt={lightboxImages[index].label} fill className="object-contain" sizes="100vw" />
               </div>
               <p className="mt-3 text-center text-sm text-slate-300">
-                {evidence[index].label}
-                {evidence.length > 1 && <span className="text-slate-500"> · {index + 1} / {evidence.length}</span>}
+                {lightboxImages[index].label}
+                {lightboxImages.length > 1 && <span className="text-slate-500"> · {index + 1} / {lightboxImages.length}</span>}
               </p>
             </div>
           </motion.div>

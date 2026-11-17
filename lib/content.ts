@@ -25,6 +25,17 @@ export const profile = {
 
 export type Metric = { label: string; value: string; note?: string }
 export type Evidence = { label: string; src: string }
+// a single step in an attack-to-response walkthrough: narrative, an inline
+// screenshot, and a short takeaway that lands the lesson for that step
+export type WalkStep = {
+  phase: string
+  heading: string
+  body: string
+  src?: string
+  caption?: string
+  takeaway?: string
+  code?: string
+}
 export type Section = { heading: string; body?: string; items?: string[] }
 
 export type Project = {
@@ -69,6 +80,8 @@ export type Project = {
   attack?: string[]
   github?: string
   gallery?: Evidence[]
+  // optional: an ordered attack-to-response walkthrough with a screenshot per step
+  walkthrough?: WalkStep[]
 }
 
 export const projects: Project[] = [
@@ -112,16 +125,95 @@ export const projects: Project[] = [
       'T1566 · Phishing',
       'T1078.004 · Valid Accounts: Cloud Accounts',
     ],
-    codeSample: {
-      label: 'The tuned detection: device code sign-ins by any account not on the CLI allowlist (KQL)',
-      code: `let allowlist = dynamic(["itops@<tenant>.onmicrosoft.com"]);
+    walkthrough: [
+      {
+        phase: 'Attack',
+        heading: 'Starting the device code flow',
+        body:
+          'Playing the attacker, I generated a device code with the Microsoft Graph CLI from a Kali VM. In a real campaign this is the lure: the attacker starts the flow and sends the victim a short code with a pitch to enter it at microsoft.com/devicelogin. I ran it from a VPN exit in another state so the sign-in would land on an IP far from my normal Michigan activity.',
+        src: '/images/projects/dcp-kali-device-code-prompt.png',
+        caption: 'The device code flow kicked off from Kali. The code and URL are what a victim would be social-engineered into using.',
+        takeaway:
+          'Nothing malicious touches the victim’s machine here. The attack rides a legitimate Microsoft authentication flow, which is exactly why attachment scanning and URL filtering miss it, and why the detection has to live in the sign-in logs.',
+      },
+      {
+        phase: 'Attack',
+        heading: 'The attacker inherits an authenticated session',
+        body:
+          'I redeemed the code as a standard user to stand in for a victim completing the sign-in, MFA included. The token came back to the session that started the flow, which in a real attack belongs to the attacker. The context dump confirms a live delegated session for the victim account, obtained through the device code flow.',
+        src: '/images/projects/dcp-attacker-session.png',
+        caption: 'A valid delegated session for the victim account, with the device-code credential type, held by the machine that started the flow.',
+        takeaway:
+          'This is the part people get wrong about device code phishing: it does not break MFA, it sidesteps it. The victim satisfies MFA and the attacker inherits the resulting token, so adding another factor does not help. Blocking the flow is the control that does.',
+      },
+      {
+        phase: 'Detect',
+        heading: 'Hunting for the sign-in',
+        body:
+          'Switching to the defender seat, I pulled every device code sign-in in the tenant. The benign admin account using the CLI from my home IP sits right next to the attacker account signing in from New York. One field I expected, AuthenticationProtocol, came back empty in this tenant, so I keyed on the signals that were actually present: the Microsoft Graph Command Line Tools application and the mobile and desktop client type.',
+        src: '/images/projects/dcp-device-code-events-query.png',
+        caption: 'Every device code sign-in in the window: a legitimate admin from home and the attacker from a different state, same auth method.',
+        takeaway:
+          'Device code auth is not malicious by itself, which is the trap. A rule that alerts on every device code sign-in would bury the SOC. The real signal is an account using it that has no business doing so, from somewhere it never signs in.',
+      },
+      {
+        phase: 'Detect',
+        heading: 'Tuning out the false positives',
+        body:
+          'The detection work was the allowlist. I carved out the admin account that legitimately uses CLI auth so the rule stays quiet on it, and fires only on an account that should never authenticate this way. After that, the attacker sign-in from New York is the only thing left, with a successful token issuance.',
+        code: `let allowlist = dynamic(["itops@<tenant>.onmicrosoft.com"]);
 SigninLogs
 | where AppDisplayName == "Microsoft Graph Command Line Tools"
 | where ClientAppUsed == "Mobile Apps and Desktop clients"
 | where UserPrincipalName !in~ (allowlist)
 | project TimeGenerated, UserPrincipalName, IPAddress, Location, ResultType, ResultDescription
 | order by TimeGenerated desc`,
-    },
+        src: '/images/projects/dcp-detection-query.png',
+        caption: 'With the allowlist applied, the legitimate admin drops out and only the anomalous account from New York remains.',
+        takeaway:
+          'This is the difference between a rule a SOC keeps and one they mute on day one. A detection’s value is in its false-positive rate as much as its catch rate, and the allowlist is where that judgment lives.',
+      },
+      {
+        phase: 'Detect',
+        heading: 'From query to analytics rule',
+        body:
+          'I promoted the query to a scheduled Sentinel analytics rule, mapped it to the techniques it actually catches, T1528 (Steal Application Access Token) and T1566 (Phishing), and mapped the user and source IP as entities so an analyst can pivot straight from the alert.',
+        src: '/images/projects/dcp-analytics-rule-mitre.png',
+        caption: 'The rule tied to MITRE ATT&CK, with the account and IP mapped as entities for investigation.',
+        takeaway:
+          'Mapping to ATT&CK by the behavior, not just a label, is what lets a detection slot into coverage tracking. It turns a one-off query into something a detection program can measure and defend.',
+      },
+      {
+        phase: 'Detect',
+        heading: 'The incident fires on its own',
+        body:
+          'With the rule live, the attacker sign-in generated a Sentinel incident without me running anything. It arrives with the entities attached and the response steps written into it, so the next analyst opens a case that is ready to work.',
+        src: '/images/projects/dcp-incident.png',
+        caption: 'The detection firing automatically and producing an investigable incident, not just a query result.',
+        takeaway:
+          'A detection that only works when someone runs the query is a hunt, not a control. The jump from a good query to an automated, enriched incident is the part that actually reduces time to detect on a live queue.',
+      },
+      {
+        phase: 'Respond',
+        heading: 'Containing the account',
+        body:
+          'I worked the response in order. First I revoked the account’s sessions, which invalidates the refresh token the attacker is holding, then I reset the password. Doing it the other way around leaves the stolen token alive.',
+        src: '/images/projects/dcp-revoke-sessions.png',
+        caption: 'Revoking every session for the compromised account to kill the attacker’s refresh token.',
+        takeaway:
+          'Revoke before reset. A password reset alone does not touch an already-issued refresh token, so the attacker keeps access until the session is explicitly revoked. That ordering is the detail that separates real containment from a checkbox.',
+      },
+      {
+        phase: 'Prevent',
+        heading: 'Blocking it for good',
+        body:
+          'Finally I added a Conditional Access policy that blocks the device code flow, excluded the break-glass account so I could not lock myself out, tested it in report-only first, then enforced it and confirmed the next attempt was blocked. Newer tenants get this from Security Defaults by default, but rebuilding it as an explicit, audited policy is how an organization that has moved past Security Defaults would actually run it.',
+        src: '/images/projects/dcp-ca-policy.png',
+        caption: 'The Conditional Access policy blocking the device code flow, running in report-only before enforcement.',
+        takeaway:
+          'Report-only first is deliberate: it proves the policy would not break legitimate access before it starts blocking. Shipping a blocking control straight to enforced is how you cause an outage and lose the business’s trust in the security team.',
+      },
+    ],
     metrics: [
       { label: 'Technique', value: 'Device code phishing', note: 'T1528 / T1566 · Storm-2372' },
       { label: 'Platform', value: 'Microsoft Sentinel', note: 'Entra ID SigninLogs' },
