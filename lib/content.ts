@@ -73,6 +73,72 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: 'device-code-phishing-detection',
+    title: 'Detecting Device Code Phishing in Microsoft Sentinel',
+    kind: 'Home lab · detection engineering',
+    timeline: 'November 2026',
+    featured: true,
+    spotlight: true,
+    readTime: '5 min read',
+    short: 'Device code phishing, detected end to end',
+    highlight:
+      'The interesting part was not catching the login. It was telling a legitimate admin using the CLI apart from an attacker, so the rule fires on the second one and stays quiet on the first.',
+    cover: '/images/projects/dcp-detection-query.png',
+    card:
+      'A detection I built in my own Microsoft 365 tenant for device code phishing, the technique Storm-2372 used against Entra ID. I ran the attack against my own test accounts, wrote a tuned Sentinel analytics rule that fired an incident on its own, then closed it out with session revocation and a Conditional Access policy that blocks the flow.',
+    result: 'Attack run in an isolated tenant · allowlist-tuned analytics rule fired an incident · contained and blocked with Conditional Access',
+    tags: ['Microsoft Sentinel', 'Entra ID', 'KQL', 'Conditional Access', 'Device Code Phishing', 'Storm-2372', 'MITRE ATT&CK'],
+    why:
+      'I wanted hands-on detection work in a Microsoft cloud environment, not just on-prem telemetry, and device code phishing was the right thing to build around because it is current. It is the Entra ID technique behind the Storm-2372 campaigns, and it is interesting precisely because the sign-in it produces looks legitimate. I ran the whole loop myself in an isolated tenant, from the attack through the detection to the response, so I would understand where each control actually sits.',
+    built: [
+      'Stood up a Microsoft 365 trial tenant with Entra ID P2, created separate admin, break-glass, and standard user accounts, and connected Microsoft Sentinel to a Log Analytics workspace with the Entra ID sign-in and audit logs streaming in through a diagnostic setting.',
+      'Ran the attack against my own accounts. I generated a device code with the Microsoft Graph CLI from a Kali VM sitting on a VPN exit in another state, then redeemed it as a standard user to stand in for a victim completing the sign-in. The geographic split was deliberate: it puts the malicious sign-in on a different IP than my normal Michigan baseline, which is the anomaly a detection can key on.',
+      'Found that my tenant did not populate the AuthenticationProtocol field, so the textbook deviceCode filter returned nothing. I keyed the detection on the signals that were actually present instead, the Microsoft Graph Command Line Tools application and the mobile and desktop client type, which is what the device code flow logs in this environment.',
+      'Tuned the rule with an allowlist so a legitimate admin using the CLI is suppressed and only an unexpected account authenticating this way raises an alert. That false-positive step was most of the real work, since firing on every device code sign-in would be useless to a SOC.',
+      'Promoted the query to a scheduled analytics rule mapped to T1528 and T1566, with the user and source IP mapped as entities, and confirmed it generated an incident on its own rather than needing me to run the query by hand.',
+      'Worked the response in order: revoked the account’s sessions first because the refresh token survives a password reset, then reset the password, and wrote the recommended actions into the rule so the next analyst sees them on the incident.',
+      'Added a Conditional Access policy that blocks the device code flow, excluded the break-glass account so I could not lock myself out, tested it in report-only first, then enforced it and confirmed the next attempt was blocked.',
+    ],
+    learned: [
+      'Device code phishing does not break MFA, it sidesteps it. The victim completes MFA and the resulting token flows to the attacker, so the control that actually stops it is blocking the flow, not adding another factor.',
+      'Security Defaults already blocks the device code flow in new tenants, a change Microsoft made in July 2026, which is why my first attempts came back blocked with a 530035. I documented the blocked attempts, then turned Security Defaults off to show the attack succeeding, then rebuilt the block as an explicit Conditional Access policy, which is closer to how an organization that has outgrown Security Defaults would handle it.',
+      'The detection is only as good as its allowlist. The useful version knows which accounts are expected to use CLI auth and stays quiet on them, which is the difference between a rule a SOC keeps and one they mute on day one.',
+      'Revoking the refresh token versus resetting the password is the detail that separates real containment from a checkbox. A reset alone leaves the stolen token valid, so the revoke has to come first.',
+    ],
+    application:
+      'In a real tenant this rule would need to cover more than the Graph CLI, since device code phishing targets other first-party clients too, and the allowlist would come from asking which service accounts and admins actually use CLI auth rather than guessing. The response matters more than the detection: the window between the token being issued and the session being revoked is the whole incident, so the revoke-first ordering is the part I would least want a tired analyst to get wrong. Everything here ran against my own accounts in an isolated tenant, and the one sign-in I show as successful required me to turn off a default protection to produce it.',
+    attack: [
+      'T1528 · Steal Application Access Token',
+      'T1566 · Phishing',
+      'T1078.004 · Valid Accounts: Cloud Accounts',
+    ],
+    codeSample: {
+      label: 'The tuned detection: device code sign-ins by any account not on the CLI allowlist (KQL)',
+      code: `let allowlist = dynamic(["itops@<tenant>.onmicrosoft.com"]);
+SigninLogs
+| where AppDisplayName == "Microsoft Graph Command Line Tools"
+| where ClientAppUsed == "Mobile Apps and Desktop clients"
+| where UserPrincipalName !in~ (allowlist)
+| project TimeGenerated, UserPrincipalName, IPAddress, Location, ResultType, ResultDescription
+| order by TimeGenerated desc`,
+    },
+    metrics: [
+      { label: 'Technique', value: 'Device code phishing', note: 'T1528 / T1566 · Storm-2372' },
+      { label: 'Platform', value: 'Microsoft Sentinel', note: 'Entra ID SigninLogs' },
+      { label: 'Detection', value: 'Scheduled rule', note: 'allowlist-tuned, fired an incident' },
+      { label: 'Control added', value: 'Conditional Access', note: 'device code flow blocked' },
+    ],
+    evidence: [
+      { label: 'The attacker initiates the device code flow from a Kali VM', src: '/images/projects/dcp-kali-device-code-prompt.png' },
+      { label: 'The attacker holds a valid device-code session for the victim account', src: '/images/projects/dcp-attacker-session.png' },
+      { label: 'Tuned detection: the allowlist suppresses legitimate CLI use and isolates the attacker sign-in from New York', src: '/images/projects/dcp-detection-query.png' },
+      { label: 'The analytics rule mapped to MITRE ATT&CK (T1528, T1566)', src: '/images/projects/dcp-analytics-rule-mitre.png' },
+      { label: 'The rule fired a Sentinel incident on its own', src: '/images/projects/dcp-incident.png' },
+      { label: 'Containment: revoking the account’s sessions, not just resetting the password', src: '/images/projects/dcp-revoke-sessions.png' },
+      { label: 'Prevention: a Conditional Access policy blocking the device code flow', src: '/images/projects/dcp-ca-policy.png' },
+    ],
+  },
+  {
     slug: 'letsdefend-phishing',
     title: 'SOC Alert: Lumma Stealer via ClickFix',
     kind: 'LetsDefend Challenge · unguided · SOC338',
